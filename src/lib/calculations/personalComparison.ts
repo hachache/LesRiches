@@ -25,6 +25,12 @@ export function calculateSalaryYearsToFortune(netWorthEUR: number, monthlySalary
   return fortune && yearlySalary ? fortune / yearlySalary : 0;
 }
 
+export function calculateSavingsMultiplier(netWorthEUR: number, savingsTotal: number): number {
+  const fortune = positive(netWorthEUR);
+  const savings = positive(savingsTotal);
+  return fortune && savings ? fortune / savings : 0;
+}
+
 export function calculateCareersAtSavingsRate(
   netWorthEUR: number,
   monthlySalary: number,
@@ -57,6 +63,7 @@ export function calculatePersonalFortuneComparison({
 
   return {
     ...fraction,
+    savingsMultiplier: calculateSavingsMultiplier(netWorthEUR, savingsTotal),
     salaryYears: calculateSalaryYearsToFortune(netWorthEUR, salaryMonthly),
     careersAt20PercentSavings: calculateCareersAtSavingsRate(netWorthEUR, salaryMonthly, savingsRate ?? undefined, careerYears ?? undefined),
     ...impact,

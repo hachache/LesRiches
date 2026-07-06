@@ -122,8 +122,8 @@ export default function Home() {
           </h2>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
             Parce que les montants très élevés deviennent abstraits. Dire “un milliard” ne raconte presque rien.
-            Dire combien d'années de salaire, de patrimoines médians, d'écoles ou d'enfants nourris cela représente
-            rend l'échelle plus compréhensible, sans slogan inutile.
+            Dire combien d'années de salaire, combien de fois ton épargne, combien d'écoles ou d'enfants nourris cela
+            représente rend l'échelle plus compréhensible, sans slogan inutile.
           </p>
         </div>
         <MethodologyNotice />

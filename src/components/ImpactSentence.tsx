@@ -3,11 +3,11 @@ import { formatCurrencyEUR, formatLargeNumber } from "@/lib/formatters/numbers";
 type ImpactSentenceProps = {
   amount: number;
   smicYears: number;
-  workingLives: number;
-  wealthMultiplier: number;
+  foodAidMeals: number;
+  schoolsBuilt: number;
 };
 
-export function ImpactSentence({ amount, smicYears, workingLives, wealthMultiplier }: ImpactSentenceProps) {
+export function ImpactSentence({ amount, smicYears, foodAidMeals, schoolsBuilt }: ImpactSentenceProps) {
   return (
     <div className="grid gap-6">
       <div>
@@ -18,7 +18,7 @@ export function ImpactSentence({ amount, smicYears, workingLives, wealthMultipli
           {formatCurrencyEUR(amount)}
         </h2>
         <p className="mt-3 max-w-2xl text-lg leading-7 text-[var(--muted)]">
-          À cette échelle, on ne lit plus un prix : on lit du temps de travail, des carrières et du patrimoine.
+          À cette échelle, on ne lit plus un prix : on lit du temps de travail et des équivalents concrets.
         </p>
       </div>
       <div className="grid gap-3 md:grid-cols-3">
@@ -30,18 +30,18 @@ export function ImpactSentence({ amount, smicYears, workingLives, wealthMultipli
           <p className="mt-1 text-sm text-[var(--muted)]">années de revenu</p>
         </div>
         <div className="border-l-4 border-black bg-white/70 p-4">
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">Travail</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">Repas</span>
           <strong className="display-type mt-2 block text-5xl font-bold leading-none">
-            {formatLargeNumber(workingLives)}
+            {formatLargeNumber(foodAidMeals)}
           </strong>
-          <p className="mt-1 text-sm text-[var(--muted)]">carrières complètes moyennes</p>
+          <p className="mt-1 text-sm text-[var(--muted)]">repas solidaires théoriques</p>
         </div>
         <div className="border-l-4 border-black bg-white/70 p-4">
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">Patrimoine</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">Écoles</span>
           <strong className="display-type mt-2 block text-5xl font-bold leading-none">
-            {formatLargeNumber(wealthMultiplier)}
+            {formatLargeNumber(schoolsBuilt)}
           </strong>
-          <p className="mt-1 text-sm text-[var(--muted)]">patrimoines médians nets</p>
+          <p className="mt-1 text-sm text-[var(--muted)]">constructions théoriques</p>
         </div>
       </div>
     </div>

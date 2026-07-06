@@ -71,6 +71,7 @@ export type PersonalFortuneComparisonOptions = {
 export type PersonalFortuneComparison = {
   fraction: number;
   percentage: number;
+  savingsMultiplier: number;
   salaryYears: number;
   careersAt20PercentSavings: number;
   medianWealthMultiplier: number;

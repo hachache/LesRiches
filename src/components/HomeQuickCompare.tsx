@@ -33,12 +33,12 @@ export function HomeQuickCompare() {
           </p>
           <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-lg border border-black/10 bg-white p-3">
-              <span className="block text-[var(--muted)]">Carrières</span>
-              <strong>{formatLargeNumber(result.workingLives.bySmic)}</strong>
+              <span className="block text-[var(--muted)]">Repas</span>
+              <strong>{formatLargeNumber(result.dailyLife.foodAidMeals)}</strong>
             </div>
             <div className="rounded-lg border border-black/10 bg-white p-3">
-              <span className="block text-[var(--muted)]">Patrimoines</span>
-              <strong>{formatLargeNumber(result.wealth.medianWealthMultiplier)}</strong>
+              <span className="block text-[var(--muted)]">Paniers</span>
+              <strong>{formatLargeNumber(result.dailyLife.groceryBaskets)}</strong>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { ResultGrid } from "@/components/ResultGrid";
 
 export const metadata: Metadata = {
   title: "Combien de SMIC pour 1 milliard d'euros ?",
-  description: "Visualisez ce que représente 1 milliard d'euros en années de SMIC net et patrimoine médian.",
+  description: "Visualisez ce que représente 1 milliard d'euros en années de SMIC, repas, paniers et écoles théoriques.",
   alternates: { canonical: "/combien-de-smic-pour-1-milliard" },
 };
 

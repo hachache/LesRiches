@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { economicReferences } from "@/data/economicReferences";
 import { compareAmount } from "@/lib/calculations/compare";
+import { calculateConcreteEquivalents } from "@/lib/calculations/taxScenarios";
 import { formatCurrencyEUR, formatLargeNumber, formatStartYear } from "@/lib/formatters/numbers";
 import { ComparisonCard } from "@/components/ComparisonCard";
 import { ImpactSentence } from "@/components/ImpactSentence";
@@ -21,12 +22,13 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
     () => compareAmount({ amount, customMonthlyIncome, careerYears, savingsRate }),
     [amount, careerYears, customMonthlyIncome, savingsRate],
   );
+  const concrete = useMemo(() => calculateConcreteEquivalents(amount), [amount]);
 
   const summary = `${formatCurrencyEUR(amount)} représente environ ${formatLargeNumber(
     result.smic.years,
-  )} années de SMIC net, ${formatLargeNumber(result.workingLives.bySmic)} carrières complètes et ${formatLargeNumber(
-    result.wealth.medianWealthMultiplier,
-  )} fois le patrimoine médian français. Calculé sur combien-de-smic.fr`;
+  )} années de SMIC net, ${formatLargeNumber(result.dailyLife.foodAidMeals)} repas solidaires théoriques et ${formatLargeNumber(
+    concrete.schoolsBuilt,
+  )} écoles construites théoriques. Calculé sur combien-de-smic.fr`;
 
   return (
     <section className="mobile-safe-panel grid gap-6">
@@ -34,13 +36,13 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
         <ImpactSentence
           amount={amount}
           smicYears={result.smic.years}
-          workingLives={result.workingLives.bySmic}
-          wealthMultiplier={result.wealth.medianWealthMultiplier}
+          foodAidMeals={result.dailyLife.foodAidMeals}
+          schoolsBuilt={concrete.schoolsBuilt}
         />
         <div className="flex flex-wrap gap-2">
-          <AssumptionBadge>Carrière complète moyenne</AssumptionBadge>
-          <AssumptionBadge>{Math.round(savingsRate * 100)} % d'épargne</AssumptionBadge>
           <AssumptionBadge>SMIC net {formatCurrencyEUR(economicReferences.smicNetMonthly.value)}/mois</AssumptionBadge>
+          <AssumptionBadge>Repas solidaire 2 €</AssumptionBadge>
+          <AssumptionBadge>École théorique 12 millions €</AssumptionBadge>
         </div>
         <ShareResultButton summary={summary} />
       </div>
@@ -56,29 +58,29 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
           )} mois de revenu net.`}
         />
         <ComparisonCard
-          title="Vie de travail"
-          value={result.workingLives.bySmic}
-          unit="carrières"
+          title="Repas solidaires"
+          value={result.dailyLife.foodAidMeals}
+          unit="repas"
           tone="dark"
-          sentence={`Base : carrière complète moyenne et ${Math.round(
-            savingsRate * 100,
-          )} % du revenu conservé, sans dépense.`}
+          sentence="Repère budgétaire simple : 2 € par repas théorique."
         />
         <ComparisonCard
-          title="Vie quotidienne"
-          value={result.dailyLife.averageRentMonths}
-          unit="loyers"
-          sentence={`${formatLargeNumber(result.dailyLife.rsaMonths)} mois de RSA, ${formatLargeNumber(
-            result.dailyLife.groceryBaskets,
-          )} paniers alimentaires, ${formatLargeNumber(result.dailyLife.foodAidMeals)} repas solidaires théoriques.`}
+          title="Paniers alimentaires"
+          value={result.dailyLife.groceryBaskets}
+          unit="paniers"
+          sentence="Un repère volontairement simple pour sentir l'échelle au quotidien."
         />
         <ComparisonCard
-          title="Patrimoine"
-          value={result.wealth.medianWealthMultiplier}
-          unit="patrimoines médians"
-          sentence={`${formatLargeNumber(result.wealth.averageWealthMultiplier)} patrimoines moyens, ${formatLargeNumber(
-            result.wealth.apartments,
-          )} appartements moyens ou ${formatLargeNumber(result.wealth.homes)} maisons moyennes.`}
+          title="Écoles"
+          value={concrete.schoolsBuilt}
+          unit="écoles"
+          sentence="Équivalent budgétaire théorique, pas une promesse de construction réelle."
+        />
+        <ComparisonCard
+          title="Hôpitaux locaux"
+          value={concrete.localHospitalsBuilt}
+          unit="hôpitaux"
+          sentence="Repère théorique pour comprendre l'ordre de grandeur."
         />
         <ComparisonCard
           title="Timeline"

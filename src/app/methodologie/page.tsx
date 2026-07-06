@@ -29,18 +29,18 @@ export default function MethodologiePage() {
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Ce que le site calcule</h2>
           <p className="mt-3">
             L'expérience principale compare un salaire net mensuel et une épargne totale à des fortunes d'ultra-riches.
-            Le moteur calcule la fraction de fortune, les années de salaire nécessaires, les carrières à 20% d'épargne,
-            puis des repères simples : SMIC, patrimoine médian, enfants nourris, écoles, hôpitaux locaux et part d'un
-            besoin annuel mondial contre la faim.
+            Le moteur calcule la fraction de fortune, les années de salaire nécessaires, combien de fois votre épargne
+            serait nécessaire, puis des repères simples : enfants nourris, écoles, hôpitaux locaux et part d'un besoin
+            annuel mondial contre la faim.
           </p>
         </section>
         <section>
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Pourquoi 20% d'épargne ?</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
+            Pourquoi simplifier les repères ?
+          </h2>
           <p className="mt-3">
-            Le parcours “moi vs ultra-riches” utilise 20% d'épargne comme hypothèse pédagogique stable : sur 2 000 €
-            nets par mois, cela revient à conserver 400 € par mois. Ce n'est pas une moyenne universelle, mais c'est
-            plus réaliste qu'une épargne à 100%. L'ancien comparateur de somme garde 100% uniquement comme borne
-            théorique minimale.
+            Certains indicateurs économiques deviennent vite abstraits. Le parcours principal privilégie donc des
+            phrases directes : “ta part”, “années de salaire”, “fois ton épargne” et équivalents budgétaires concrets.
           </p>
         </section>
         <section>
@@ -48,9 +48,9 @@ export default function MethodologiePage() {
             Pourquoi rester sur des repères simples ?
           </h2>
           <p className="mt-3">
-            Les comparaisons les plus fortes sont aussi les plus lisibles : années de salaire, patrimoines médians,
+            Les comparaisons les plus fortes sont aussi les plus lisibles : années de salaire, fois votre épargne,
             enfants nourris pendant un an, écoles construites et hôpitaux locaux théoriques. L'interface évite les
-            sigles et les unités compactes quand elles rendent l'échelle abstraite.
+            sigles, les unités compactes et les indicateurs qui demandent déjà une culture économique.
           </p>
         </section>
         <section>
@@ -68,8 +68,8 @@ export default function MethodologiePage() {
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets ajoutés</h2>
           <p className="mt-3">
             Les repères visibles couvrent l'aide alimentaire théorique, le coût d'une école, le coût d'un hôpital local,
-            les patrimoines médians et un besoin annuel mondial contre la faim. Les valeurs incertaines restent marquées
-            comme hypothèses plutôt que présentées comme faits définitifs.
+            et un besoin annuel mondial contre la faim. Les valeurs incertaines restent marquées comme hypothèses plutôt
+            que présentées comme faits définitifs.
           </p>
         </section>
         <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

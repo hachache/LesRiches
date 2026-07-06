@@ -71,9 +71,9 @@ export function BillionaireCard({
             <p className="mt-1 text-xs leading-5 text-[var(--muted)]">sans aucune dépense</p>
           </div>
           <div className="border-l border-black/15 pl-3">
-            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">20% d'épargne</span>
-            <strong>{formatLargeNumber(personal.careersAt20PercentSavings)} carrières</strong>
-            <p className="mt-1 text-xs leading-5 text-[var(--muted)]">base de 42 ans</p>
+            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Ton épargne</span>
+            <strong>{formatLargeNumber(personal.savingsMultiplier)} fois</strong>
+            <p className="mt-1 text-xs leading-5 text-[var(--muted)]">pour atteindre cette fortune</p>
           </div>
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-3">

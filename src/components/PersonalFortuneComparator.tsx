@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight, BowlFood, Coins, PiggyBank, TrendUp } from "@phosphor-icons/react";
+import { ArrowRight, BowlFood, GraduationCap, TrendUp, Wallet } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import { billionaires } from "@/data/billionaires";
 import { economicReferences } from "@/data/economicReferences";
@@ -165,8 +165,8 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                   fortune.
                 </p>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-                  À ce niveau, on ne compare plus deux revenus. On compare une vie financière ordinaire avec une masse
-                  d'actifs d'un autre ordre.
+                  Plus le pourcentage est petit, plus l'écart est grand. Le reste de la page traduit cet écart en
+                  exemples concrets.
                 </p>
               </div>
             </div>
@@ -179,18 +179,18 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {[
               [TrendUp, "Années de salaire", formatLargeNumber(comparison.salaryYears), "sans aucune dépense"],
-              [
-                PiggyBank,
-                "Carrières à 20%",
-                formatLargeNumber(comparison.careersAt20PercentSavings),
-                "épargne conservée",
-              ],
-              [Coins, "Patrimoines médians", formatLargeNumber(comparison.medianWealthMultiplier), "équivalents"],
+              [Wallet, "Fois ton épargne", formatLargeNumber(comparison.savingsMultiplier), "pour atteindre la fortune"],
               [
                 BowlFood,
                 "Enfants nourris 1 an",
                 formatLargeNumber(selectedConcrete.childrenFedOneYear),
                 "sur la fortune totale",
+              ],
+              [
+                GraduationCap,
+                "Écoles construites",
+                formatLargeNumber(selectedConcrete.schoolsBuilt),
+                "ordre de grandeur",
               ],
             ].map(([Icon, title, value, text]) => (
               <article key={String(title)} className="border border-black/15 bg-white/68 p-4">

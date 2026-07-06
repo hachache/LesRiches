@@ -58,6 +58,7 @@ export async function GET(request: Request) {
       ...comparison,
       formatted: {
         percentage: formatTinyPercentage(comparison.percentage),
+        savingsMultiplier: formatLargeNumber(comparison.savingsMultiplier),
         salaryYears: formatLargeNumber(comparison.salaryYears),
         careersAt20PercentSavings: formatLargeNumber(comparison.careersAt20PercentSavings),
         medianWealthMultiplier: formatLargeNumber(comparison.medianWealthMultiplier),

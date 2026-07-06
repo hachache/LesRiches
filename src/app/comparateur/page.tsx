@@ -5,7 +5,7 @@ import { PersonalFortuneComparator } from "@/components/PersonalFortuneComparato
 export const metadata: Metadata = {
   title: "Moi vs ultra-riches",
   description:
-    "Comparez votre salaire et votre épargne à des fortunes d'ultra-riches avec des fractions, carrières, patrimoines et repères alimentaires.",
+    "Comparez votre salaire et votre épargne à des fortunes d'ultra-riches avec des fractions, années de salaire et repères concrets.",
   alternates: { canonical: "/comparateur" },
 };
 
@@ -35,8 +35,7 @@ export default async function ComparateurPage({ searchParams }: PageProps) {
             Comparer une somme libre
           </h2>
           <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-            L'ancien calculateur reste disponible pour tester un montant précis en SMIC, patrimoines et repères du
-            quotidien.
+            L'ancien calculateur reste disponible pour tester un montant précis en SMIC et repères du quotidien.
           </p>
         </div>
         <ComparatorTool initialAmount={params?.amount ?? "1 milliard"} />

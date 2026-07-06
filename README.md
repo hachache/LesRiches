@@ -1,6 +1,6 @@
 # Combien de SMIC
 
-Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, carrières à 20% d'épargne, patrimoines médians, enfants nourris, écoles, hôpitaux locaux et variations annuelles estimées.
+Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, multiplicateur d'épargne, enfants nourris, écoles, hôpitaux locaux et variations annuelles estimées.
 
 Le ton est volontairement direct, factuel et chiffré. Le projet évite les slogans : l'objectif est de rendre les ordres de grandeur lisibles.
 
@@ -26,7 +26,7 @@ Les captures seront à ajouter après déploiement :
 
 - Expérience principale “moi vs ultra-riches” : salaire net mensuel, épargne totale, fortune sélectionnée
 - Camembert de fraction pour afficher la part réelle d'une fortune estimée
-- Comparaison en années de salaire, carrières à 20% d'épargne, patrimoines médians et fraction personnelle
+- Comparaison en années de salaire, nombre de fois l'épargne personnelle, fraction personnelle et repères concrets
 - Module “si on prélevait X%” avec `0,5%`, `1%`, `2%`, `5%` sur variation annuelle estimée de fortune
 - Repères concrets visibles : enfants nourris pendant un an, écoles construites, hôpitaux locaux, part d'un besoin annuel mondial contre la faim
 - Page milliardaires avec recherche, tri, portraits et comparaison personnelle
@@ -79,7 +79,7 @@ Ouvrir `http://localhost:3000`.
 npm test
 ```
 
-Les tests couvrent le parsing des montants, les années de revenus, les carrières complètes, les fractions de fortune, le taux d'épargne à 20%, les très grands nombres, les cas invalides, les API et les formatages.
+Les tests couvrent le parsing des montants, les années de revenus, les fractions de fortune, les très grands nombres, les cas invalides, les API et les formatages.
 
 ## Build
 
@@ -117,11 +117,10 @@ Certaines valeurs sont volontairement marquées comme placeholders réalistes :
 
 Avant usage public sérieux, ces valeurs doivent être vérifiées et remplacées par des sources publiques fiables.
 
-L'hypothèse principale de comparaison personnelle est une épargne de 20% du revenu net. L'épargne à 100% reste uniquement utilisée dans le comparateur de somme comme borne théorique.
+Le parcours principal privilégie des repères simples : fraction de fortune, années de salaire et nombre de fois l'épargne personnelle. L'épargne à 100% reste uniquement utilisée dans le comparateur de somme comme borne théorique.
 
 ## Limites
 
-- Une épargne à 20% reste une hypothèse simplifiée. Elle ne remplace pas une analyse budgétaire réelle.
 - Une épargne à 100% est irréaliste. Elle sert uniquement de borne théorique minimale dans le mode somme libre.
 - Les fortunes estimées varient fortement avec les marchés financiers.
 - Revenu, patrimoine et fortune ne mesurent pas la même réalité économique.

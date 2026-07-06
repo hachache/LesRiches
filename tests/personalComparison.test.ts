@@ -4,6 +4,7 @@ import {
   calculateFortuneFraction,
   calculateImpactEquivalents,
   calculatePersonalFortuneComparison,
+  calculateSavingsMultiplier,
   calculateSalaryYearsToFortune,
 } from "@/lib/calculations/personalComparison";
 
@@ -24,6 +25,11 @@ describe("personal fortune comparison", () => {
   test("calculates years of salary required for a fortune", () => {
     expect(calculateSalaryYearsToFortune(1_200_000, 2_000)).toBe(50);
     expect(calculateSalaryYearsToFortune(1_200_000, 0)).toBe(0);
+  });
+
+  test("calculates how many times personal savings fit into a fortune", () => {
+    expect(calculateSavingsMultiplier(1_000_000_000, 10_000)).toBe(100_000);
+    expect(calculateSavingsMultiplier(1_000_000_000, 0)).toBe(0);
   });
 
   test("calculates careers at a fixed savings rate", () => {
@@ -47,6 +53,7 @@ describe("personal fortune comparison", () => {
     });
 
     expect(result.percentage).toBeCloseTo(0.00000595238);
+    expect(result.savingsMultiplier).toBe(16_800_000);
     expect(result.salaryYears).toBe(17_500_000);
     expect(result.careersAt20PercentSavings).toBeCloseTo(2_083_333.33);
     expect(Number.isFinite(result.foodAidMeals)).toBe(true);

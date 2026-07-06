@@ -4,7 +4,7 @@ import { BillionairesList } from "@/components/BillionairesList";
 export const metadata: Metadata = {
   title: "Ultra-riches comparés à votre salaire",
   description:
-    "Comparez des fortunes estimées avec votre salaire, votre épargne, des carrières complètes et des repères alimentaires.",
+    "Comparez des fortunes estimées avec votre salaire, votre épargne et des repères concrets faciles à lire.",
   alternates: { canonical: "/milliardaires" },
 };
 
@@ -20,7 +20,7 @@ export default function MilliardairesPage() {
         </h1>
         <p className="mt-5 max-w-3xl text-xl leading-8 text-[var(--muted)]">
           Les fortunes sont des estimations variables. Les montants doivent être mis à jour depuis des sources
-          publiques fiables. Ici, on compare avec ton salaire, ton épargne et des repères alimentaires prudents.
+          publiques fiables. Ici, on compare avec ton salaire, ton épargne et des repères concrets faciles à lire.
         </p>
       </div>
       <BillionairesList />
