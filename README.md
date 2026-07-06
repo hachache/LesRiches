@@ -1,6 +1,6 @@
 # Combien de SMIC
 
-Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, carrières à 20% d'épargne, patrimoines médians, repères alimentaires, services publics et simulations fiscales théoriques.
+Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, carrières à 20% d'épargne, patrimoines médians, RSA, loyers, SMIC et simulations fiscales théoriques.
 
 Le ton est volontairement direct, factuel et chiffré. Le projet évite les slogans : l'objectif est de rendre les ordres de grandeur lisibles.
 
@@ -26,9 +26,9 @@ Les captures seront à ajouter après déploiement :
 
 - Expérience principale “moi vs ultra-riches” : salaire net mensuel, épargne totale, fortune sélectionnée
 - Camembert de fraction pour afficher la part réelle d'une fortune estimée
-- Comparaison en années de salaire, carrières à 20% d'épargne, patrimoines médians et repas solidaires théoriques
+- Comparaison en années de salaire, carrières à 20% d'épargne, patrimoines médians, mois de RSA et loyers moyens
 - Module “si on prélevait X%” avec `0,5%`, `1%`, `2%`, `5%` en simulation ponctuelle neutre
-- Repères concrets : seuil de pauvreté, RSA, coût annuel par élève, repas distribués, logement social théorique, recettes fiscales nettes
+- Repères concrets visibles : SMIC, RSA, seuil de pauvreté, loyers, patrimoine médian
 - Page milliardaires avec recherche, tri, portraits et comparaison personnelle
 - Mode secondaire de saisie libre d'une somme : `1000000`, `1 000 000`, `1,000,000`, `1m`, `1 milliard`, `1 billion`
 - Comparaison d'une somme libre en SMIC net, salaire médian, RSA, loyers, paniers alimentaires, immobilier et patrimoine
@@ -122,7 +122,7 @@ L'hypothèse principale de comparaison personnelle est une épargne de 20% du re
 - Les fortunes estimées varient fortement avec les marchés financiers.
 - Revenu, patrimoine et fortune ne mesurent pas la même réalité économique.
 - Les loyers et prix immobiliers varient fortement selon le territoire.
-- Les repas solidaires et paniers alimentaires sont des équivalents budgétaires théoriques, pas une promesse de solution publique.
+- Les repères RSA, loyers, SMIC et seuil de pauvreté sont des équivalents théoriques, pas une promesse de politique publique.
 - Les scénarios fiscaux sont des simulations ponctuelles sur fortune estimée, pas une proposition fiscale ni une prévision de recettes réelles.
 - Le site donne des ordres de grandeur, pas un conseil financier.
 

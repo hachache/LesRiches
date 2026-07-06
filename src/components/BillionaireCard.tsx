@@ -2,7 +2,6 @@ import Image from "next/image";
 import type { Billionaire } from "@/types/economics";
 import { compareAmount } from "@/lib/calculations/compare";
 import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalComparison";
-import { economicReferences } from "@/data/economicReferences";
 import { formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
 import { FortuneFractionPie } from "@/components/FortuneFractionPie";
 import { TaxScenarioPanel } from "@/components/TaxScenarioPanel";
@@ -77,23 +76,23 @@ export function BillionaireCard({
             <p className="mt-1 text-sm text-white/68">années</p>
           </div>
           <div className="bg-[var(--accent)] p-4 text-white">
-            <span className="font-mono text-xs uppercase tracking-[0.12em] text-white/72">Repas solidaires</span>
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-white/72">Mois de RSA</span>
             <strong className="display-type mt-2 block text-5xl leading-none">
-              {formatLargeNumber(result.dailyLife.foodAidMeals)}
+              {formatLargeNumber(result.dailyLife.rsaMonths)}
             </strong>
-            <p className="mt-1 text-sm text-white/75">à {economicReferences.foodAidMeal.value} € / repas</p>
+            <p className="mt-1 text-sm text-white/75">personne seule</p>
           </div>
           <div className="border border-black/15 bg-white p-4">
-            <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Paniers alimentaires</span>
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Loyers moyens</span>
             <strong className="display-type mt-2 block text-5xl leading-none">
-              {formatLargeNumber(result.dailyLife.groceryBaskets)}
+              {formatLargeNumber(result.dailyLife.averageRentMonths)}
             </strong>
-            <p className="mt-1 text-sm text-[var(--muted)]">repère alimentaire hebdomadaire</p>
+            <p className="mt-1 text-sm text-[var(--muted)]">mois de loyer indicatif</p>
           </div>
         </div>
         <p className="mt-5 max-w-3xl text-sm leading-6 text-[var(--muted)]">
-          Ces équivalences ne disent pas qu'une fortune pourrait mécaniquement résoudre la faim. Elles donnent un
-          ordre de grandeur budgétaire, avec des hypothèses visibles.
+          Ces équivalences donnent un ordre de grandeur simple. Elles ne disent pas qu'une fortune se transforme
+          mécaniquement en revenus, loyers ou prestations.
         </p>
         <p className="mt-2 font-mono text-xs uppercase tracking-[0.1em] text-[var(--muted)]">
           Dernière mise à jour indicative : {billionaire.lastUpdated}

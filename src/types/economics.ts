@@ -68,6 +68,8 @@ export type PersonalFortuneComparison = {
 };
 
 export type ConcreteEquivalents = {
+  smicYears: number;
+  rsaMonths: number;
   rsaYears: number;
   povertyThresholdYears: number;
   foodAidMeals: number;

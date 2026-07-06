@@ -3,11 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight, Coins, ForkKnife, PiggyBank, TrendUp } from "@phosphor-icons/react";
+import { ArrowRight, Coins, PiggyBank, TrendUp, Wallet } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import { billionaires } from "@/data/billionaires";
 import { economicReferences } from "@/data/economicReferences";
 import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalComparison";
+import { calculateConcreteEquivalents } from "@/lib/calculations/taxScenarios";
 import { formatCurrencyEUR, formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
 import { FortuneFractionPie } from "@/components/FortuneFractionPie";
 import { ShareResultButton } from "@/components/ShareResultButton";
@@ -42,6 +43,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
       }),
     [salaryMonthly, savingsTotal, selected.netWorthEUR],
   );
+  const selectedConcrete = useMemo(() => calculateConcreteEquivalents(selected.netWorthEUR), [selected.netWorthEUR]);
 
   const summary = `${formatCurrencyEUR(savingsTotal)} d'épargne représente ${formatTinyPercentage(
     comparison.percentage,
@@ -181,7 +183,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                 "épargne conservée",
               ],
               [Coins, "Patrimoines médians", formatLargeNumber(comparison.medianWealthMultiplier), "équivalents"],
-              [ForkKnife, "Repas solidaires", formatLargeNumber(comparison.foodAidMeals), "repère budgétaire"],
+              [Wallet, "Mois de RSA", formatLargeNumber(selectedConcrete.rsaMonths), "personne seule"],
             ].map(([Icon, title, value, text]) => (
               <article key={String(title)} className="border border-black/15 bg-white/68 p-4">
                 <Icon size={22} weight="bold" className="text-[var(--accent-dark)]" />
@@ -194,8 +196,8 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
 
           <div className="grid gap-4 border-t border-black/10 pt-5 md:grid-cols-[1fr_auto] md:items-center">
             <p className="max-w-3xl text-sm leading-6 text-[var(--muted)]">
-              Les repas et paniers sont des équivalents budgétaires théoriques. Ils ne disent pas qu'une fortune se
-              transforme mécaniquement en solution publique.
+              Ces repères restent théoriques. Ils servent à comprendre l'échelle, pas à promettre une transformation
+              mécanique d'une fortune en politique publique.
             </p>
             <div className="flex flex-wrap gap-2">
               <ShareResultButton summary={summary} />

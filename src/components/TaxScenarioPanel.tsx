@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { Buildings, ForkKnife, GraduationCap, HouseLine, Scales } from "@phosphor-icons/react";
+import { Bank, HouseLine, Scales, TrendUp, Wallet } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import { calculateTaxScenario, taxScenarioRates } from "@/lib/calculations/taxScenarios";
 import { formatCurrencyEUR, formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
@@ -19,20 +19,10 @@ export function TaxScenarioPanel({ netWorthEUR, ownerName, compact = false }: Ta
   const scenario = useMemo(() => calculateTaxScenario(netWorthEUR, rate), [netWorthEUR, rate]);
 
   const cards = [
-    [ForkKnife, "Repas solidaires", formatLargeNumber(scenario.concrete.foodAidMeals), "à 2 € le repas théorique"],
-    [
-      GraduationCap,
-      "Années par élève",
-      formatLargeNumber(scenario.concrete.educationStudentYears),
-      "dépense moyenne d'éducation",
-    ],
-    [HouseLine, "Logements sociaux", formatLargeNumber(scenario.concrete.socialHousingUnits), "hypothèse unitaire"],
-    [
-      Buildings,
-      "Budget État",
-      formatTinyPercentage(scenario.publicScale.stateNetRevenueShare * 100),
-      "des recettes fiscales nettes",
-    ],
+    [TrendUp, "Années de SMIC", formatLargeNumber(scenario.concrete.smicYears), "au SMIC net, sans dépense"],
+    [Wallet, "Mois de RSA", formatLargeNumber(scenario.concrete.rsaMonths), "personne seule"],
+    [Bank, "Années au seuil de pauvreté", formatLargeNumber(scenario.concrete.povertyThresholdYears), "repère INSEE"],
+    [HouseLine, "Années de loyer", formatLargeNumber(scenario.concrete.averageRentYears), "loyer moyen indicatif"],
   ] as const;
 
   return (
@@ -48,11 +38,11 @@ export function TaxScenarioPanel({ netWorthEUR, ownerName, compact = false }: Ta
               Simulation fiscale neutre
             </p>
             <h3 className="display-type mt-3 text-4xl font-semibold uppercase leading-[0.95] sm:text-5xl">
-              Si on prélevait {formatTinyPercentage(rate * 100)}.
+              {formatTinyPercentage(rate * 100)} ferait déjà ça.
             </h3>
             <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-              Simulation théorique ponctuelle sur fortune estimée de {ownerName}. Ce n'est pas une proposition fiscale
-              ni une recette réellement mobilisable telle quelle.
+              Simulation théorique ponctuelle sur la fortune estimée de {ownerName}. Pas une proposition fiscale :
+              juste l'ordre de grandeur.
             </p>
           </div>
 
@@ -82,6 +72,9 @@ export function TaxScenarioPanel({ netWorthEUR, ownerName, compact = false }: Ta
             <strong className="display-type block text-5xl font-semibold leading-none text-[var(--accent)] sm:text-6xl">
               {formatCurrencyEUR(scenario.amount)}
             </strong>
+            <p className="mt-2 text-sm font-semibold text-[var(--foreground)]">
+              Une fraction minuscule, mais déjà une somme massive.
+            </p>
           </motion.div>
         </div>
 
@@ -119,7 +112,7 @@ export function TaxScenarioPanel({ netWorthEUR, ownerName, compact = false }: Ta
       <p className="mt-4 flex gap-2 text-xs leading-5 text-[var(--muted)]">
         <Scales size={18} weight="bold" className="mt-0.5 shrink-0 text-[var(--accent-dark)]" />
         Les comparaisons montrent des ordres de grandeur. Elles ne modélisent ni l'assiette fiscale réelle, ni les
-        comportements de marché, ni les coûts administratifs.
+        comportements de marché, ni les coûts administratifs. Le but est de rendre l'échelle lisible.
       </p>
     </section>
   );

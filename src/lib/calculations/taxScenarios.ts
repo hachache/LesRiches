@@ -16,6 +16,8 @@ export function calculateConcreteEquivalents(amount: number): ConcreteEquivalent
   const cleanAmount = positive(amount);
 
   return {
+    smicYears: calculatePurchasingPowerUnits(cleanAmount, economicReferences.smicNetMonthly.value * 12),
+    rsaMonths: calculatePurchasingPowerUnits(cleanAmount, economicReferences.rsaSingleMonthly.value),
     rsaYears: calculatePurchasingPowerUnits(cleanAmount, economicReferences.rsaSingleMonthly.value * 12),
     povertyThresholdYears: calculatePurchasingPowerUnits(cleanAmount, economicReferences.povertyThresholdMonthly.value * 12),
     foodAidMeals: calculatePurchasingPowerUnits(cleanAmount, economicReferences.foodAidMeal.value),

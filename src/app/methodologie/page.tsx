@@ -30,7 +30,7 @@ export default function MethodologiePage() {
           <p className="mt-3">
             L'expérience principale compare un salaire net mensuel et une épargne totale à des fortunes d'ultra-riches.
             Le moteur calcule la fraction de fortune, les années de salaire nécessaires, les carrières à 20% d'épargne,
-            puis des repères comme les patrimoines médians, les paniers alimentaires et les repas solidaires théoriques.
+            puis des repères simples : SMIC, RSA, loyers, seuil de pauvreté et patrimoine médian.
           </p>
         </section>
         <section>
@@ -44,13 +44,12 @@ export default function MethodologiePage() {
         </section>
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-            Pourquoi parler de repas ou de faim ?
+            Pourquoi rester sur des repères simples ?
           </h2>
           <p className="mt-3">
-            Les repas solidaires et paniers alimentaires sont des équivalents budgétaires. Ils aident à saisir un ordre
-            de grandeur, mais ne signifient pas qu'une fortune privée pourrait se transformer mécaniquement en politique
-            publique efficace. Les coûts de distribution, les infrastructures, les territoires et les choix collectifs ne
-            sont pas modélisés ici.
+            Les comparaisons les plus fortes sont aussi les plus lisibles : années de SMIC, mois de RSA, années de
+            loyer, seuil de pauvreté. Les repères plus spécialisés existent dans les données, mais l'interface met en
+            avant ce qui se comprend immédiatement.
           </p>
         </section>
         <section>
@@ -67,10 +66,8 @@ export default function MethodologiePage() {
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets ajoutés</h2>
           <p className="mt-3">
-            Les nouveaux repères couvrent le seuil de pauvreté INSEE, le RSA, les repas distribués par de grandes
-            associations, le coût annuel moyen par élève, une hypothèse de logement social et les recettes fiscales
-            nettes de l'État. Les valeurs incertaines sont marquées comme hypothèses plutôt que présentées comme faits
-            définitifs.
+            Les repères visibles couvrent le seuil de pauvreté INSEE, le RSA, le SMIC net et le loyer moyen indicatif.
+            Les valeurs incertaines restent marquées comme hypothèses plutôt que présentées comme faits définitifs.
           </p>
         </section>
         <section className="grid gap-4 md:grid-cols-3">

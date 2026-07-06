@@ -17,12 +17,12 @@ export function HomeTaxPreview() {
             Simulation neutre
           </p>
           <h2 className="display-type mt-3 text-5xl font-semibold uppercase leading-[0.98] md:text-7xl">
-            Ce que 1% représenterait.
+            1%. Déjà des milliards.
           </h2>
         </div>
         <p className="max-w-2xl text-base leading-7 text-[var(--muted)]">
-          Exemple avec la fortune estimée de {referenceFortune.name}. Ce n'est pas une proposition fiscale : seulement
-          une façon de rendre visible l'ordre de grandeur.
+          Exemple avec {referenceFortune.name}. Ce n'est pas une proposition fiscale. C'est juste une traduction de
+          l'échelle.
         </p>
       </div>
 
@@ -36,26 +36,14 @@ export function HomeTaxPreview() {
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              ["Repas solidaires", formatLargeNumber(onePercent.concrete.foodAidMeals), "/assets/editorial/food-scale.png"],
-              [
-                "Années par élève",
-                formatLargeNumber(onePercent.concrete.educationStudentYears),
-                "/assets/editorial/school-budget.png",
-              ],
-              [
-                "Logements théoriques",
-                formatLargeNumber(onePercent.concrete.socialHousingUnits),
-                "/assets/editorial/housing-ledger.png",
-              ],
+              ["Années de SMIC", formatLargeNumber(onePercent.concrete.smicYears), "au SMIC net, sans rien dépenser"],
+              ["Mois de RSA", formatLargeNumber(onePercent.concrete.rsaMonths), "personne seule"],
+              ["Années de loyer", formatLargeNumber(onePercent.concrete.averageRentYears), "loyer moyen indicatif"],
             ].map(([title, value, image]) => (
-              <article key={title} className="overflow-hidden border border-black/15 bg-white">
-                <div className="relative aspect-[16/10] bg-black">
-                  <Image src={image} alt="" fill sizes="(max-width: 768px) 100vw, 240px" className="object-cover" />
-                </div>
-                <div className="p-4">
-                  <p className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--muted)]">{title}</p>
-                  <strong className="display-type mt-2 block text-4xl font-semibold leading-none">{value}</strong>
-                </div>
+              <article key={title} className="border border-black/15 bg-white p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--muted)]">{title}</p>
+                <strong className="display-type mt-2 block text-5xl font-semibold leading-none">{value}</strong>
+                <p className="mt-2 text-sm leading-5 text-[var(--muted)]">{image}</p>
               </article>
             ))}
           </div>
