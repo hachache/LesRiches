@@ -1,0 +1,49 @@
+import type { Billionaire } from "@/types/economics";
+
+export const billionaires: Billionaire[] = [
+  {
+    name: "Bernard Arnault",
+    netWorthEUR: 174_000_000_000,
+    imageSrc: "/assets/billionaires/bernard-arnault.png",
+    imageAlt: "Portrait éditorial stylisé associé à Bernard Arnault",
+    sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
+    sourceUrl: "https://www.forbes.com/billionaires/",
+    lastUpdated: "2026-07-06",
+  },
+  {
+    name: "Elon Musk",
+    netWorthEUR: 420_000_000_000,
+    imageSrc: "/assets/billionaires/elon-musk.png",
+    imageAlt: "Portrait éditorial stylisé associé à Elon Musk",
+    sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
+    sourceUrl: "https://www.forbes.com/billionaires/",
+    lastUpdated: "2026-07-06",
+  },
+  {
+    name: "Jeff Bezos",
+    netWorthEUR: 210_000_000_000,
+    imageSrc: "/assets/billionaires/jeff-bezos.png",
+    imageAlt: "Portrait éditorial stylisé associé à Jeff Bezos",
+    sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
+    sourceUrl: "https://www.forbes.com/billionaires/",
+    lastUpdated: "2026-07-06",
+  },
+  {
+    name: "Mark Zuckerberg",
+    netWorthEUR: 230_000_000_000,
+    imageSrc: "/assets/billionaires/mark-zuckerberg.png",
+    imageAlt: "Portrait éditorial stylisé associé à Mark Zuckerberg",
+    sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
+    sourceUrl: "https://www.forbes.com/billionaires/",
+    lastUpdated: "2026-07-06",
+  },
+  {
+    name: "Bill Gates",
+    netWorthEUR: 105_000_000_000,
+    imageSrc: "/assets/billionaires/bill-gates.png",
+    imageAlt: "Portrait éditorial stylisé associé à Bill Gates",
+    sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
+    sourceUrl: "https://www.forbes.com/billionaires/",
+    lastUpdated: "2026-07-06",
+  },
+];

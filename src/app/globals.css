@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f3efe6;
+  --foreground: #11100e;
+  --muted: #686058;
+  --accent: #d51f12;
+  --accent-dark: #a5140a;
+  --panel: #fffaf0;
+  --ink: #050505;
+  --line: #17110b24;
 }
 
 @theme inline {
@@ -12,15 +18,119 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 12% 4%, rgba(213, 31, 18, 0.07), transparent 28rem),
+    linear-gradient(90deg, rgba(23, 20, 17, 0.055) 1px, transparent 1px) 0 0 / 42px 42px,
+    linear-gradient(0deg, rgba(23, 20, 17, 0.04) 1px, transparent 1px) 0 0 / 42px 42px,
+    var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+.paper-panel {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 250, 240, 0.9)),
+    var(--panel);
+  box-shadow: 0 30px 90px rgba(31, 24, 18, 0.14);
+}
+
+.ink-panel {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(213, 31, 18, 0.18), transparent 22rem),
+    linear-gradient(135deg, #151515, #050505 72%);
+  color: var(--panel);
+}
+
+.scale-rail {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(213, 31, 18, 0.9) 0,
+    rgba(213, 31, 18, 0.9) 2px,
+    transparent 2px,
+    transparent 14px
+  );
+}
+
+.stamp {
+  border: 1px solid rgba(213, 31, 18, 0.42);
+  color: var(--accent-dark);
+  transform: rotate(-5deg);
+}
+
+.display-type {
+  font-family: var(--font-display), var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  letter-spacing: -0.025em;
+  text-rendering: geometricPrecision;
+}
+
+.poster-shell {
+  position: relative;
+}
+
+.mobile-safe-panel {
+  width: calc(100vw - 2rem);
+  max-width: 100%;
+  min-width: 0;
+}
+
+.poster-shell::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 96px;
+  bottom: 56px;
+  width: 1px;
+  background: var(--accent);
+  opacity: 0.72;
+}
+
+.poster-shell::after {
+  content: "1 Md€  ·  100 M€  ·  10 M€  ·  1 M€";
+  position: absolute;
+  left: 8px;
+  top: 168px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  color: var(--accent-dark);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 767px) {
+  .poster-shell::before,
+  .poster-shell::after {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .mobile-safe-panel {
+    width: 100%;
+  }
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--panel);
+}
+
+button,
+a,
+input,
+select {
+  outline-color: var(--accent);
 }
