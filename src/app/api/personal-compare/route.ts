@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { billionaires } from "@/data/billionaires";
 import { economicReferences } from "@/data/economicReferences";
 import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalComparison";
+import { calculateDefaultTaxScenarios } from "@/lib/calculations/taxScenarios";
 import { formatCurrencyEUR, formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
 
 function readPositiveNumber(value: string | null): number {
@@ -32,6 +33,7 @@ export async function GET(request: Request) {
     savingsTotal,
     netWorthEUR: billionaire.netWorthEUR,
   });
+  const taxScenarios = calculateDefaultTaxScenarios(billionaire.netWorthEUR);
 
   return NextResponse.json({
     input: {
@@ -59,6 +61,17 @@ export async function GET(request: Request) {
         groceryBaskets: formatLargeNumber(comparison.groceryBaskets),
       },
     },
+    taxScenarios: taxScenarios.map((scenario) => ({
+      ...scenario,
+      formatted: {
+        rate: formatTinyPercentage(scenario.rate * 100),
+        amount: formatCurrencyEUR(scenario.amount),
+        foodAidMeals: formatLargeNumber(scenario.concrete.foodAidMeals),
+        povertyThresholdYears: formatLargeNumber(scenario.concrete.povertyThresholdYears),
+        educationStudentYears: formatLargeNumber(scenario.concrete.educationStudentYears),
+        socialHousingUnits: formatLargeNumber(scenario.concrete.socialHousingUnits),
+      },
+    })),
     generatedAt: new Date().toISOString(),
     assumptions: {
       defaultSavingsRate: economicReferences.defaultSavingsRate.value,

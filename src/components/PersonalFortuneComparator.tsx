@@ -11,6 +11,7 @@ import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalC
 import { formatCurrencyEUR, formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
 import { FortuneFractionPie } from "@/components/FortuneFractionPie";
 import { ShareResultButton } from "@/components/ShareResultButton";
+import { TaxScenarioPanel } from "@/components/TaxScenarioPanel";
 
 type PersonalFortuneComparatorProps = {
   compact?: boolean;
@@ -211,6 +212,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
           </div>
         </motion.div>
       </div>
+      {!compact ? <TaxScenarioPanel netWorthEUR={selected.netWorthEUR} ownerName={selected.name} /> : null}
     </section>
   );
 }

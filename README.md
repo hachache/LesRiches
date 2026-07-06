@@ -1,6 +1,6 @@
 # Combien de SMIC
 
-Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, carrières à 20% d'épargne, patrimoines médians et repères alimentaires.
+Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, carrières à 20% d'épargne, patrimoines médians, repères alimentaires, services publics et simulations fiscales théoriques.
 
 Le ton est volontairement direct, factuel et chiffré. Le projet évite les slogans : l'objectif est de rendre les ordres de grandeur lisibles.
 
@@ -27,12 +27,15 @@ Les captures seront à ajouter après déploiement :
 - Expérience principale “moi vs ultra-riches” : salaire net mensuel, épargne totale, fortune sélectionnée
 - Camembert de fraction pour afficher la part réelle d'une fortune estimée
 - Comparaison en années de salaire, carrières à 20% d'épargne, patrimoines médians et repas solidaires théoriques
+- Module “si on prélevait X%” avec `0,5%`, `1%`, `2%`, `5%` en simulation ponctuelle neutre
+- Repères concrets : seuil de pauvreté, RSA, coût annuel par élève, repas distribués, logement social théorique, recettes fiscales nettes
 - Page milliardaires avec recherche, tri, portraits et comparaison personnelle
 - Mode secondaire de saisie libre d'une somme : `1000000`, `1 000 000`, `1,000,000`, `1m`, `1 milliard`, `1 billion`
 - Comparaison d'une somme libre en SMIC net, salaire médian, RSA, loyers, paniers alimentaires, immobilier et patrimoine
 - Timeline théorique : année de départ nécessaire au SMIC sans dépense
 - API JSON : `/api/compare?amount=1000000000`
 - API JSON personnelle : `/api/personal-compare?salary=2000&savings=10000&billionaire=elon-musk`
+- API JSON fiscale : `/api/tax-scenario?billionaire=elon-musk&rate=1`
 - Boutons copier/partager
 - Pages SEO : `/combien-de-smic-pour-1-million`, `/combien-de-smic-pour-1-milliard`
 
@@ -94,6 +97,10 @@ Certaines valeurs sont sourcées avec des références publiques récentes :
 - RSA personne seule : barème CAF 2026
 - Patrimoine médian net : INSEE, données de patrimoine 2024 publiées en 2026
 - Salaire médian : repère INSEE 2024 à vérifier dans les tableaux détaillés
+- Seuil de pauvreté : INSEE, seuil à 60% du niveau de vie médian
+- Éducation : DEPP / Éducation nationale, dépense intérieure d'éducation
+- Recettes fiscales nettes : Budget.gouv, projet de loi de finances 2026
+- Repas distribués : Banques Alimentaires et Restos du Cœur, rapports et communications publiques récentes
 
 Certaines valeurs sont volontairement marquées comme placeholders réalistes :
 
@@ -101,6 +108,7 @@ Certaines valeurs sont volontairement marquées comme placeholders réalistes :
 - panier alimentaire
 - voiture populaire
 - prix moyen appartement/maison
+- coût unitaire d'un logement social théorique
 - fortunes de milliardaires
 
 Avant usage public sérieux, ces valeurs doivent être vérifiées et remplacées par des sources publiques fiables.
@@ -115,6 +123,7 @@ L'hypothèse principale de comparaison personnelle est une épargne de 20% du re
 - Revenu, patrimoine et fortune ne mesurent pas la même réalité économique.
 - Les loyers et prix immobiliers varient fortement selon le territoire.
 - Les repas solidaires et paniers alimentaires sont des équivalents budgétaires théoriques, pas une promesse de solution publique.
+- Les scénarios fiscaux sont des simulations ponctuelles sur fortune estimée, pas une proposition fiscale ni une prévision de recettes réelles.
 - Le site donne des ordres de grandeur, pas un conseil financier.
 
 ## API
@@ -173,6 +182,35 @@ Réponse abrégée :
   "assumptions": {
     "defaultSavingsRate": 0.2,
     "careerYears": 42
+  }
+}
+```
+
+Comparer une simulation fiscale :
+
+```bash
+curl "http://localhost:3000/api/tax-scenario?billionaire=elon-musk&rate=1"
+```
+
+Réponse abrégée :
+
+```json
+{
+  "input": {
+    "billionaire": "elon-musk",
+    "ratePercent": 1
+  },
+  "scenario": {
+    "rate": 0.01,
+    "amount": 4200000000,
+    "formatted": {
+      "amount": "4 200 000 000 €",
+      "foodAidMeals": "2,1 Md",
+      "educationStudentYears": "401 914"
+    }
+  },
+  "assumptions": {
+    "framing": "simulation théorique ponctuelle sur fortune estimée"
   }
 }
 ```

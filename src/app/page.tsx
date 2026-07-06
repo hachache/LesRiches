@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChartBar, Scales, Timer } from "@phosphor-icons/react/dist/ssr";
 import { MethodologyNotice } from "@/components/MethodologyNotice";
+import { HomeTaxPreview } from "@/components/HomeTaxPreview";
 import { PersonalFortuneComparator } from "@/components/PersonalFortuneComparator";
 import { SourceList } from "@/components/SourceList";
 import { sourceReferences } from "@/data/economicReferences";
@@ -94,6 +95,8 @@ export default function Home() {
         </div>
         <PersonalFortuneComparator compact />
       </section>
+
+      <HomeTaxPreview />
 
       <section className="border-y border-white/10 bg-[var(--ink)] py-12 text-[var(--panel)]">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 md:grid-cols-3 lg:px-8">

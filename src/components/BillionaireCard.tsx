@@ -5,6 +5,7 @@ import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalC
 import { economicReferences } from "@/data/economicReferences";
 import { formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
 import { FortuneFractionPie } from "@/components/FortuneFractionPie";
+import { TaxScenarioPanel } from "@/components/TaxScenarioPanel";
 
 export function BillionaireCard({
   billionaire,
@@ -102,6 +103,9 @@ export function BillionaireCard({
             {billionaire.sourceLabel}
           </a>
         ) : null}
+        <div className="mt-5">
+          <TaxScenarioPanel netWorthEUR={billionaire.netWorthEUR} ownerName={billionaire.name} compact />
+        </div>
       </div>
     </article>
   );

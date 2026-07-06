@@ -17,6 +17,12 @@ export type EconomicReferences = {
   averageRentMonthly: EconomicReference;
   groceryBasket: EconomicReference;
   foodAidMeal: EconomicReference;
+  annualBanquesAlimentairesMeals: EconomicReference;
+  annualRestosDuCoeurMeals: EconomicReference;
+  povertyThresholdMonthly: EconomicReference;
+  educationCostPerStudentYear: EconomicReference;
+  socialHousingUnitCost: EconomicReference;
+  stateNetRevenueAnnual: EconomicReference;
   popularCarPrice: EconomicReference;
   medianWealth: EconomicReference;
   averageWealth: EconomicReference;
@@ -59,4 +65,27 @@ export type PersonalFortuneComparison = {
   medianWealthMultiplier: number;
   foodAidMeals: number;
   groceryBaskets: number;
+};
+
+export type ConcreteEquivalents = {
+  rsaYears: number;
+  povertyThresholdYears: number;
+  foodAidMeals: number;
+  groceryBaskets: number;
+  educationStudentYears: number;
+  socialHousingUnits: number;
+  averageRentYears: number;
+};
+
+export type PublicScaleRatios = {
+  stateNetRevenueShare: number;
+  banquesAlimentairesYearsEquivalent: number;
+  restosDuCoeurYearsEquivalent: number;
+};
+
+export type TaxScenario = {
+  rate: number;
+  amount: number;
+  concrete: ConcreteEquivalents;
+  publicScale: PublicScaleRatios;
 };

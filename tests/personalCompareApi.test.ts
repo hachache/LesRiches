@@ -12,6 +12,8 @@ describe("/api/personal-compare", () => {
     expect(payload.input.salaryMonthly).toBe(2000);
     expect(payload.billionaire.slug).toBe("elon-musk");
     expect(payload.comparison.percentage).toBeGreaterThan(0);
+    expect(payload.taxScenarios).toHaveLength(4);
+    expect(payload.taxScenarios[1].rate).toBe(0.01);
     expect(payload.assumptions.defaultSavingsRate).toBe(0.2);
     expect(payload.generatedAt).toEqual(expect.any(String));
   });

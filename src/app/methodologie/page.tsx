@@ -53,6 +53,26 @@ export default function MethodologiePage() {
             sont pas modélisés ici.
           </p>
         </section>
+        <section>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
+            Pourquoi ce n'est pas une proposition fiscale
+          </h2>
+          <p className="mt-3">
+            Le module “si on prélevait X%” affiche une simulation théorique ponctuelle sur fortune estimée. Il ne
+            modélise pas l'assiette fiscale réelle, les plus-values latentes, la liquidité des actifs, les comportements
+            de marché, les règles juridiques, les coûts administratifs ou les effets de calendrier. Il sert uniquement à
+            traduire une fraction de fortune en repères concrets.
+          </p>
+        </section>
+        <section>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets ajoutés</h2>
+          <p className="mt-3">
+            Les nouveaux repères couvrent le seuil de pauvreté INSEE, le RSA, les repas distribués par de grandes
+            associations, le coût annuel moyen par élève, une hypothèse de logement social et les recettes fiscales
+            nettes de l'État. Les valeurs incertaines sont marquées comme hypothèses plutôt que présentées comme faits
+            définitifs.
+          </p>
+        </section>
         <section className="grid gap-4 md:grid-cols-3">
           {[
             ["Revenu", "Argent qui entre régulièrement : salaire, allocation, rente ou autre flux."],
