@@ -2,9 +2,7 @@ const frenchNumber = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 0,
 });
 
-const compactNumber = new Intl.NumberFormat("fr-FR", {
-  notation: "compact",
-  compactDisplay: "short",
+const unitNumber = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 1,
 });
 
@@ -23,8 +21,15 @@ export function formatCurrencyEUR(value: number): string {
 
 export function formatLargeNumber(value: number): string {
   const clean = cleanNumber(value);
+  if (clean >= 1_000_000_000) {
+    const billions = clean / 1_000_000_000;
+    const unit = billions >= 2 ? "milliards" : "milliard";
+    return `${normalizeSpaces(unitNumber.format(billions))} ${unit}`;
+  }
   if (clean >= 1_000_000) {
-    return normalizeSpaces(compactNumber.format(clean));
+    const millions = clean / 1_000_000;
+    const unit = millions >= 2 ? "millions" : "million";
+    return `${normalizeSpaces(unitNumber.format(millions))} ${unit}`;
   }
   return normalizeSpaces(frenchNumber.format(Math.round(clean)));
 }

@@ -9,6 +9,13 @@ export const billionaires: Billionaire[] = [
     imageAlt: "Portrait éditorial stylisé associé à Bernard Arnault",
     sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
     sourceUrl: "https://www.forbes.com/billionaires/",
+    annualGainEUR: 12_000_000_000,
+    annualGainLabel: "Variation annuelle estimée",
+    annualGainSourceLabel: "Placeholder à remplacer par la variation 12 mois Forbes/Bloomberg",
+    annualGainSourceUrl: "https://www.bloomberg.com/billionaires/",
+    annualGainLastUpdated: "2026-07-06",
+    annualGainNote:
+      "Ce montant n'est pas un salaire. Il représente une variation annuelle indicative de fortune, très dépendante des marchés.",
     lastUpdated: "2026-07-06",
   },
   {
@@ -19,6 +26,13 @@ export const billionaires: Billionaire[] = [
     imageAlt: "Portrait éditorial stylisé associé à Elon Musk",
     sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
     sourceUrl: "https://www.forbes.com/billionaires/",
+    annualGainEUR: 120_000_000_000,
+    annualGainLabel: "Variation annuelle estimée",
+    annualGainSourceLabel: "Placeholder à remplacer par la variation 12 mois Forbes/Bloomberg",
+    annualGainSourceUrl: "https://www.bloomberg.com/billionaires/",
+    annualGainLastUpdated: "2026-07-06",
+    annualGainNote:
+      "Ce montant n'est pas un salaire. Il représente une variation annuelle indicative de fortune, très dépendante des marchés.",
     lastUpdated: "2026-07-06",
   },
   {
@@ -29,6 +43,13 @@ export const billionaires: Billionaire[] = [
     imageAlt: "Portrait éditorial stylisé associé à Jeff Bezos",
     sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
     sourceUrl: "https://www.forbes.com/billionaires/",
+    annualGainEUR: 28_000_000_000,
+    annualGainLabel: "Variation annuelle estimée",
+    annualGainSourceLabel: "Placeholder à remplacer par la variation 12 mois Forbes/Bloomberg",
+    annualGainSourceUrl: "https://www.bloomberg.com/billionaires/",
+    annualGainLastUpdated: "2026-07-06",
+    annualGainNote:
+      "Ce montant n'est pas un salaire. Il représente une variation annuelle indicative de fortune, très dépendante des marchés.",
     lastUpdated: "2026-07-06",
   },
   {
@@ -39,6 +60,13 @@ export const billionaires: Billionaire[] = [
     imageAlt: "Portrait éditorial stylisé associé à Mark Zuckerberg",
     sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
     sourceUrl: "https://www.forbes.com/billionaires/",
+    annualGainEUR: 55_000_000_000,
+    annualGainLabel: "Variation annuelle estimée",
+    annualGainSourceLabel: "Placeholder à remplacer par la variation 12 mois Forbes/Bloomberg",
+    annualGainSourceUrl: "https://www.bloomberg.com/billionaires/",
+    annualGainLastUpdated: "2026-07-06",
+    annualGainNote:
+      "Ce montant n'est pas un salaire. Il représente une variation annuelle indicative de fortune, très dépendante des marchés.",
     lastUpdated: "2026-07-06",
   },
   {
@@ -49,6 +77,13 @@ export const billionaires: Billionaire[] = [
     imageAlt: "Portrait éditorial stylisé associé à Bill Gates",
     sourceLabel: "Source à vérifier depuis Forbes/Bloomberg",
     sourceUrl: "https://www.forbes.com/billionaires/",
+    annualGainEUR: 4_000_000_000,
+    annualGainLabel: "Variation annuelle estimée",
+    annualGainSourceLabel: "Placeholder à remplacer par la variation 12 mois Forbes/Bloomberg",
+    annualGainSourceUrl: "https://www.bloomberg.com/billionaires/",
+    annualGainLastUpdated: "2026-07-06",
+    annualGainNote:
+      "Ce montant n'est pas un salaire. Il représente une variation annuelle indicative de fortune, très dépendante des marchés.",
     lastUpdated: "2026-07-06",
   },
 ];

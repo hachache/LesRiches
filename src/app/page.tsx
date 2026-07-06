@@ -14,7 +14,7 @@ const jsonLd = {
   applicationCategory: "FinanceApplication",
   operatingSystem: "Web",
   description:
-    "Comparateur pédagogique qui convertit une somme en années de SMIC, salaires médians, loyers et patrimoine.",
+    "Comparateur pédagogique qui rend lisibles les fortunes extrêmes avec salaire, épargne, écoles, alimentation et patrimoine.",
 };
 
 export default function Home() {
@@ -122,8 +122,8 @@ export default function Home() {
           </h2>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
             Parce que les montants très élevés deviennent abstraits. Dire “un milliard” ne raconte presque rien.
-            Dire combien d'années de SMIC, de loyers ou de patrimoines médians cela représente rend l'échelle plus
-            compréhensible, sans slogan inutile.
+            Dire combien d'années de salaire, de patrimoines médians, d'écoles ou d'enfants nourris cela représente
+            rend l'échelle plus compréhensible, sans slogan inutile.
           </p>
         </div>
         <MethodologyNotice />

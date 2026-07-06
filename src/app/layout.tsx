@@ -28,14 +28,14 @@ export const metadata: Metadata = {
     template: "%s | Combien de SMIC",
   },
   description:
-    "Entrez une somme et visualisez ce qu'elle représente en années de SMIC, salaires médians, loyers, paniers alimentaires et patrimoine.",
+    "Comparez votre salaire et votre épargne aux ultra-riches avec des repères concrets : années de revenu, patrimoine, écoles, alimentation et hôpitaux.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Combien de SMIC représente une fortune ?",
     description:
-      "Un comparateur pédagogique pour convertir les grandes fortunes en ordres de grandeur économiques quotidiens.",
+      "Un comparateur pédagogique pour rendre les fortunes extrêmes lisibles avec des ordres de grandeur concrets.",
     url: siteUrl,
     siteName: "Combien de SMIC",
     locale: "fr_FR",

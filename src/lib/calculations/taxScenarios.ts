@@ -23,6 +23,14 @@ export function calculateConcreteEquivalents(amount: number): ConcreteEquivalent
     foodAidMeals: calculatePurchasingPowerUnits(cleanAmount, economicReferences.foodAidMeal.value),
     groceryBaskets: calculatePurchasingPowerUnits(cleanAmount, economicReferences.groceryBasket.value),
     educationStudentYears: calculatePurchasingPowerUnits(cleanAmount, economicReferences.educationCostPerStudentYear.value),
+    childrenFedOneYear: calculatePurchasingPowerUnits(cleanAmount, economicReferences.childFedOneYear.value),
+    schoolsBuilt: calculatePurchasingPowerUnits(cleanAmount, economicReferences.schoolConstructionCost.value),
+    localHospitalsBuilt: calculatePurchasingPowerUnits(cleanAmount, economicReferences.localHospitalConstructionCost.value),
+    globalHungerFundingShare: calculatePurchasingPowerUnits(
+      cleanAmount,
+      economicReferences.globalHungerFundingNeedAnnual.value,
+    ),
+    waterWells: calculatePurchasingPowerUnits(cleanAmount, economicReferences.waterWellCost.value),
     socialHousingUnits: calculatePurchasingPowerUnits(cleanAmount, economicReferences.socialHousingUnitCost.value),
     averageRentYears: calculatePurchasingPowerUnits(cleanAmount, economicReferences.averageRentMonthly.value * 12),
   };
@@ -45,19 +53,21 @@ export function calculatePublicScaleRatios(amount: number): PublicScaleRatios {
   };
 }
 
-export function calculateTaxScenario(netWorthEUR: number, taxRate: number): TaxScenario {
+export function calculateTaxScenario(baseAmountEUR: number, taxRate: number, baseLabel = "variation annuelle estimée"): TaxScenario {
   const rate = validRate(taxRate);
-  const fortune = positive(netWorthEUR);
-  const amount = fortune && rate ? fortune * rate : 0;
+  const baseAmount = positive(baseAmountEUR);
+  const amount = baseAmount && rate ? baseAmount * rate : 0;
 
   return {
     rate,
+    baseAmount,
+    baseLabel,
     amount,
     concrete: calculateConcreteEquivalents(amount),
     publicScale: calculatePublicScaleRatios(amount),
   };
 }
 
-export function calculateDefaultTaxScenarios(netWorthEUR: number): TaxScenario[] {
-  return taxScenarioRates.map((rate) => calculateTaxScenario(netWorthEUR, rate));
+export function calculateDefaultTaxScenarios(baseAmountEUR: number, baseLabel = "variation annuelle estimée"): TaxScenario[] {
+  return taxScenarioRates.map((rate) => calculateTaxScenario(baseAmountEUR, rate, baseLabel));
 }

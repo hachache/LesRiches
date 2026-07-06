@@ -98,7 +98,7 @@ body {
 }
 
 .poster-shell::after {
-  content: "1 Md€  ·  100 M€  ·  10 M€  ·  1 M€";
+  content: "1 milliard €  ·  100 millions €  ·  10 millions €  ·  1 million €";
   position: absolute;
   left: 8px;
   top: 168px;

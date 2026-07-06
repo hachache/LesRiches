@@ -9,9 +9,12 @@ describe("/api/tax-scenario", () => {
     expect(response.status).toBe(200);
     expect(payload.input.billionaire).toBe("elon-musk");
     expect(payload.input.ratePercent).toBe(1);
-    expect(payload.scenario.amount).toBe(4_200_000_000);
-    expect(payload.scenario.concrete.foodAidMeals).toBe(2_100_000_000);
-    expect(payload.assumptions.framing).toContain("simulation théorique ponctuelle");
+    expect(payload.billionaire.annualGainEUR).toBe(120_000_000_000);
+    expect(payload.scenario.amount).toBe(1_200_000_000);
+    expect(payload.scenario.concrete.foodAidMeals).toBe(600_000_000);
+    expect(payload.scenario.concrete.schoolsBuilt).toBe(100);
+    expect(payload.scenario.concrete.globalHungerFundingShare).toBeCloseTo(0.03);
+    expect(payload.assumptions.framing).toContain("variation annuelle estimée");
   });
 
   test("rejects invalid slugs and rates", async () => {

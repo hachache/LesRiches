@@ -12,8 +12,9 @@ describe("formatters", () => {
     expect(formatCurrencyEUR(1_000_000)).toBe("1 000 000 €");
   });
 
-  test("formats large numbers compactly when useful", () => {
-    expect(formatLargeNumber(1_500_000_000)).toBe("1,5 Md");
+  test("formats large numbers with explicit French units", () => {
+    expect(formatLargeNumber(1_500_000_000)).toBe("1,5 milliard");
+    expect(formatLargeNumber(12_000_000)).toBe("12 millions");
     expect(formatLargeNumber(42_000)).toBe("42 000");
   });
 

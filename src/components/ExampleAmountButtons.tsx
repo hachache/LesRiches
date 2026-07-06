@@ -3,10 +3,10 @@
 import { ArrowRight } from "@phosphor-icons/react";
 
 export const exampleAmounts = [
-  { label: "1 million €", shortLabel: "1 M €", value: "1 million" },
-  { label: "10 millions €", shortLabel: "10 M €", value: "10 millions" },
-  { label: "1 milliard €", shortLabel: "1 Md €", value: "1 milliard" },
-  { label: "100 milliards €", shortLabel: "100 Md €", value: "100 milliards" },
+  { label: "1 million €", shortLabel: "1 million", value: "1 million" },
+  { label: "10 millions €", shortLabel: "10 millions", value: "10 millions" },
+  { label: "1 milliard €", shortLabel: "1 milliard", value: "1 milliard" },
+  { label: "100 milliards €", shortLabel: "100 milliards", value: "100 milliards" },
 ] as const;
 
 export function ExampleAmountButtons({ onSelect }: { onSelect: (value: string) => void }) {

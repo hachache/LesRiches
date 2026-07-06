@@ -9,8 +9,8 @@ export function MethodologyNotice() {
         <AssumptionBadge>Taxes simulées</AssumptionBadge>
       </div>
       <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
-        Les calculs comparent des ordres de grandeur. Les taxes affichées sont des simulations ponctuelles sur fortune
-        estimée, pas une proposition fiscale. Les références doivent être révisées régulièrement.
+        Les calculs comparent des ordres de grandeur. Les scénarios affichés portent sur une variation annuelle estimée
+        de fortune, pas sur toute la fortune accumulée. Les références doivent être révisées régulièrement.
       </p>
       <Link href="/methodologie" className="mt-4 inline-flex text-sm font-semibold text-[var(--accent-dark)]">
         Voir la méthodologie

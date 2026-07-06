@@ -21,6 +21,11 @@ export type EconomicReferences = {
   annualRestosDuCoeurMeals: EconomicReference;
   povertyThresholdMonthly: EconomicReference;
   educationCostPerStudentYear: EconomicReference;
+  childFedOneYear: EconomicReference;
+  schoolConstructionCost: EconomicReference;
+  localHospitalConstructionCost: EconomicReference;
+  globalHungerFundingNeedAnnual: EconomicReference;
+  waterWellCost: EconomicReference;
   socialHousingUnitCost: EconomicReference;
   stateNetRevenueAnnual: EconomicReference;
   popularCarPrice: EconomicReference;
@@ -38,6 +43,12 @@ export type Billionaire = {
   imageAlt: string;
   sourceLabel: string;
   sourceUrl?: string;
+  annualGainEUR: number;
+  annualGainLabel: string;
+  annualGainSourceLabel: string;
+  annualGainSourceUrl?: string;
+  annualGainLastUpdated: string;
+  annualGainNote: string;
   lastUpdated: string;
 };
 
@@ -75,6 +86,11 @@ export type ConcreteEquivalents = {
   foodAidMeals: number;
   groceryBaskets: number;
   educationStudentYears: number;
+  childrenFedOneYear: number;
+  schoolsBuilt: number;
+  localHospitalsBuilt: number;
+  globalHungerFundingShare: number;
+  waterWells: number;
   socialHousingUnits: number;
   averageRentYears: number;
 };
@@ -87,6 +103,8 @@ export type PublicScaleRatios = {
 
 export type TaxScenario = {
   rate: number;
+  baseAmount: number;
+  baseLabel: string;
   amount: number;
   concrete: ConcreteEquivalents;
   publicScale: PublicScaleRatios;

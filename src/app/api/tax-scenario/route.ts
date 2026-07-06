@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const scenario = calculateTaxScenario(billionaire.netWorthEUR, rate);
+  const scenario = calculateTaxScenario(billionaire.annualGainEUR, rate, billionaire.annualGainLabel);
 
   return NextResponse.json({
     input: {
@@ -38,6 +38,10 @@ export async function GET(request: Request) {
       name: billionaire.name,
       netWorthEUR: billionaire.netWorthEUR,
       formattedNetWorth: formatCurrencyEUR(billionaire.netWorthEUR),
+      annualGainEUR: billionaire.annualGainEUR,
+      formattedAnnualGain: formatCurrencyEUR(billionaire.annualGainEUR),
+      annualGainLabel: billionaire.annualGainLabel,
+      annualGainNote: billionaire.annualGainNote,
     },
     scenario: {
       ...scenario,
@@ -47,14 +51,25 @@ export async function GET(request: Request) {
         foodAidMeals: formatLargeNumber(scenario.concrete.foodAidMeals),
         povertyThresholdYears: formatLargeNumber(scenario.concrete.povertyThresholdYears),
         educationStudentYears: formatLargeNumber(scenario.concrete.educationStudentYears),
+        childrenFedOneYear: formatLargeNumber(scenario.concrete.childrenFedOneYear),
+        schoolsBuilt: formatLargeNumber(scenario.concrete.schoolsBuilt),
+        localHospitalsBuilt: formatLargeNumber(scenario.concrete.localHospitalsBuilt),
+        globalHungerFundingShare: formatTinyPercentage(scenario.concrete.globalHungerFundingShare * 100),
+        waterWells: formatLargeNumber(scenario.concrete.waterWells),
         socialHousingUnits: formatLargeNumber(scenario.concrete.socialHousingUnits),
         stateNetRevenueShare: formatTinyPercentage(scenario.publicScale.stateNetRevenueShare * 100),
       },
     },
     generatedAt: new Date().toISOString(),
     assumptions: {
-      framing: "simulation théorique ponctuelle sur fortune estimée",
+      framing: "simulation théorique ponctuelle sur variation annuelle estimée de fortune",
+      baseCompared: billionaire.annualGainLabel,
+      baseNote: billionaire.annualGainNote,
       foodAidMealEUR: economicReferences.foodAidMeal.value,
+      childFedOneYearEUR: economicReferences.childFedOneYear.value,
+      schoolConstructionCostEUR: economicReferences.schoolConstructionCost.value,
+      localHospitalConstructionCostEUR: economicReferences.localHospitalConstructionCost.value,
+      globalHungerFundingNeedAnnualEUR: economicReferences.globalHungerFundingNeedAnnual.value,
       povertyThresholdMonthlyEUR: economicReferences.povertyThresholdMonthly.value,
       educationCostPerStudentYearEUR: economicReferences.educationCostPerStudentYear.value,
       socialHousingUnitCostEUR: economicReferences.socialHousingUnitCost.value,

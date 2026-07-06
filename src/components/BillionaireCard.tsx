@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Billionaire } from "@/types/economics";
-import { compareAmount } from "@/lib/calculations/compare";
 import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalComparison";
+import { calculateConcreteEquivalents, calculateTaxScenario } from "@/lib/calculations/taxScenarios";
 import { formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
 import { FortuneFractionPie } from "@/components/FortuneFractionPie";
 import { TaxScenarioPanel } from "@/components/TaxScenarioPanel";
@@ -15,7 +15,12 @@ export function BillionaireCard({
   monthlySalary: number;
   savingsTotal: number;
 }) {
-  const result = compareAmount({ amount: billionaire.netWorthEUR });
+  const concrete = calculateConcreteEquivalents(billionaire.netWorthEUR);
+  const onePercentAnnualGain = calculateTaxScenario(
+    billionaire.annualGainEUR,
+    0.01,
+    billionaire.annualGainLabel,
+  );
   const personal = calculatePersonalFortuneComparison({
     salaryMonthly: monthlySalary,
     savingsTotal,
@@ -50,6 +55,10 @@ export function BillionaireCard({
         <p className="display-type mt-6 text-6xl font-bold leading-[0.88] text-[var(--accent)] md:text-7xl">
           {formatLargeNumber(billionaire.netWorthEUR)} €
         </p>
+        <p className="mt-3 max-w-2xl text-sm font-semibold text-[var(--foreground)]">
+          Variation annuelle estimée : {formatLargeNumber(billionaire.annualGainEUR)} €. Ce n'est pas un salaire, mais
+          une variation indicative de patrimoine.
+        </p>
         <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
           <div className="border-l border-black/15 pl-3">
             <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Ton épargne</span>
@@ -69,30 +78,31 @@ export function BillionaireCard({
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-3">
           <div className="bg-[var(--ink)] p-4 text-white">
-            <span className="font-mono text-xs uppercase tracking-[0.12em] text-white/58">SMIC net</span>
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-white/58">1% de son année</span>
             <strong className="display-type mt-2 block text-5xl leading-none text-white">
-              {formatLargeNumber(result.smic.years)}
+              {formatLargeNumber(onePercentAnnualGain.amount)} €
             </strong>
-            <p className="mt-1 text-sm text-white/68">années</p>
+            <p className="mt-1 text-sm text-white/68">sur variation annuelle estimée</p>
           </div>
           <div className="bg-[var(--accent)] p-4 text-white">
-            <span className="font-mono text-xs uppercase tracking-[0.12em] text-white/72">Mois de RSA</span>
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-white/72">Enfants nourris 1 an</span>
             <strong className="display-type mt-2 block text-5xl leading-none">
-              {formatLargeNumber(result.dailyLife.rsaMonths)}
+              {formatLargeNumber(onePercentAnnualGain.concrete.childrenFedOneYear)}
             </strong>
-            <p className="mt-1 text-sm text-white/75">personne seule</p>
+            <p className="mt-1 text-sm text-white/75">1 repas/jour à 2 €</p>
           </div>
           <div className="border border-black/15 bg-white p-4">
-            <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Loyers moyens</span>
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Écoles théoriques</span>
             <strong className="display-type mt-2 block text-5xl leading-none">
-              {formatLargeNumber(result.dailyLife.averageRentMonths)}
+              {formatLargeNumber(onePercentAnnualGain.concrete.schoolsBuilt)}
             </strong>
-            <p className="mt-1 text-sm text-[var(--muted)]">mois de loyer indicatif</p>
+            <p className="mt-1 text-sm text-[var(--muted)]">sur 1% du gain annuel estimé</p>
           </div>
         </div>
         <p className="mt-5 max-w-3xl text-sm leading-6 text-[var(--muted)]">
-          Ces équivalences donnent un ordre de grandeur simple. Elles ne disent pas qu'une fortune se transforme
-          mécaniquement en revenus, loyers ou prestations.
+          Sur la fortune totale, cela représenterait aussi {formatLargeNumber(concrete.childrenFedOneYear)} enfants
+          nourris pendant un an avec l'hypothèse simple d'un repas par jour à 2 €. C'est un équivalent budgétaire, pas
+          une solution automatique.
         </p>
         <p className="mt-2 font-mono text-xs uppercase tracking-[0.1em] text-[var(--muted)]">
           Dernière mise à jour indicative : {billionaire.lastUpdated}
@@ -103,7 +113,12 @@ export function BillionaireCard({
           </a>
         ) : null}
         <div className="mt-5">
-          <TaxScenarioPanel netWorthEUR={billionaire.netWorthEUR} ownerName={billionaire.name} compact />
+          <TaxScenarioPanel
+            baseAmountEUR={billionaire.annualGainEUR}
+            baseLabel={billionaire.annualGainLabel}
+            ownerName={billionaire.name}
+            compact
+          />
         </div>
       </div>
     </article>

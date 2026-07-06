@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight, Coins, PiggyBank, TrendUp, Wallet } from "@phosphor-icons/react";
+import { ArrowRight, BowlFood, Coins, PiggyBank, TrendUp } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import { billionaires } from "@/data/billionaires";
 import { economicReferences } from "@/data/economicReferences";
@@ -152,6 +152,9 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                   <p className="display-type mt-1 text-5xl font-semibold leading-none text-[var(--accent)] sm:text-7xl">
                     {formatLargeNumber(selected.netWorthEUR)} €
                   </p>
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--muted)]">
+                    Variation annuelle estimée : {formatLargeNumber(selected.annualGainEUR)} €
+                  </p>
                 </div>
               </div>
 
@@ -183,7 +186,12 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                 "épargne conservée",
               ],
               [Coins, "Patrimoines médians", formatLargeNumber(comparison.medianWealthMultiplier), "équivalents"],
-              [Wallet, "Mois de RSA", formatLargeNumber(selectedConcrete.rsaMonths), "personne seule"],
+              [
+                BowlFood,
+                "Enfants nourris 1 an",
+                formatLargeNumber(selectedConcrete.childrenFedOneYear),
+                "sur la fortune totale",
+              ],
             ].map(([Icon, title, value, text]) => (
               <article key={String(title)} className="border border-black/15 bg-white/68 p-4">
                 <Icon size={22} weight="bold" className="text-[var(--accent-dark)]" />
@@ -214,7 +222,13 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
           </div>
         </motion.div>
       </div>
-      {!compact ? <TaxScenarioPanel netWorthEUR={selected.netWorthEUR} ownerName={selected.name} /> : null}
+      {!compact ? (
+        <TaxScenarioPanel
+          baseAmountEUR={selected.annualGainEUR}
+          baseLabel={selected.annualGainLabel}
+          ownerName={selected.name}
+        />
+      ) : null}
     </section>
   );
 }
