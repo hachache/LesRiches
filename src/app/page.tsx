@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChartBar, Scales, Timer } from "@phosphor-icons/react/dist/ssr";
-import { HomeQuickCompare } from "@/components/HomeQuickCompare";
 import { MethodologyNotice } from "@/components/MethodologyNotice";
+import { PersonalFortuneComparator } from "@/components/PersonalFortuneComparator";
 import { SourceList } from "@/components/SourceList";
 import { sourceReferences } from "@/data/economicReferences";
 
@@ -20,8 +20,9 @@ export default function Home() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <section className="poster-shell mx-auto grid min-h-[calc(100dvh-4rem)] max-w-[1580px] gap-10 overflow-hidden px-4 py-8 sm:px-8 md:px-14 lg:grid-cols-[0.95fr_1.05fr] lg:px-24 lg:py-14">
-        <div className="relative flex flex-col justify-center lg:pl-10">
+      <section className="poster-shell mx-auto grid min-h-[calc(100dvh-4rem)] max-w-[1580px] gap-8 overflow-hidden px-4 py-8 sm:px-8 md:px-14 lg:px-24 lg:py-12">
+        <div className="relative grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:pl-10">
+          <div>
           <div className="mb-10 flex items-end justify-between gap-6 lg:hidden">
             <div className="display-type text-4xl font-bold uppercase leading-[0.85]">
               Combien de
@@ -40,24 +41,24 @@ export default function Home() {
             </div>
             <span className="mb-1 h-1 w-12 bg-[var(--accent)]" />
           </div>
-          <h1 className="display-type max-w-4xl text-5xl font-bold uppercase leading-[0.9] sm:text-6xl md:text-8xl xl:text-[7.7rem]">
-            Combien de SMIC représente une fortune ?
+          <h1 className="display-type max-w-3xl text-5xl font-semibold uppercase leading-[0.95] sm:text-6xl md:text-7xl xl:text-[6.8rem]">
+            Ton épargne face aux ultra-riches.
           </h1>
-          <p className="mt-7 max-w-xl text-xl leading-8 text-[var(--muted)] sm:text-2xl sm:leading-9">
-            Entrez une somme. Regardez <span className="font-bold text-[var(--accent)]">l'échelle.</span>
+          <p className="mt-6 max-w-xl text-xl leading-8 text-[var(--muted)]">
+            Entre ton salaire, ton épargne, puis regarde la fraction réelle d'une fortune extrême.
           </p>
-          <div className="mt-10 grid gap-4 text-sm text-[var(--muted)] sm:grid-cols-3">
+          <div className="mt-8 grid gap-4 text-sm text-[var(--muted)] sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
             <div className="border-l border-black/15 pl-4">
-              <strong className="block text-[var(--foreground)]">SMIC net</strong>
-              mensuel ≈ 1 478 €
+              <strong className="block text-[var(--foreground)]">Salaire</strong>
+              années de revenu net
             </div>
             <div className="border-l border-black/15 pl-4">
-              <strong className="block text-[var(--foreground)]">17 735 €</strong>
-              par an, avant toute dépense
+              <strong className="block text-[var(--foreground)]">Épargne</strong>
+              fraction visible
             </div>
             <div className="border-l border-black/15 pl-4">
-              <strong className="block text-[var(--foreground)]">Ordres de grandeur</strong>
-              pas slogans
+              <strong className="block text-[var(--foreground)]">Impact</strong>
+              repères budgétaires
             </div>
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -65,7 +66,7 @@ export default function Home() {
               href="/comparateur"
               className="inline-flex h-12 items-center gap-2 rounded-none bg-[var(--foreground)] px-5 text-sm font-bold uppercase tracking-[0.08em] text-[var(--panel)] transition hover:bg-black active:translate-y-px"
             >
-              Ouvrir le comparateur
+              Lancer l'expérience
               <ArrowRight size={18} weight="bold" />
             </Link>
             <Link
@@ -75,27 +76,23 @@ export default function Home() {
               Voir les fortunes
             </Link>
           </div>
-        </div>
-        <div className="relative self-center lg:pt-24">
-          <p className="display-type pointer-events-none mb-[-16px] hidden max-w-full overflow-hidden text-right text-5xl font-bold leading-none sm:block sm:text-6xl md:text-8xl xl:text-[7.5rem]">
-            1 000 000 000 €
-          </p>
-          <div className="paper-panel relative mb-[-70px] ml-auto aspect-[16/8] w-full max-w-3xl overflow-hidden rounded-none border-black/35 md:mb-[-98px]">
+          </div>
+          <div className="relative hidden min-h-72 overflow-hidden border border-black/25 bg-black lg:block">
             <Image
               src="/assets/home/ledger-scale.png"
-              alt="Illustration éditoriale d'une balance de papier et de registres"
+              alt="Illustration éditoriale d'une échelle de fortune"
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 620px"
+              sizes="(max-width: 1024px) 100vw, 560px"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-transparent to-transparent" />
-            <span className="absolute right-5 top-5 font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
-              Exemple
-            </span>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+            <p className="absolute bottom-5 left-5 max-w-xs text-sm leading-6 text-white/82">
+              Une fraction si petite qu'elle disparaît souvent des graphiques classiques.
+            </p>
           </div>
-          <HomeQuickCompare />
         </div>
+        <PersonalFortuneComparator compact />
       </section>
 
       <section className="border-y border-white/10 bg-[var(--ink)] py-12 text-[var(--panel)]">

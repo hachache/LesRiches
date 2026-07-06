@@ -2,6 +2,7 @@ import type { Billionaire } from "@/types/economics";
 
 export const billionaires: Billionaire[] = [
   {
+    slug: "bernard-arnault",
     name: "Bernard Arnault",
     netWorthEUR: 174_000_000_000,
     imageSrc: "/assets/billionaires/bernard-arnault.png",
@@ -11,6 +12,7 @@ export const billionaires: Billionaire[] = [
     lastUpdated: "2026-07-06",
   },
   {
+    slug: "elon-musk",
     name: "Elon Musk",
     netWorthEUR: 420_000_000_000,
     imageSrc: "/assets/billionaires/elon-musk.png",
@@ -20,6 +22,7 @@ export const billionaires: Billionaire[] = [
     lastUpdated: "2026-07-06",
   },
   {
+    slug: "jeff-bezos",
     name: "Jeff Bezos",
     netWorthEUR: 210_000_000_000,
     imageSrc: "/assets/billionaires/jeff-bezos.png",
@@ -29,6 +32,7 @@ export const billionaires: Billionaire[] = [
     lastUpdated: "2026-07-06",
   },
   {
+    slug: "mark-zuckerberg",
     name: "Mark Zuckerberg",
     netWorthEUR: 230_000_000_000,
     imageSrc: "/assets/billionaires/mark-zuckerberg.png",
@@ -38,6 +42,7 @@ export const billionaires: Billionaire[] = [
     lastUpdated: "2026-07-06",
   },
   {
+    slug: "bill-gates",
     name: "Bill Gates",
     netWorthEUR: 105_000_000_000,
     imageSrc: "/assets/billionaires/bill-gates.png",

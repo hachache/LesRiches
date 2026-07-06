@@ -1,6 +1,6 @@
 # Combien de SMIC
 
-Outil web pédagogique qui transforme de grandes sommes d'argent en comparaisons économiques concrètes : années de SMIC net, salaires médians, carrières complètes, loyers, paniers alimentaires, RSA, voitures populaires, immobilier et patrimoine médian.
+Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, carrières à 20% d'épargne, patrimoines médians et repères alimentaires.
 
 Le ton est volontairement direct, factuel et chiffré. Le projet évite les slogans : l'objectif est de rendre les ordres de grandeur lisibles.
 
@@ -17,19 +17,22 @@ Les captures seront à ajouter après déploiement :
 - Next.js 16 avec App Router
 - TypeScript strict
 - Tailwind CSS v4
+- Motion pour les animations UI
 - Vitest
 - Route Handler API interne
 - Déploiement Vercel compatible
 
 ## Fonctionnalités
 
-- Saisie libre d'une somme : `1000000`, `1 000 000`, `1,000,000`, `1m`, `1 milliard`, `1 billion`
-- Comparaison en années/mois/jours de SMIC net
-- Comparaison avec salaire médian, RSA, loyers, paniers alimentaires, voitures, immobilier et patrimoine
-- Hypothèses configurables : revenu mensuel, durée de carrière, taux d'épargne
+- Expérience principale “moi vs ultra-riches” : salaire net mensuel, épargne totale, fortune sélectionnée
+- Camembert de fraction pour afficher la part réelle d'une fortune estimée
+- Comparaison en années de salaire, carrières à 20% d'épargne, patrimoines médians et repas solidaires théoriques
+- Page milliardaires avec recherche, tri, portraits et comparaison personnelle
+- Mode secondaire de saisie libre d'une somme : `1000000`, `1 000 000`, `1,000,000`, `1m`, `1 milliard`, `1 billion`
+- Comparaison d'une somme libre en SMIC net, salaire médian, RSA, loyers, paniers alimentaires, immobilier et patrimoine
 - Timeline théorique : année de départ nécessaire au SMIC sans dépense
-- Page milliardaires avec recherche et tri
 - API JSON : `/api/compare?amount=1000000000`
+- API JSON personnelle : `/api/personal-compare?salary=2000&savings=10000&billionaire=elon-musk`
 - Boutons copier/partager
 - Pages SEO : `/combien-de-smic-pour-1-million`, `/combien-de-smic-pour-1-milliard`
 
@@ -73,7 +76,7 @@ Ouvrir `http://localhost:3000`.
 npm test
 ```
 
-Les tests couvrent le parsing des montants, les années de revenus, les carrières complètes, le taux d'épargne, les très grands nombres, les cas invalides et les formatages.
+Les tests couvrent le parsing des montants, les années de revenus, les carrières complètes, les fractions de fortune, le taux d'épargne à 20%, les très grands nombres, les cas invalides, les API et les formatages.
 
 ## Build
 
@@ -102,15 +105,21 @@ Certaines valeurs sont volontairement marquées comme placeholders réalistes :
 
 Avant usage public sérieux, ces valeurs doivent être vérifiées et remplacées par des sources publiques fiables.
 
+L'hypothèse principale de comparaison personnelle est une épargne de 20% du revenu net. L'épargne à 100% reste uniquement utilisée dans le comparateur de somme comme borne théorique.
+
 ## Limites
 
-- Une épargne à 100 % est irréaliste. Elle sert uniquement de borne théorique minimale.
+- Une épargne à 20% reste une hypothèse simplifiée. Elle ne remplace pas une analyse budgétaire réelle.
+- Une épargne à 100% est irréaliste. Elle sert uniquement de borne théorique minimale dans le mode somme libre.
 - Les fortunes estimées varient fortement avec les marchés financiers.
 - Revenu, patrimoine et fortune ne mesurent pas la même réalité économique.
 - Les loyers et prix immobiliers varient fortement selon le territoire.
+- Les repas solidaires et paniers alimentaires sont des équivalents budgétaires théoriques, pas une promesse de solution publique.
 - Le site donne des ordres de grandeur, pas un conseil financier.
 
 ## API
+
+Comparer une somme libre :
 
 ```bash
 curl "http://localhost:3000/api/compare?amount=1000000000"
@@ -133,6 +142,38 @@ Réponse :
   "medianWealthMultiplier": 6752.19,
   "generatedAt": "2026-07-06T00:00:00.000Z",
   "assumptions": {}
+}
+```
+
+Comparer une situation personnelle :
+
+```bash
+curl "http://localhost:3000/api/personal-compare?salary=2000&savings=10000&billionaire=elon-musk"
+```
+
+Réponse abrégée :
+
+```json
+{
+  "input": {
+    "salaryMonthly": 2000,
+    "savingsTotal": 10000,
+    "billionaire": "elon-musk"
+  },
+  "billionaire": {
+    "slug": "elon-musk",
+    "name": "Elon Musk",
+    "formattedNetWorth": "420 000 000 000 €"
+  },
+  "comparison": {
+    "percentage": 0.000002380952380952381,
+    "salaryYears": 17500000,
+    "careersAt20PercentSavings": 2083333.33
+  },
+  "assumptions": {
+    "defaultSavingsRate": 0.2,
+    "careerYears": 42
+  }
 }
 ```
 

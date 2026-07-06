@@ -28,17 +28,29 @@ export default function MethodologiePage() {
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Ce que le site calcule</h2>
           <p className="mt-3">
-            Le moteur divise une somme par des références mensuelles ou unitaires : SMIC net, salaire médian, RSA,
-            loyer moyen, panier alimentaire, voiture populaire et patrimoine médian. Les résultats sont des ordres de
-            grandeur, pas des trajectoires financières réalistes.
+            L'expérience principale compare un salaire net mensuel et une épargne totale à des fortunes d'ultra-riches.
+            Le moteur calcule la fraction de fortune, les années de salaire nécessaires, les carrières à 20% d'épargne,
+            puis des repères comme les patrimoines médians, les paniers alimentaires et les repas solidaires théoriques.
           </p>
         </section>
         <section>
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Pourquoi 100 % d'épargne ?</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Pourquoi 20% d'épargne ?</h2>
           <p className="mt-3">
-            Une épargne à 100 % est irréaliste : personne ne vit sans logement, nourriture, transport ou impôts. Elle
-            sert ici de borne basse théorique. Si même cette hypothèse produit des milliers d'années, l'écart est déjà
-            lisible.
+            Le parcours “moi vs ultra-riches” utilise 20% d'épargne comme hypothèse pédagogique stable : sur 2 000 €
+            nets par mois, cela revient à conserver 400 € par mois. Ce n'est pas une moyenne universelle, mais c'est
+            plus réaliste qu'une épargne à 100%. L'ancien comparateur de somme garde 100% uniquement comme borne
+            théorique minimale.
+          </p>
+        </section>
+        <section>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
+            Pourquoi parler de repas ou de faim ?
+          </h2>
+          <p className="mt-3">
+            Les repas solidaires et paniers alimentaires sont des équivalents budgétaires. Ils aident à saisir un ordre
+            de grandeur, mais ne signifient pas qu'une fortune privée pourrait se transformer mécaniquement en politique
+            publique efficace. Les coûts de distribution, les infrastructures, les territoires et les choix collectifs ne
+            sont pas modélisés ici.
           </p>
         </section>
         <section className="grid gap-4 md:grid-cols-3">
@@ -57,8 +69,9 @@ export default function MethodologiePage() {
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Limites</h2>
           <p className="mt-3">
             Les données économiques changent, les loyers varient fortement selon les villes, et les fortunes de
-            milliardaires bougent avec les cours de marché. Le dépôt isole toutes les références dans un seul fichier
-            pour faciliter les mises à jour et éviter les valeurs magiques dans l'interface.
+            milliardaires bougent avec les cours de marché. Les portraits sont des assets éditoriaux générés et les
+            fortunes doivent être revérifiées depuis Forbes, Bloomberg ou une autre source publique fiable. Le dépôt
+            isole toutes les références dans un seul fichier pour faciliter les mises à jour.
           </p>
         </section>
       </div>

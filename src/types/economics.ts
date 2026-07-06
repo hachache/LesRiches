@@ -12,6 +12,7 @@ export type EconomicReferences = {
   smicNetMonthly: EconomicReference;
   medianNetSalaryMonthly: EconomicReference;
   classicNetMonthlyIncome: EconomicReference;
+  defaultSavingsRate: EconomicReference;
   rsaSingleMonthly: EconomicReference;
   averageRentMonthly: EconomicReference;
   groceryBasket: EconomicReference;
@@ -24,6 +25,7 @@ export type EconomicReferences = {
 };
 
 export type Billionaire = {
+  slug: string;
   name: string;
   netWorthEUR: number;
   imageSrc: string;
@@ -39,4 +41,22 @@ export type CompareOptions = {
   careerYears?: number | null;
   savingsRate?: number | null;
   currentYear?: number;
+};
+
+export type PersonalFortuneComparisonOptions = {
+  salaryMonthly: number;
+  savingsTotal: number;
+  netWorthEUR: number;
+  savingsRate?: number | null;
+  careerYears?: number | null;
+};
+
+export type PersonalFortuneComparison = {
+  fraction: number;
+  percentage: number;
+  salaryYears: number;
+  careersAt20PercentSavings: number;
+  medianWealthMultiplier: number;
+  foodAidMeals: number;
+  groceryBaskets: number;
 };

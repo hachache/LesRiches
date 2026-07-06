@@ -56,14 +56,6 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
           )} mois de revenu net.`}
         />
         <ComparisonCard
-          title="Revenu personnalisé"
-          value={result.classicIncome.years}
-          unit="années"
-          sentence={`Avec le revenu saisi, il faudrait ${formatLargeNumber(
-            result.classicIncome.months,
-          )} mois sans aucune dépense.`}
-        />
-        <ComparisonCard
           title="Vie de travail"
           value={result.workingLives.bySmic}
           unit="carrières"

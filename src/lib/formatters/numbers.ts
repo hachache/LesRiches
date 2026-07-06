@@ -36,6 +36,19 @@ export function formatDecimal(value: number, maximumFractionDigits = 1): string 
   }).format(clean).replace(/[\u00a0\u202f]/g, " ");
 }
 
+export function formatTinyPercentage(value: number): string {
+  const clean = cleanNumber(value);
+  if (clean === 0) return "0 %";
+  const digits = clean < 0.0001 ? 8 : clean < 0.01 ? 6 : clean < 1 ? 4 : 2;
+
+  return `${new Intl.NumberFormat("fr-FR", {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: Math.min(2, digits),
+  })
+    .format(clean)
+    .replace(/[\u00a0\u202f]/g, " ")} %`;
+}
+
 export function formatDurationYears(value: number): string {
   const clean = cleanNumber(value);
   if (clean === 0) return "0 an";

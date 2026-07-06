@@ -25,6 +25,14 @@ export const economicReferences: EconomicReferences = {
     source: "Hypothese pedagogique configurable",
     lastUpdated: "2026-07-06",
   },
+  defaultSavingsRate: {
+    value: 0.2,
+    label: "Taux d'épargne réaliste par défaut",
+    unit: "ratio",
+    source: "Hypothèse pédagogique interne pour comparer une épargne personnelle à une fortune",
+    lastUpdated: "2026-07-06",
+    note: "20% du revenu net conservé. Ce taux reste une hypothèse, pas une moyenne observée universelle.",
+  },
   rsaSingleMonthly: {
     value: 651.69,
     label: "RSA mensuel personne seule",

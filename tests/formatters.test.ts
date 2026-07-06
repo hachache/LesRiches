@@ -3,6 +3,7 @@ import {
   formatCurrencyEUR,
   formatDurationYears,
   formatLargeNumber,
+  formatTinyPercentage,
   formatStartYear,
 } from "@/lib/formatters/numbers";
 
@@ -24,5 +25,10 @@ describe("formatters", () => {
   test("formats BCE start years as years before common era", () => {
     expect(formatStartYear(-40_000)).toBe("environ 40 000 ans avant notre ère");
     expect(formatStartYear(1998)).toBe("vers 1998");
+  });
+
+  test("formats very small percentages without hiding the order of magnitude", () => {
+    expect(formatTinyPercentage(0.00000595238)).toBe("0,00000595 %");
+    expect(formatTinyPercentage(0)).toBe("0 %");
   });
 });
