@@ -13,16 +13,17 @@ function readPositiveNumber(value: string | null): number {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const salaryMonthly = readPositiveNumber(url.searchParams.get("salary"));
-  const savingsTotal = readPositiveNumber(url.searchParams.get("savings"));
+  const salaryMonthly =
+    readPositiveNumber(url.searchParams.get("salary")) || economicReferences.medianNetSalaryMonthly.value;
+  const amount = readPositiveNumber(url.searchParams.get("amount")) || readPositiveNumber(url.searchParams.get("savings"));
   const billionaireSlug = url.searchParams.get("billionaire") ?? "";
   const billionaire = billionaires.find((person) => person.slug === billionaireSlug);
 
-  if (!salaryMonthly || !savingsTotal || !billionaire) {
+  if (!amount || !billionaire) {
     return NextResponse.json(
       {
         error:
-          "Parametres invalides. Utilisez salary, savings et billionaire avec un slug connu, par exemple elon-musk.",
+          "Parametres invalides. Utilisez amount et billionaire avec un slug connu, par exemple /api/personal-compare?amount=10000&billionaire=elon-musk.",
       },
       { status: 400 },
     );
@@ -30,15 +31,15 @@ export async function GET(request: Request) {
 
   const comparison = calculatePersonalFortuneComparison({
     salaryMonthly,
-    savingsTotal,
+    savingsTotal: amount,
     netWorthEUR: billionaire.netWorthEUR,
   });
   const taxScenarios = calculateDefaultTaxScenarios(billionaire.annualGainEUR, billionaire.annualGainLabel);
 
   return NextResponse.json({
     input: {
+      amount,
       salaryMonthly,
-      savingsTotal,
       billionaire: billionaire.slug,
     },
     billionaire: {

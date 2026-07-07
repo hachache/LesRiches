@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
-import { economicReferences } from "@/data/economicReferences";
 import { billionaires } from "@/data/billionaires";
 import { BillionaireCard } from "@/components/BillionaireCard";
 import { formatCurrencyEUR } from "@/lib/formatters/numbers";
@@ -12,12 +11,9 @@ type SortMode = "desc" | "asc" | "name";
 export function BillionairesList() {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortMode>("desc");
-  const [monthlySalary, setMonthlySalary] = useState(String(economicReferences.classicNetMonthlyIncome.value));
-  const [savingsTotal, setSavingsTotal] = useState("10000");
-  const parsedSalary = Number(monthlySalary.replace(/\s/g, "").replace(",", "."));
-  const parsedSavings = Number(savingsTotal.replace(/\s/g, "").replace(",", "."));
-  const usableSalary = Number.isFinite(parsedSalary) && parsedSalary > 0 ? parsedSalary : economicReferences.classicNetMonthlyIncome.value;
-  const usableSavings = Number.isFinite(parsedSavings) && parsedSavings > 0 ? parsedSavings : 0;
+  const [amountInput, setAmountInput] = useState("10000");
+  const parsedAmount = Number(amountInput.replace(/\s/g, "").replace(",", "."));
+  const usableAmount = Number.isFinite(parsedAmount) && parsedAmount > 0 ? parsedAmount : 0;
 
   const filtered = useMemo(() => {
     return billionaires
@@ -53,34 +49,22 @@ export function BillionairesList() {
           <option value="name">Nom</option>
         </select>
         </div>
-        <div className="grid gap-3 border-t border-black/10 pt-4 md:grid-cols-[240px_240px_1fr] md:items-end">
+        <div className="grid gap-3 border-t border-black/10 pt-4 md:grid-cols-[280px_1fr] md:items-end">
           <label className="grid gap-2">
-            <span className="font-mono text-xs font-bold uppercase tracking-[0.12em]">Ton salaire net mensuel</span>
+            <span className="font-mono text-xs font-bold uppercase tracking-[0.12em]">Somme à comparer</span>
             <div className="grid grid-cols-[48px_1fr] border border-black/25 bg-white">
               <span className="flex items-center justify-center border-r border-black/15 text-xl">€</span>
               <input
                 inputMode="decimal"
-                value={monthlySalary}
-                onChange={(event) => setMonthlySalary(event.target.value)}
-                className="h-12 bg-white px-3 text-xl font-bold"
-              />
-            </div>
-          </label>
-          <label className="grid gap-2">
-            <span className="font-mono text-xs font-bold uppercase tracking-[0.12em]">Ton épargne totale</span>
-            <div className="grid grid-cols-[48px_1fr] border border-black/25 bg-white">
-              <span className="flex items-center justify-center border-r border-black/15 text-xl">€</span>
-              <input
-                inputMode="decimal"
-                value={savingsTotal}
-                onChange={(event) => setSavingsTotal(event.target.value)}
+                value={amountInput}
+                onChange={(event) => setAmountInput(event.target.value)}
                 className="h-12 bg-white px-3 text-xl font-bold"
               />
             </div>
           </label>
           <p className="text-sm leading-6 text-[var(--muted)]">
-            Les cartes comparent chaque fortune à {formatCurrencyEUR(usableSalary)} net par mois et à{" "}
-            {formatCurrencyEUR(usableSavings)} d'épargne. C'est un repère d'échelle, pas un jugement politique.
+            Les cartes comparent chaque fortune à {formatCurrencyEUR(usableAmount)}. C'est un repère d'échelle, pas un
+            jugement politique.
           </p>
         </div>
       </div>
@@ -89,8 +73,7 @@ export function BillionairesList() {
           <BillionaireCard
             key={person.name}
             billionaire={person}
-            monthlySalary={usableSalary}
-            savingsTotal={usableSavings}
+            amountToCompare={usableAmount}
           />
         ))}
       </div>

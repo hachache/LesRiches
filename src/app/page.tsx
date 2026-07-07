@@ -9,11 +9,11 @@ import { sourceReferences } from "@/data/economicReferences";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Combien de SMIC",
+  name: "L'Écart",
   applicationCategory: "FinanceApplication",
   operatingSystem: "Web",
   description:
-    "Comparateur pédagogique qui rend lisibles les fortunes extrêmes avec salaire, épargne, écoles, alimentation et patrimoine.",
+    "Comparateur pédagogique qui rend lisibles les fortunes extrêmes à partir d'une somme unique.",
 };
 
 export default function Home() {
@@ -36,14 +36,12 @@ export default function Home() {
 
         <div className="relative mx-auto grid min-h-[calc(100dvh-4rem)] max-w-7xl content-center gap-8 px-4 py-10 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl text-center">
-            <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-[var(--accent-dark)]">
-              Moi vs ultra-riches
-            </p>
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-[var(--accent-dark)]">L'Écart</p>
             <h1 className="display-type mt-5 text-6xl font-semibold uppercase leading-[0.9] sm:text-7xl md:text-8xl xl:text-[8.4rem]">
-              Ton épargne pèse combien ?
+              Une somme face aux ultra-riches.
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-xl sm:leading-8">
-              Entre ton salaire, ton épargne et choisis une fortune. Le site te répond en trois chiffres lisibles.
+              Entre un montant. Choisis une fortune. Le site traduit l'écart en trois repères lisibles.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link
@@ -74,8 +72,8 @@ export default function Home() {
             Moins d'indicateurs. Plus d'échelle.
           </h2>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
-            L'interface évite les repères économiques opaques. Elle garde ce qui se comprend tout de suite : ta part,
-            le temps de salaire, et un équivalent concret sur une fraction de gain annuel estimé.
+            L'interface évite les repères économiques opaques. Elle garde ce qui se comprend tout de suite : la part
+            réelle, le temps de revenu médian, et un équivalent concret sur une fraction de gain annuel estimé.
           </p>
         </div>
         <MethodologyNotice />

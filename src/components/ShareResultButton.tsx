@@ -18,7 +18,7 @@ export function ShareResultButton({ summary }: ShareResultButtonProps) {
 
   async function share() {
     if (navigator.share) {
-      await navigator.share({ title: "Combien de SMIC", text: summary, url: window.location.href });
+      await navigator.share({ title: "L'Écart", text: summary, url: window.location.href });
       return;
     }
     await copy();

@@ -3,18 +3,18 @@ import type { Billionaire } from "@/types/economics";
 import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalComparison";
 import { calculateConcreteEquivalents, calculateTaxScenario } from "@/lib/calculations/taxScenarios";
 import { formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
+import { economicReferences } from "@/data/economicReferences";
 import { FortuneFractionPie } from "@/components/FortuneFractionPie";
 import { TaxScenarioPanel } from "@/components/TaxScenarioPanel";
 
 export function BillionaireCard({
   billionaire,
-  monthlySalary,
-  savingsTotal,
+  amountToCompare,
 }: {
   billionaire: Billionaire;
-  monthlySalary: number;
-  savingsTotal: number;
+  amountToCompare: number;
 }) {
+  const referenceMonthlyIncome = economicReferences.medianNetSalaryMonthly.value;
   const concrete = calculateConcreteEquivalents(billionaire.netWorthEUR);
   const onePercentAnnualGain = calculateTaxScenario(
     billionaire.annualGainEUR,
@@ -22,8 +22,8 @@ export function BillionaireCard({
     billionaire.annualGainLabel,
   );
   const personal = calculatePersonalFortuneComparison({
-    salaryMonthly: monthlySalary,
-    savingsTotal,
+    salaryMonthly: referenceMonthlyIncome,
+    savingsTotal: amountToCompare,
     netWorthEUR: billionaire.netWorthEUR,
   });
 
@@ -61,19 +61,21 @@ export function BillionaireCard({
         </p>
         <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
           <div className="border-l border-black/15 pl-3">
-            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Ton épargne</span>
+            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Cette somme</span>
             <strong>{formatTinyPercentage(personal.percentage)}</strong>
             <p className="mt-1 text-xs leading-5 text-[var(--muted)]">de cette fortune estimée</p>
           </div>
           <div className="border-l border-black/15 pl-3">
-            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Ton salaire</span>
+            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
+              Revenu médian
+            </span>
             <strong>{formatLargeNumber(personal.salaryYears)} ans</strong>
-            <p className="mt-1 text-xs leading-5 text-[var(--muted)]">sans aucune dépense</p>
+            <p className="mt-1 text-xs leading-5 text-[var(--muted)]">référence neutre</p>
           </div>
           <div className="border-l border-black/15 pl-3">
-            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Ton épargne</span>
+            <span className="block font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Multiplicateur</span>
             <strong>{formatLargeNumber(personal.savingsMultiplier)} fois</strong>
-            <p className="mt-1 text-xs leading-5 text-[var(--muted)]">pour atteindre cette fortune</p>
+            <p className="mt-1 text-xs leading-5 text-[var(--muted)]">la somme comparée</p>
           </div>
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-3">

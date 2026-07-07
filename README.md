@@ -1,6 +1,6 @@
-# Combien de SMIC
+# L'Écart
 
-Outil web pédagogique qui compare une situation personnelle à des fortunes d'ultra-riches : salaire net mensuel, épargne totale, fraction de fortune, années de salaire, multiplicateur d'épargne, enfants nourris, écoles, hôpitaux locaux et variations annuelles estimées.
+Outil web pédagogique qui compare une somme unique à des fortunes d'ultra-riches : fraction réelle, années de revenu médian, enfants nourris, écoles, hôpitaux locaux et variations annuelles estimées.
 
 Le ton est volontairement direct, factuel et chiffré. Le projet évite les slogans : l'objectif est de rendre les ordres de grandeur lisibles.
 
@@ -24,17 +24,16 @@ Les captures seront à ajouter après déploiement :
 
 ## Fonctionnalités
 
-- Expérience principale “moi vs ultra-riches” : salaire net mensuel, épargne totale, fortune sélectionnée
+- Expérience principale “une somme face aux ultra-riches” : montant unique, fortune sélectionnée, trois repères lisibles
 - Camembert de fraction pour afficher la part réelle d'une fortune estimée
-- Comparaison en années de salaire, nombre de fois l'épargne personnelle, fraction personnelle et repères concrets
+- Comparaison en part réelle, années de revenu médian et repères concrets
 - Module “si on prélevait X%” avec `0,5%`, `1%`, `2%`, `5%` sur variation annuelle estimée de fortune
 - Repères concrets visibles : enfants nourris pendant un an, écoles construites, hôpitaux locaux, part d'un besoin annuel mondial contre la faim
 - Page milliardaires avec recherche, tri, portraits et comparaison personnelle
 - Mode secondaire de saisie libre d'une somme : `1000000`, `1 000 000`, `1,000,000`, `1m`, `1 milliard`, `1 billion`
-- Comparaison d'une somme libre en SMIC net, salaire médian, RSA, loyers, paniers alimentaires, immobilier et patrimoine
-- Timeline théorique : année de départ nécessaire au SMIC sans dépense
+- Comparaison secondaire d'une somme libre en repères de revenu, repas, paniers alimentaires, immobilier et temps théorique
 - API JSON : `/api/compare?amount=1000000000`
-- API JSON personnelle : `/api/personal-compare?salary=2000&savings=10000&billionaire=elon-musk`
+- API JSON personnelle : `/api/personal-compare?amount=10000&billionaire=elon-musk`
 - API JSON fiscale : `/api/tax-scenario?billionaire=elon-musk&rate=1`
 - Boutons copier/partager
 - Pages SEO : `/combien-de-smic-pour-1-million`, `/combien-de-smic-pour-1-milliard`
@@ -117,11 +116,11 @@ Certaines valeurs sont volontairement marquées comme placeholders réalistes :
 
 Avant usage public sérieux, ces valeurs doivent être vérifiées et remplacées par des sources publiques fiables.
 
-Le parcours principal privilégie des repères simples : fraction de fortune, années de salaire et nombre de fois l'épargne personnelle. L'épargne à 100% reste uniquement utilisée dans le comparateur de somme comme borne théorique.
+Le parcours principal privilégie des repères simples : fraction de fortune, années de revenu médian et équivalents concrets. Le comparateur de somme libre conserve quelques repères historiques en mode secondaire.
 
 ## Limites
 
-- Une épargne à 100% est irréaliste. Elle sert uniquement de borne théorique minimale dans le mode somme libre.
+- Les calculs de temps de revenu supposent de ne rien dépenser. C'est une borne théorique, pas une situation réaliste.
 - Les fortunes estimées varient fortement avec les marchés financiers.
 - Revenu, patrimoine et fortune ne mesurent pas la même réalité économique.
 - Les loyers et prix immobiliers varient fortement selon le territoire.
@@ -160,7 +159,7 @@ Réponse :
 Comparer une situation personnelle :
 
 ```bash
-curl "http://localhost:3000/api/personal-compare?salary=2000&savings=10000&billionaire=elon-musk"
+curl "http://localhost:3000/api/personal-compare?amount=10000&billionaire=elon-musk"
 ```
 
 Réponse abrégée :
@@ -168,8 +167,7 @@ Réponse abrégée :
 ```json
 {
   "input": {
-    "salaryMonthly": 2000,
-    "savingsTotal": 10000,
+    "amount": 10000,
     "billionaire": "elon-musk"
   },
   "billionaire": {

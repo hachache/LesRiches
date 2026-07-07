@@ -5,7 +5,7 @@ import { PersonalFortuneComparator } from "@/components/PersonalFortuneComparato
 export const metadata: Metadata = {
   title: "Moi vs ultra-riches",
   description:
-    "Comparez votre salaire et votre épargne à des fortunes d'ultra-riches avec des fractions, années de salaire et repères concrets.",
+    "Comparez une somme à des fortunes d'ultra-riches avec une fraction réelle, un temps de revenu médian et des repères concrets.",
   alternates: { canonical: "/comparateur" },
 };
 
@@ -23,10 +23,10 @@ export default async function ComparateurPage({ searchParams }: PageProps) {
           Comparateur
         </p>
         <h1 className="display-type mt-4 text-5xl font-semibold uppercase leading-[0.95] md:text-7xl">
-          Ton épargne pèse combien ?
+          Une somme face aux ultra-riches.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">
-          Deux champs, une fortune, trois chiffres. Le reste sert seulement à vérifier les hypothèses.
+          Un montant, une fortune, trois repères. Le reste sert seulement à vérifier les hypothèses.
         </p>
       </div>
       <PersonalFortuneComparator showSecondaryLink={false} />
@@ -45,7 +45,7 @@ export default async function ComparateurPage({ searchParams }: PageProps) {
           <span className="hidden text-sm font-semibold text-[var(--muted)] group-open:inline">Fermer</span>
         </summary>
         <p className="mt-3 max-w-2xl text-base leading-7 text-[var(--muted)]">
-          Pour tester un montant précis en SMIC et repères du quotidien.
+          Pour tester un montant précis avec des repères de revenu et de quotidien.
         </p>
         <div className="mt-5">
           <ComparatorTool initialAmount={params?.amount ?? "1 milliard"} />

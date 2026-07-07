@@ -23,7 +23,9 @@ export function ImpactSentence({ amount, smicYears, foodAidMeals, schoolsBuilt }
       </div>
       <div className="grid gap-3 md:grid-cols-3">
         <div className="border-l-4 border-[var(--accent)] bg-white/70 p-4">
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">SMIC net</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">
+            Revenu minimum
+          </span>
           <strong className="display-type mt-2 block text-5xl font-bold leading-none text-[var(--accent)]">
             {formatLargeNumber(smicYears)}
           </strong>

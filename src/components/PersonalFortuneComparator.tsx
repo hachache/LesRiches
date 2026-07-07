@@ -27,34 +27,31 @@ function readMoneyInput(value: string): number {
 
 export function PersonalFortuneComparator({ compact = false, showSecondaryLink = true }: PersonalFortuneComparatorProps) {
   const reduce = useReducedMotion();
-  const [salaryInput, setSalaryInput] = useState("2000");
-  const [savingsInput, setSavingsInput] = useState("10000");
+  const [amountInput, setAmountInput] = useState("10000");
   const [selectedSlug, setSelectedSlug] = useState("elon-musk");
-  const salaryMonthly = readMoneyInput(salaryInput) || economicReferences.classicNetMonthlyIncome.value;
-  const savingsTotal = readMoneyInput(savingsInput);
+  const referenceMonthlyIncome = economicReferences.medianNetSalaryMonthly.value;
+  const amountToCompare = readMoneyInput(amountInput);
   const selected = billionaires.find((person) => person.slug === selectedSlug) ?? billionaires[0];
 
   const comparison = useMemo(
     () =>
       calculatePersonalFortuneComparison({
-        salaryMonthly,
-        savingsTotal,
+        salaryMonthly: referenceMonthlyIncome,
+        savingsTotal: amountToCompare,
         netWorthEUR: selected.netWorthEUR,
       }),
-    [salaryMonthly, savingsTotal, selected.netWorthEUR],
+    [amountToCompare, referenceMonthlyIncome, selected.netWorthEUR],
   );
   const onePercentAnnualGain = useMemo(
     () => calculateTaxScenario(selected.annualGainEUR, 0.01, selected.annualGainLabel),
     [selected.annualGainEUR, selected.annualGainLabel],
   );
 
-  const summary = `${formatCurrencyEUR(savingsTotal)} d'épargne représente ${formatTinyPercentage(
+  const summary = `${formatCurrencyEUR(amountToCompare)} représente ${formatTinyPercentage(
     comparison.percentage,
-  )} de la fortune estimée de ${selected.name}. Au salaire net de ${formatCurrencyEUR(
-    salaryMonthly,
-  )}/mois, cette fortune représente environ ${formatLargeNumber(
+  )} de la fortune estimée de ${selected.name}. Au revenu net médian de référence, cette fortune représente environ ${formatLargeNumber(
     comparison.salaryYears,
-  )} années de revenu. Calculé sur combien-de-smic.fr`;
+  )} années de revenu. Calculé sur L'Écart.`;
 
   return (
     <section className={compact ? "grid gap-5" : "grid gap-8"}>
@@ -69,34 +66,20 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
               Moi vs ultra-riches
             </p>
             <h2 className="display-type mt-2 text-3xl font-semibold uppercase leading-[0.98] sm:text-4xl">
-              Trois chiffres. Pas plus.
+              Une somme. Trois repères.
             </h2>
           </div>
 
           <label className="grid gap-2">
-            <span className="text-sm font-semibold">Salaire net mensuel</span>
+            <span className="text-sm font-semibold">Somme à comparer</span>
             <div className="grid grid-cols-[48px_1fr] border border-black/25 bg-white">
               <span className="flex items-center justify-center border-r border-black/15 text-xl">€</span>
               <input
                 inputMode="decimal"
-                value={salaryInput}
-                onChange={(event) => setSalaryInput(event.target.value)}
+                value={amountInput}
+                onChange={(event) => setAmountInput(event.target.value)}
                 className="h-12 bg-white px-3 text-xl font-semibold"
-                aria-label="Salaire net mensuel"
-              />
-            </div>
-          </label>
-
-          <label className="grid gap-2">
-            <span className="text-sm font-semibold">Épargne totale</span>
-            <div className="grid grid-cols-[48px_1fr] border border-black/25 bg-white">
-              <span className="flex items-center justify-center border-r border-black/15 text-xl">€</span>
-              <input
-                inputMode="decimal"
-                value={savingsInput}
-                onChange={(event) => setSavingsInput(event.target.value)}
-                className="h-12 bg-white px-3 text-xl font-semibold"
-                aria-label="Épargne totale"
+                aria-label="Somme à comparer"
               />
             </div>
           </label>
@@ -142,7 +125,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
         </div>
 
         <motion.div
-          key={selected.slug + salaryMonthly + savingsTotal}
+          key={selected.slug + amountToCompare}
           initial={reduce ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
@@ -167,11 +150,11 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
 
               <div>
                 <p className="display-type text-4xl font-semibold uppercase leading-[0.95] sm:text-5xl xl:text-6xl">
-                  Ton épargne pèse{" "}
+                  Cette somme représente{" "}
                   <span className="text-[var(--accent)]">{formatTinyPercentage(comparison.percentage)}</span>.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base">
-                  Pas besoin de lire dix indicateurs : une fraction, un temps de salaire, un équivalent concret.
+                  Un seul montant en entrée. Le reste traduit l'écart en repères simples.
                 </p>
               </div>
             </div>
@@ -189,7 +172,12 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                 formatTinyPercentage(comparison.percentage),
                 "de la fortune estimée",
               ],
-              [TrendUp, "Temps de salaire", `${formatLargeNumber(comparison.salaryYears)} ans`, "sans dépenser"],
+              [
+                TrendUp,
+                "Revenu médian",
+                `${formatLargeNumber(comparison.salaryYears)} ans`,
+                `référence : ${formatCurrencyEUR(referenceMonthlyIncome)}/mois`,
+              ],
               [
                 BowlFood,
                 "1% de son année",

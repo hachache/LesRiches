@@ -24,20 +24,20 @@ const siteUrl = "https://combien-de-smic.fr";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Combien de SMIC représente une fortune ?",
-    template: "%s | Combien de SMIC",
+    default: "L'Écart | Une somme face aux ultra-riches",
+    template: "%s | L'Écart",
   },
   description:
-    "Comparez votre salaire et votre épargne aux ultra-riches avec des repères concrets : années de revenu, patrimoine, écoles, alimentation et hôpitaux.",
+    "Entrez une somme et comparez-la aux ultra-riches avec des repères concrets : part réelle, années de revenu, écoles et alimentation.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Combien de SMIC représente une fortune ?",
+    title: "L'Écart | Une somme face aux ultra-riches",
     description:
       "Un comparateur pédagogique pour rendre les fortunes extrêmes lisibles avec des ordres de grandeur concrets.",
     url: siteUrl,
-    siteName: "Combien de SMIC",
+    siteName: "L'Écart",
     locale: "fr_FR",
     type: "website",
   },
@@ -61,8 +61,8 @@ export default function RootLayout({
           <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <Link href="/" className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.14em] sm:text-sm">
               <span className="h-5 w-1 bg-[var(--accent)]" />
-              <span className="sm:hidden">SMIC</span>
-              <span className="hidden sm:inline">Combien de SMIC</span>
+              <span className="sm:hidden">Écart</span>
+              <span className="hidden sm:inline">L'Écart</span>
             </Link>
             <Link
               href="/comparateur"

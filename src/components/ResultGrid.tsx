@@ -26,7 +26,7 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
 
   const summary = `${formatCurrencyEUR(amount)} représente environ ${formatLargeNumber(
     result.smic.years,
-  )} années de SMIC net, ${formatLargeNumber(result.dailyLife.foodAidMeals)} repas solidaires théoriques et ${formatLargeNumber(
+  )} années de revenu minimum, ${formatLargeNumber(result.dailyLife.foodAidMeals)} repas solidaires théoriques et ${formatLargeNumber(
     concrete.schoolsBuilt,
   )} écoles construites théoriques. Calculé sur combien-de-smic.fr`;
 
@@ -40,7 +40,7 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
           schoolsBuilt={concrete.schoolsBuilt}
         />
         <div className="flex flex-wrap gap-2">
-          <AssumptionBadge>SMIC net {formatCurrencyEUR(economicReferences.smicNetMonthly.value)}/mois</AssumptionBadge>
+          <AssumptionBadge>Revenu minimum {formatCurrencyEUR(economicReferences.smicNetMonthly.value)}/mois</AssumptionBadge>
           <AssumptionBadge>Repas solidaire 2 €</AssumptionBadge>
           <AssumptionBadge>École théorique 12 millions €</AssumptionBadge>
         </div>
@@ -86,7 +86,7 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
           title="Timeline"
           value={Math.abs(result.timeline.smicStartYear)}
           unit={result.timeline.smicStartYear <= 0 ? "avant notre ère" : "année"}
-          sentence={`Au SMIC net, il aurait fallu commencer ${formatStartYear(
+          sentence={`Au revenu minimum, il aurait fallu commencer ${formatStartYear(
             result.timeline.smicStartYear,
           )}, sans jamais rien dépenser.`}
         />

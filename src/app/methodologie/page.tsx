@@ -6,7 +6,7 @@ import { sourceReferences } from "@/data/economicReferences";
 export const metadata: Metadata = {
   title: "Méthodologie",
   description:
-    "Références, hypothèses et limites du comparateur de fortunes en années de SMIC et patrimoine français.",
+    "Références, hypothèses et limites du comparateur de fortunes L'Écart.",
   alternates: { canonical: "/methodologie" },
 };
 
@@ -28,10 +28,9 @@ export default function MethodologiePage() {
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Ce que le site calcule</h2>
           <p className="mt-3">
-            L'expérience principale compare un salaire net mensuel et une épargne totale à des fortunes d'ultra-riches.
-            Le moteur calcule la fraction de fortune, les années de salaire nécessaires, combien de fois votre épargne
-            serait nécessaire, puis des repères simples : enfants nourris, écoles, hôpitaux locaux et part d'un besoin
-            annuel mondial contre la faim.
+            L'expérience principale compare une somme unique à des fortunes d'ultra-riches. Le moteur calcule la
+            fraction réelle de fortune, le temps équivalent au revenu net médian, puis des repères simples : enfants
+            nourris, écoles, hôpitaux locaux et part d'un besoin annuel mondial contre la faim.
           </p>
         </section>
         <section>
@@ -40,7 +39,7 @@ export default function MethodologiePage() {
           </h2>
           <p className="mt-3">
             Certains indicateurs économiques deviennent vite abstraits. Le parcours principal privilégie donc des
-            phrases directes : “ta part”, “années de salaire”, “fois ton épargne” et équivalents budgétaires concrets.
+            phrases directes : “part réelle”, “années de revenu médian” et équivalents budgétaires concrets.
           </p>
         </section>
         <section>
@@ -48,7 +47,7 @@ export default function MethodologiePage() {
             Pourquoi rester sur des repères simples ?
           </h2>
           <p className="mt-3">
-            Les comparaisons les plus fortes sont aussi les plus lisibles : années de salaire, fois votre épargne,
+            Les comparaisons les plus fortes sont aussi les plus lisibles : part réelle, années de revenu médian,
             enfants nourris pendant un an, écoles construites et hôpitaux locaux théoriques. L'interface évite les
             sigles, les unités compactes et les indicateurs qui demandent déjà une culture économique.
           </p>

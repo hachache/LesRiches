@@ -26,10 +26,10 @@ export function HomeQuickCompare() {
             Cette somme représente environ
           </p>
           <p className="display-type mt-3 text-6xl font-bold uppercase leading-[0.86] text-[var(--accent)] md:text-7xl">
-            {formatLargeNumber(result.smic.years)} SMIC
+            {formatLargeNumber(result.smic.years)} années
           </p>
           <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--muted)]">
-            Soit {formatLargeNumber(result.smic.years)} années de SMIC net, sans dépenser un centime.
+            Soit {formatLargeNumber(result.smic.years)} années de revenu minimum, sans dépenser un centime.
           </p>
           <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-lg border border-black/10 bg-white p-3">
