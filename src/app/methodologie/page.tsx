@@ -13,7 +13,12 @@ export const metadata: Metadata = {
 export default function MethodologiePage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="text-5xl font-semibold leading-none tracking-tight md:text-6xl">Méthodologie</h1>
+      <h1 className="display-type text-5xl font-medium uppercase leading-none md:text-7xl">Méthodologie</h1>
+      <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
+        L'Écart compare une somme unique à une fortune extrême. Le site cherche à rendre l'ordre de grandeur lisible,
+        pas à produire une analyse fiscale ou patrimoniale complète.
+      </p>
+
       <div className="paper-panel relative mt-8 aspect-[16/7] overflow-hidden rounded-lg">
         <Image
           src="/assets/methodology/source-ledger.png"
@@ -24,61 +29,57 @@ export default function MethodologiePage() {
           className="object-cover"
         />
       </div>
+
       <div className="mt-8 grid gap-8 text-lg leading-8 text-[var(--muted)]">
         <section>
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Ce que le site calcule</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Ce que le site affiche</h2>
           <p className="mt-3">
-            L'expérience principale compare une somme unique à des fortunes d'ultra-riches. Le moteur calcule la
-            fraction réelle de fortune, le temps équivalent au revenu net médian, puis des repères simples : enfants
-            nourris, écoles, hôpitaux locaux et part d'un besoin annuel mondial contre la faim.
+            Le parcours principal calcule trois choses : le ratio entre la somme saisie et la fortune, le nombre de fois
+            où la fortune contient cette somme, et ce que 1% d'une variation annuelle estimée représenterait en repères
+            budgétaires simples.
           </p>
         </section>
+
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-            Pourquoi simplifier les repères ?
+            Pourquoi le ratio passe avant le pourcentage
           </h2>
           <p className="mt-3">
-            Certains indicateurs économiques deviennent vite abstraits. Le parcours principal privilégie donc des
-            phrases directes : “part réelle”, “années de revenu médian” et équivalents budgétaires concrets.
+            Un pourcentage comme 0,00000238% est exact, mais difficile à sentir. Le ratio “1 / 42 millions” exprime le
+            même ordre de grandeur dans une forme plus mémorisable.
           </p>
         </section>
-        <section>
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-            Pourquoi rester sur des repères simples ?
-          </h2>
-          <p className="mt-3">
-            Les comparaisons les plus fortes sont aussi les plus lisibles : part réelle, années de revenu médian,
-            enfants nourris pendant un an, écoles construites et hôpitaux locaux théoriques. L'interface évite les
-            sigles, les unités compactes et les indicateurs qui demandent déjà une culture économique.
-          </p>
-        </section>
+
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
             Pourquoi ce n'est pas une proposition fiscale
           </h2>
           <p className="mt-3">
-            Le module “si on prélevait X%” utilise la variation annuelle estimée de fortune, pas toute la fortune
-            accumulée. Il ne modélise pas l'assiette fiscale réelle, les plus-values latentes, la liquidité des actifs,
-            les comportements de marché, les règles juridiques, les coûts administratifs ou les effets de calendrier. Il
-            sert uniquement à traduire une fraction d'une année patrimoniale en repères concrets.
+            Le module fiscal simule un prélèvement ponctuel sur une variation annuelle estimée de fortune, pas sur toute
+            la fortune accumulée. Il ne modélise pas les plus-values latentes, la liquidité des actifs, le droit fiscal,
+            les réactions de marché, les coûts administratifs ou les dépenses de fonctionnement.
           </p>
         </section>
+
         <section>
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets ajoutés</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets conservés</h2>
           <p className="mt-3">
-            Les repères visibles couvrent l'aide alimentaire théorique, le coût d'une école, le coût d'un hôpital local,
-            et un besoin annuel mondial contre la faim. Les valeurs incertaines restent marquées comme hypothèses plutôt
-            que présentées comme faits définitifs.
+            L'interface principale garde seulement trois repères : enfants nourris pendant un an, écoles théoriques et
+            hôpitaux locaux théoriques. Ce sont des équivalents budgétaires, pas des effets garantis.
           </p>
         </section>
-        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+
+        <section className="grid gap-4 md:grid-cols-2">
           {[
-            ["Revenu", "Argent qui entre régulièrement : salaire, allocation, rente ou autre flux."],
-            ["Patrimoine", "Ce qu'une personne possède moins ce qu'elle doit : immobilier, épargne, actifs, dettes."],
+            ["Somme comparée", "Montant libre saisi par l'utilisateur : épargne, don, héritage, prix, budget ou fortune."],
             ["Fortune estimée", "Approximation fondée sur actifs, actions, participations, immobilier et marchés."],
             [
               "Variation annuelle",
-              "Écart estimé d'une fortune sur une période. Ce n'est pas un salaire et cela peut être négatif.",
+              "Écart indicatif d'une fortune sur une période. Ce n'est pas un salaire et cela peut être négatif.",
+            ],
+            [
+              "Hypothèse pédagogique",
+              "Valeur utile pour comprendre une échelle, mais à vérifier ou remplacer avant usage éditorial sérieux.",
             ],
           ].map(([title, text]) => (
             <article key={title} className="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5">
@@ -87,19 +88,23 @@ export default function MethodologiePage() {
             </article>
           ))}
         </section>
+
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Limites</h2>
           <p className="mt-3">
-            Les données économiques changent, les loyers varient fortement selon les villes, et les fortunes de
-            milliardaires bougent avec les cours de marché. Les portraits sont des assets éditoriaux générés et les
-            fortunes doivent être revérifiées depuis Forbes, Bloomberg ou une autre source publique fiable. Le dépôt
-            isole toutes les références dans un seul fichier pour faciliter les mises à jour.
+            Les fortunes de milliardaires changent avec les marchés. Les variations annuelles dans le dépôt sont
+            marquées comme données démo et doivent être remplacées par Forbes, Bloomberg ou une source équivalente. Les
+            portraits sont des assets éditoriaux générés.
           </p>
         </section>
       </div>
 
       <section className="mt-10">
-        <h2 className="text-3xl font-semibold tracking-tight">Références utilisées</h2>
+        <h2 className="text-3xl font-semibold tracking-tight">Références et hypothèses</h2>
+        <p className="mt-3 max-w-3xl text-base leading-7 text-[var(--muted)]">
+          Certaines lignes ci-dessous sont des sources publiques, d'autres sont des hypothèses pédagogiques explicitement
+          marquées. Elles sont centralisées pour être faciles à vérifier et remplacer.
+        </p>
         <div className="mt-5">
           <SourceList sources={sourceReferences} />
         </div>

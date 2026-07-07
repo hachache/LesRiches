@@ -19,6 +19,10 @@ export function calculateFortuneFraction(personalSavings: number, netWorthEUR: n
   };
 }
 
+export function calculateFortuneRatioDenominator(personalAmount: number, netWorthEUR: number): number {
+  return calculateSavingsMultiplier(netWorthEUR, personalAmount);
+}
+
 export function calculateSalaryYearsToFortune(netWorthEUR: number, monthlySalary: number): number {
   const fortune = positive(netWorthEUR);
   const yearlySalary = positive(monthlySalary) * 12;
@@ -63,6 +67,7 @@ export function calculatePersonalFortuneComparison({
 
   return {
     ...fraction,
+    ratioDenominator: calculateFortuneRatioDenominator(savingsTotal, netWorthEUR),
     savingsMultiplier: calculateSavingsMultiplier(netWorthEUR, savingsTotal),
     salaryYears: calculateSalaryYearsToFortune(netWorthEUR, salaryMonthly),
     careersAt20PercentSavings: calculateCareersAtSavingsRate(netWorthEUR, salaryMonthly, savingsRate ?? undefined, careerYears ?? undefined),

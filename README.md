@@ -1,16 +1,8 @@
 # L'Écart
 
-Outil web pédagogique qui compare une somme unique à des fortunes d'ultra-riches : fraction réelle, années de revenu médian, enfants nourris, écoles, hôpitaux locaux et variations annuelles estimées.
+Outil web pédagogique qui compare un salaire net ou une épargne à des fortunes extrêmes. Le site affiche le temps théorique nécessaire, le ratio réel, puis des repères concrets d'achat, sociaux et civils.
 
-Le ton est volontairement direct, factuel et chiffré. Le projet évite les slogans : l'objectif est de rendre les ordres de grandeur lisibles.
-
-## Screenshots
-
-Les captures seront à ajouter après déploiement :
-
-- `docs/screenshots/home.png`
-- `docs/screenshots/comparateur.png`
-- `docs/screenshots/milliardaires.png`
+Le ton est direct, factuel et non militant. L'objectif est de rendre les ordres de grandeur compréhensibles sans transformer l'interface en simulateur économique.
 
 ## Stack
 
@@ -19,24 +11,19 @@ Les captures seront à ajouter après déploiement :
 - Tailwind CSS v4
 - Motion pour les animations UI
 - Vitest
-- Route Handler API interne
-- Déploiement Vercel compatible
+- Route Handlers API
+- Compatible Vercel
 
 ## Fonctionnalités
 
-- Expérience principale “une somme face aux ultra-riches” : montant unique, fortune sélectionnée, trois repères lisibles
-- Camembert de fraction pour afficher la part réelle d'une fortune estimée
-- Comparaison en part réelle, années de revenu médian et repères concrets
-- Module “si on prélevait X%” avec `0,5%`, `1%`, `2%`, `5%` sur variation annuelle estimée de fortune
-- Repères concrets visibles : enfants nourris pendant un an, écoles construites, hôpitaux locaux, part d'un besoin annuel mondial contre la faim
-- Page milliardaires avec recherche, tri, portraits et comparaison personnelle
-- Mode secondaire de saisie libre d'une somme : `1000000`, `1 000 000`, `1,000,000`, `1m`, `1 milliard`, `1 billion`
-- Comparaison secondaire d'une somme libre en repères de revenu, repas, paniers alimentaires, immobilier et temps théorique
-- API JSON : `/api/compare?amount=1000000000`
-- API JSON personnelle : `/api/personal-compare?amount=10000&billionaire=elon-musk`
-- API JSON fiscale : `/api/tax-scenario?billionaire=elon-musk&rate=1`
-- Boutons copier/partager
-- Pages SEO : `/combien-de-smic-pour-1-million`, `/combien-de-smic-pour-1-milliard`
+- Parcours principal : deux modes, `Salaire net` ou `Épargne`, plus une fortune de référence.
+- Formats acceptés : `10000`, `10 000`, `1,000,000`, `1m`, `1 million`, `1 milliard`, `1 billion`.
+- Résultats lisibles : temps théorique en mode salaire, ratio et multiplicateur en mode épargne.
+- Simulation théorique sur 1% d'une variation annuelle estimée, jamais sur toute la fortune par défaut.
+- Repères visibles : achats/infrastructures théoriques, équivalents sociaux et repères civils.
+- Page fortunes avec recherche, tri, cartes compactes et un seul détail ouvert.
+- APIs JSON : `/api/personal-compare`, `/api/tax-scenario`, `/api/compare` en compatibilité historique.
+- Boutons copier/partager.
 
 ## Architecture
 
@@ -47,6 +34,8 @@ src/app/
   milliardaires/page.tsx
   methodologie/page.tsx
   api/compare/route.ts
+  api/personal-compare/route.ts
+  api/tax-scenario/route.ts
 src/components/
 src/lib/calculations/
 src/lib/formatters/
@@ -56,7 +45,7 @@ src/types/
 tests/
 ```
 
-La logique métier est isolée dans `src/lib/calculations` et `src/lib/formatters`. Les composants React ne contiennent pas de valeurs économiques magiques.
+La logique métier est isolée dans `src/lib/calculations` et `src/lib/formatters`. Les valeurs économiques sont centralisées dans `src/data`.
 
 ## Installation
 
@@ -78,156 +67,70 @@ Ouvrir `http://localhost:3000`.
 npm test
 ```
 
-Les tests couvrent le parsing des montants, les années de revenus, les fractions de fortune, les très grands nombres, les cas invalides, les API et les formatages.
-
 ## Build
 
 ```bash
 npm run build
 ```
 
-## Données et méthodologie
+## APIs
 
-Les références sont centralisées dans `src/data/economicReferences.ts`.
-
-Certaines valeurs sont sourcées avec des références publiques récentes :
-
-- SMIC net mensuel : Service Public, montant indicatif au 1er juin 2026
-- Patrimoine médian net : INSEE, données de patrimoine 2024 publiées en 2026
-- Salaire médian : repère INSEE 2024 à vérifier dans les tableaux détaillés
-- Seuil de pauvreté : INSEE, seuil à 60% du niveau de vie médian
-- Éducation : DEPP / Éducation nationale, dépense intérieure d'éducation
-- Recettes fiscales nettes : Budget.gouv, projet de loi de finances 2026
-- Repas distribués : Banques Alimentaires et Restos du Cœur, rapports et communications publiques récentes
-
-Certaines valeurs sont volontairement marquées comme placeholders réalistes :
-
-- loyer moyen
-- panier alimentaire
-- voiture populaire
-- prix moyen appartement/maison
-- coût unitaire d'un logement social théorique
-- coût d'une école construite théorique
-- coût d'un hôpital local théorique
-- coût annuel pour nourrir un enfant avec une hypothèse simple de 1 repas par jour à 2 €
-- besoin annuel mondial contre la faim
-- variations annuelles estimées des fortunes
-- fortunes de milliardaires
-
-Avant usage public sérieux, ces valeurs doivent être vérifiées et remplacées par des sources publiques fiables.
-
-Le parcours principal privilégie des repères simples : fraction de fortune, années de revenu médian et équivalents concrets. Le comparateur de somme libre conserve quelques repères historiques en mode secondaire.
-
-## Limites
-
-- Les calculs de temps de revenu supposent de ne rien dépenser. C'est une borne théorique, pas une situation réaliste.
-- Les fortunes estimées varient fortement avec les marchés financiers.
-- Revenu, patrimoine et fortune ne mesurent pas la même réalité économique.
-- Les loyers et prix immobiliers varient fortement selon le territoire.
-- Les repères écoles, hôpitaux, repas et faim mondiale sont des équivalents budgétaires théoriques, pas une promesse de résultat.
-- Les scénarios fiscaux sont des simulations ponctuelles sur variation annuelle estimée de fortune, pas une proposition fiscale ni une prévision de recettes réelles.
-- Le site donne des ordres de grandeur, pas un conseil financier.
-
-## API
-
-Comparer une somme libre :
+Comparer une somme à une fortune :
 
 ```bash
-curl "http://localhost:3000/api/compare?amount=1000000000"
-```
-
-Réponse :
-
-```json
-{
-  "input": {
-    "amount": 1000000000,
-    "formattedAmount": "1 000 000 000 €"
-  },
-  "smicYears": 56377.64,
-  "medianSalaryYears": 38051.75,
-  "workingLives": 1342.32,
-  "rsaMonths": 1534470.45,
-  "averageRentMonths": 1315789.47,
-  "groceryBaskets": 9090909.09,
-  "medianWealthMultiplier": 6752.19,
-  "generatedAt": "2026-07-06T00:00:00.000Z",
-  "assumptions": {}
-}
-```
-
-Comparer une situation personnelle :
-
-```bash
-curl "http://localhost:3000/api/personal-compare?amount=10000&billionaire=elon-musk"
+curl "http://localhost:3000/api/personal-compare?amount=1%20million&billionaire=elon-musk"
 ```
 
 Réponse abrégée :
 
 ```json
 {
-  "input": {
-    "amount": 10000,
-    "billionaire": "elon-musk"
-  },
-  "billionaire": {
-    "slug": "elon-musk",
-    "name": "Elon Musk",
-    "formattedNetWorth": "420 000 000 000 €",
-    "formattedAnnualGain": "120 000 000 000 €"
-  },
-  "comparison": {
-    "percentage": 0.000002380952380952381,
-    "salaryYears": 17500000,
-    "careersAt20PercentSavings": 2083333.33
-  },
-  "assumptions": {
-    "defaultSavingsRate": 0.2,
-    "careerYears": 42
+  "amount": { "value": 1000000, "formatted": "1 000 000 €" },
+  "billionaire": { "slug": "elon-musk", "name": "Elon Musk" },
+  "ratio": { "denominator": 420000, "formatted": "1 / 420 000" },
+  "percentage": { "formatted": "0,0002381 %" },
+  "multiplier": { "formatted": "420 000 fois" },
+  "annualVariationOnePercent": { "base": "annualVariationEstimate" },
+  "concreteEquivalents": {
+    "formatted": {
+      "childrenFedOneYear": "1,6 million",
+      "schoolsBuilt": "100",
+      "localHospitalsBuilt": "8"
+    }
   }
 }
 ```
 
-Comparer une simulation fiscale :
+Simulation sur variation annuelle estimée :
 
 ```bash
 curl "http://localhost:3000/api/tax-scenario?billionaire=elon-musk&rate=1"
 ```
 
-Réponse abrégée :
+Compatibilité historique :
 
-```json
-{
-  "input": {
-    "billionaire": "elon-musk",
-    "ratePercent": 1
-  },
-  "scenario": {
-    "rate": 0.01,
-    "amount": 1200000000,
-    "formatted": {
-      "amount": "1 200 000 000 €",
-      "childrenFedOneYear": "1,6 million",
-      "schoolsBuilt": "100",
-      "globalHungerFundingShare": "3,00 %"
-    }
-  },
-  "assumptions": {
-    "framing": "simulation théorique ponctuelle sur variation annuelle estimée de fortune"
-  }
-}
+```bash
+curl "http://localhost:3000/api/compare?amount=1%20milliard"
 ```
+
+## Données
+
+Les fortunes et variations annuelles dans `src/data/billionaires.ts` sont marquées comme données démo à vérifier. Avant publication éditoriale sérieuse, elles doivent être remplacées par des valeurs datées issues de Forbes, Bloomberg ou d'une source publique équivalente.
+
+Les repères concrets dans `src/data/economicReferences.ts` mélangent sources publiques et hypothèses pédagogiques. Les hypothèses sont explicitement signalées dans la méthodologie.
+
+## Limites
+
+- Les fortunes estimées varient avec les marchés.
+- Une variation annuelle de fortune n'est pas un salaire.
+- Les scénarios fiscaux sont des simulations ponctuelles sur variation annuelle estimée, pas une proposition fiscale.
+- Les écoles, hôpitaux et repas sont des équivalents budgétaires théoriques, pas des effets garantis.
+- Le site donne des ordres de grandeur, pas un conseil financier.
 
 ## Roadmap
 
-- Ajout de sources dynamiques
-- Graphiques et visualisations temporelles
-- Export image partageable
-- Comparaison entre deux fortunes
-- Internationalisation
-- Mise à jour automatisée des données publiques
-- Dashboard admin des références économiques
-
-## Déploiement
-
-Le projet peut être déployé tel quel sur Vercel.
+- Remplacer les données démo par des sources vérifiées et datées.
+- Ajouter un export image partageable.
+- Ajouter une comparaison entre deux fortunes.
+- Ajouter une mise à jour automatisée des références publiques.
+- Ajouter un mode internationalisation.

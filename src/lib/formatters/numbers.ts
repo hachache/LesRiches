@@ -54,6 +54,18 @@ export function formatTinyPercentage(value: number): string {
     .replace(/[\u00a0\u202f]/g, " ")} %`;
 }
 
+export function formatRatio(value: number): string {
+  const clean = cleanNumber(value);
+  if (!clean) return "1 / impossible";
+  return `1 / ${formatLargeNumber(clean)}`;
+}
+
+export function formatMultiplier(value: number): string {
+  const clean = cleanNumber(value);
+  if (!clean) return "0 fois";
+  return `${formatLargeNumber(clean)} fois`;
+}
+
 export function formatDurationYears(value: number): string {
   const clean = cleanNumber(value);
   if (clean === 0) return "0 an";

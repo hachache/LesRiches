@@ -28,7 +28,7 @@ export function ResultGrid({ amount, customMonthlyIncome, careerYears, savingsRa
     result.smic.years,
   )} années de revenu minimum, ${formatLargeNumber(result.dailyLife.foodAidMeals)} repas solidaires théoriques et ${formatLargeNumber(
     concrete.schoolsBuilt,
-  )} écoles construites théoriques. Calculé sur combien-de-smic.fr`;
+  )} écoles construites théoriques. Calculé sur L'Écart.`;
 
   return (
     <section className="mobile-safe-panel grid gap-6">

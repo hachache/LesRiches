@@ -49,6 +49,7 @@ export type Billionaire = {
   annualGainSourceUrl?: string;
   annualGainLastUpdated: string;
   annualGainNote: string;
+  dataQuality?: "demo" | "verified";
   lastUpdated: string;
 };
 
@@ -71,6 +72,7 @@ export type PersonalFortuneComparisonOptions = {
 export type PersonalFortuneComparison = {
   fraction: number;
   percentage: number;
+  ratioDenominator: number;
   savingsMultiplier: number;
   salaryYears: number;
   careersAt20PercentSavings: number;

@@ -3,6 +3,8 @@ import {
   formatCurrencyEUR,
   formatDurationYears,
   formatLargeNumber,
+  formatMultiplier,
+  formatRatio,
   formatTinyPercentage,
   formatStartYear,
 } from "@/lib/formatters/numbers";
@@ -31,5 +33,10 @@ describe("formatters", () => {
   test("formats very small percentages without hiding the order of magnitude", () => {
     expect(formatTinyPercentage(0.00000595238)).toBe("0,00000595 %");
     expect(formatTinyPercentage(0)).toBe("0 %");
+  });
+
+  test("formats ratios and multipliers in readable French units", () => {
+    expect(formatRatio(42_000_000)).toBe("1 / 42 millions");
+    expect(formatMultiplier(42_000_000)).toBe("42 millions fois");
   });
 });

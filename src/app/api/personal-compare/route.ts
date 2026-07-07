@@ -2,100 +2,99 @@ import { NextResponse } from "next/server";
 import { billionaires } from "@/data/billionaires";
 import { economicReferences } from "@/data/economicReferences";
 import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalComparison";
-import { calculateDefaultTaxScenarios } from "@/lib/calculations/taxScenarios";
-import { formatCurrencyEUR, formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
-
-function readPositiveNumber(value: string | null): number {
-  if (!value) return 0;
-  const parsed = Number(value.replace(",", "."));
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-}
+import { calculateTaxScenario } from "@/lib/calculations/taxScenarios";
+import {
+  formatCurrencyEUR,
+  formatLargeNumber,
+  formatMultiplier,
+  formatRatio,
+  formatTinyPercentage,
+} from "@/lib/formatters/numbers";
+import { parseAmountInput } from "@/lib/formatters/parseAmount";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const salaryMonthly =
-    readPositiveNumber(url.searchParams.get("salary")) || economicReferences.medianNetSalaryMonthly.value;
-  const amount = readPositiveNumber(url.searchParams.get("amount")) || readPositiveNumber(url.searchParams.get("savings"));
+  const amountParam = url.searchParams.get("amount") ?? url.searchParams.get("savings") ?? "";
+  const parsed = parseAmountInput(amountParam);
   const billionaireSlug = url.searchParams.get("billionaire") ?? "";
   const billionaire = billionaires.find((person) => person.slug === billionaireSlug);
 
-  if (!amount || !billionaire) {
+  if (!parsed.amount || !billionaire) {
     return NextResponse.json(
       {
         error:
-          "Parametres invalides. Utilisez amount et billionaire avec un slug connu, par exemple /api/personal-compare?amount=10000&billionaire=elon-musk.",
+          "Parametres invalides. Utilisez amount et billionaire avec un slug connu, par exemple /api/personal-compare?amount=1%20million&billionaire=elon-musk.",
       },
       { status: 400 },
     );
   }
 
   const comparison = calculatePersonalFortuneComparison({
-    salaryMonthly,
-    savingsTotal: amount,
+    salaryMonthly: economicReferences.medianNetSalaryMonthly.value,
+    savingsTotal: parsed.amount,
     netWorthEUR: billionaire.netWorthEUR,
   });
-  const taxScenarios = calculateDefaultTaxScenarios(billionaire.annualGainEUR, billionaire.annualGainLabel);
+  const annualVariationOnePercent = calculateTaxScenario(
+    billionaire.annualGainEUR,
+    0.01,
+    billionaire.annualGainLabel,
+  );
 
   return NextResponse.json({
-    input: {
-      amount,
-      salaryMonthly,
-      billionaire: billionaire.slug,
+    amount: {
+      value: parsed.amount,
+      formatted: formatCurrencyEUR(parsed.amount),
+      warning: parsed.warning,
     },
     billionaire: {
       slug: billionaire.slug,
       name: billionaire.name,
       netWorthEUR: billionaire.netWorthEUR,
       formattedNetWorth: formatCurrencyEUR(billionaire.netWorthEUR),
-      annualGainEUR: billionaire.annualGainEUR,
-      formattedAnnualGain: formatCurrencyEUR(billionaire.annualGainEUR),
-      annualGainLabel: billionaire.annualGainLabel,
-      annualGainNote: billionaire.annualGainNote,
+      dataQuality: billionaire.dataQuality ?? "demo",
       sourceLabel: billionaire.sourceLabel,
       sourceUrl: billionaire.sourceUrl,
       lastUpdated: billionaire.lastUpdated,
     },
-    comparison: {
-      ...comparison,
+    ratio: {
+      denominator: comparison.ratioDenominator,
+      formatted: formatRatio(comparison.ratioDenominator),
+    },
+    percentage: {
+      value: comparison.percentage,
+      formatted: formatTinyPercentage(comparison.percentage),
+    },
+    multiplier: {
+      value: comparison.savingsMultiplier,
+      formatted: formatMultiplier(comparison.savingsMultiplier),
+    },
+    annualVariationOnePercent: {
+      base: "annualVariationEstimate",
+      baseAmountEUR: billionaire.annualGainEUR,
+      formattedBaseAmount: formatCurrencyEUR(billionaire.annualGainEUR),
+      amountEUR: annualVariationOnePercent.amount,
+      formattedAmount: formatCurrencyEUR(annualVariationOnePercent.amount),
+    },
+    concreteEquivalents: {
+      childrenFedOneYear: annualVariationOnePercent.concrete.childrenFedOneYear,
+      schoolsBuilt: annualVariationOnePercent.concrete.schoolsBuilt,
+      localHospitalsBuilt: annualVariationOnePercent.concrete.localHospitalsBuilt,
       formatted: {
-        percentage: formatTinyPercentage(comparison.percentage),
-        savingsMultiplier: formatLargeNumber(comparison.savingsMultiplier),
-        salaryYears: formatLargeNumber(comparison.salaryYears),
-        careersAt20PercentSavings: formatLargeNumber(comparison.careersAt20PercentSavings),
-        medianWealthMultiplier: formatLargeNumber(comparison.medianWealthMultiplier),
-        foodAidMeals: formatLargeNumber(comparison.foodAidMeals),
-        groceryBaskets: formatLargeNumber(comparison.groceryBaskets),
+        childrenFedOneYear: formatLargeNumber(annualVariationOnePercent.concrete.childrenFedOneYear),
+        schoolsBuilt: formatLargeNumber(annualVariationOnePercent.concrete.schoolsBuilt),
+        localHospitalsBuilt: formatLargeNumber(annualVariationOnePercent.concrete.localHospitalsBuilt),
       },
     },
-    taxScenarios: taxScenarios.map((scenario) => ({
-      ...scenario,
-      formatted: {
-        rate: formatTinyPercentage(scenario.rate * 100),
-        amount: formatCurrencyEUR(scenario.amount),
-        foodAidMeals: formatLargeNumber(scenario.concrete.foodAidMeals),
-        povertyThresholdYears: formatLargeNumber(scenario.concrete.povertyThresholdYears),
-        educationStudentYears: formatLargeNumber(scenario.concrete.educationStudentYears),
-        childrenFedOneYear: formatLargeNumber(scenario.concrete.childrenFedOneYear),
-        schoolsBuilt: formatLargeNumber(scenario.concrete.schoolsBuilt),
-        localHospitalsBuilt: formatLargeNumber(scenario.concrete.localHospitalsBuilt),
-        globalHungerFundingShare: formatTinyPercentage(scenario.concrete.globalHungerFundingShare * 100),
-        waterWells: formatLargeNumber(scenario.concrete.waterWells),
-        socialHousingUnits: formatLargeNumber(scenario.concrete.socialHousingUnits),
-      },
-    })),
     generatedAt: new Date().toISOString(),
     assumptions: {
-      defaultSavingsRate: economicReferences.defaultSavingsRate.value,
-      careerYears: 42,
-      taxScenarioBase: billionaire.annualGainLabel,
+      comparisonInput: "singleAmount",
+      taxScenarioBase: "annualVariationEstimate",
       taxScenarioBaseNote: billionaire.annualGainNote,
-      foodAidMealEUR: economicReferences.foodAidMeal.value,
       childFedOneYearEUR: economicReferences.childFedOneYear.value,
       schoolConstructionCostEUR: economicReferences.schoolConstructionCost.value,
       localHospitalConstructionCostEUR: economicReferences.localHospitalConstructionCost.value,
-      globalHungerFundingNeedAnnualEUR: economicReferences.globalHungerFundingNeedAnnual.value,
       note:
-        "Les repas et paniers sont des equivalences budgetaires theoriques. Ils ne constituent pas une promesse de politique publique.",
+        "Les équivalents sont des ordres de grandeur budgétaires théoriques. Ils ne constituent pas une promesse de résultat.",
     },
   });
 }

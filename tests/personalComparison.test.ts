@@ -53,6 +53,7 @@ describe("personal fortune comparison", () => {
     });
 
     expect(result.percentage).toBeCloseTo(0.00000595238);
+    expect(result.ratioDenominator).toBe(16_800_000);
     expect(result.savingsMultiplier).toBe(16_800_000);
     expect(result.salaryYears).toBe(17_500_000);
     expect(result.careersAt20PercentSavings).toBeCloseTo(2_083_333.33);

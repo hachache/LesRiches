@@ -32,6 +32,7 @@ export async function GET(request: Request) {
     input: {
       billionaire: billionaire.slug,
       ratePercent: rate * 100,
+      base: "annualVariationEstimate",
     },
     billionaire: {
       slug: billionaire.slug,
@@ -63,6 +64,7 @@ export async function GET(request: Request) {
     generatedAt: new Date().toISOString(),
     assumptions: {
       framing: "simulation théorique ponctuelle sur variation annuelle estimée de fortune",
+      taxScenarioBase: "annualVariationEstimate",
       baseCompared: billionaire.annualGainLabel,
       baseNote: billionaire.annualGainNote,
       foodAidMealEUR: economicReferences.foodAidMeal.value,

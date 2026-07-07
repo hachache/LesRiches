@@ -19,23 +19,23 @@ const oswald = Oswald({
   weight: ["500", "600", "700"],
 });
 
-const siteUrl = "https://combien-de-smic.fr";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lecart.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "L'Écart | Une somme face aux ultra-riches",
+    default: "L'Écart | Mesurer l'écart",
     template: "%s | L'Écart",
   },
   description:
-    "Entrez une somme et comparez-la aux ultra-riches avec des repères concrets : part réelle, années de revenu, écoles et alimentation.",
+    "Comparez un salaire net ou une épargne aux fortunes extrêmes avec un temps théorique, un ratio et des repères concrets.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "L'Écart | Une somme face aux ultra-riches",
+    title: "L'Écart | Mesurer l'écart",
     description:
-      "Un comparateur pédagogique pour rendre les fortunes extrêmes lisibles avec des ordres de grandeur concrets.",
+      "Un comparateur pédagogique pour rendre les fortunes extrêmes lisibles avec salaire, épargne, ratios et ordres de grandeur concrets.",
     url: siteUrl,
     siteName: "L'Écart",
     locale: "fr_FR",
