@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState, type ComponentType } from "react";
+import { useMemo, useState, type ComponentType } from "react";
 import type { IconProps } from "@phosphor-icons/react";
 import {
   ArrowRight,
@@ -12,11 +12,12 @@ import {
   GraduationCap,
   Hospital,
   Mountains,
+  ClockCounterClockwise,
   PiggyBank,
   ShareFat,
   WarningCircle,
 } from "@phosphor-icons/react";
-import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { billionaires } from "@/data/billionaires";
 import { economicReferences } from "@/data/economicReferences";
 import {
@@ -69,73 +70,122 @@ const modeOptions = [
   { value: "savings", Icon: PiggyBank, label: "Épargne" },
 ] as const;
 
-function AnimatedMetric({
-  value,
-  formatter,
-  className,
-}: {
-  value: number;
-  formatter: (value: number) => string;
-  className?: string;
-}) {
-  const reduce = useReducedMotion();
-  const motionValue = useMotionValue(value);
-  const [display, setDisplay] = useState(formatter(value));
-
-  useEffect(() => {
-    if (reduce) {
-      motionValue.set(value);
-      return;
-    }
-
-    const controls = animate(motionValue, value, {
-      duration: 0.85,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (latest) => setDisplay(formatter(latest)),
-    });
-
-    return () => controls.stop();
-  }, [formatter, motionValue, reduce, value]);
-
-  return <span className={className}>{reduce ? formatter(value) : display}</span>;
-}
-
 function formatEpicYears(value: number): string {
   if (value >= 1_000_000) return `${formatLargeNumber(value)} d'années`;
   return formatDurationYears(value);
 }
 
+function TimeScale({ years, isSalaryMode, selectedName }: { years: number; isSalaryMode: boolean; selectedName: string }) {
+  const markers = isSalaryMode
+    ? [
+        { label: "1 vie", value: 83, show: years >= 83 },
+        { label: "Antiquité", value: 2_500, show: years >= 2_500 },
+        { label: "Homo sapiens", value: 300_000, show: years >= 300_000 },
+        { label: "Dinosaures", value: 66_000_000, show: years >= 66_000_000 },
+      ]
+    : [
+        { label: "toi", value: 1, show: true },
+        { label: "x1 000", value: 1_000, show: years >= 1_000 },
+        { label: "x1 million", value: 1_000_000, show: years >= 1_000_000 },
+        { label: selectedName, value: Math.max(years, 1), show: true },
+      ];
+  const visible = markers.filter((marker) => marker.show);
+  const max = Math.max(years, 1);
+
+  return (
+    <article className="grid content-between gap-8 rounded-[2.25rem] bg-white/66 p-6 shadow-[0_24px_80px_rgba(31,24,18,0.1)] sm:p-8">
+      <div>
+        <div className="flex items-center justify-between gap-4">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--accent-dark)]">
+            Timeline
+          </p>
+          <ClockCounterClockwise className="text-[var(--accent)]" size={25} weight="bold" />
+        </div>
+        <p className="mt-3 text-lg leading-7 text-[var(--muted)]">
+          {isSalaryMode
+            ? "Le résultat ne tient pas dans une vie humaine. Il traverse des repères historiques."
+            : "La distance est affichée comme un ratio. Plus on avance, plus l'échelle se déforme."}
+        </p>
+      </div>
+      <div className="grid gap-5">
+        <div className="relative h-2 rounded-full bg-black/10">
+          {visible.map((marker) => {
+            const left = isSalaryMode
+              ? Math.min(100, Math.max(0, (Math.log10(marker.value) / Math.log10(max)) * 100))
+              : Math.min(100, Math.max(0, (Math.log10(marker.value) / Math.log10(max)) * 100));
+
+            return (
+              <span
+                key={marker.label}
+                className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--foreground)] shadow-[0_0_0_8px_rgba(17,16,14,0.08)] first:bg-[var(--accent)]"
+                style={{ left: `${left}%` }}
+              />
+            );
+          })}
+        </div>
+        <div className="grid gap-3">
+          {visible.map((marker) => (
+            <div key={marker.label} className="flex items-center justify-between gap-4 text-sm">
+              <span className="font-semibold text-[var(--foreground)]">{marker.label}</span>
+              <span className="text-right text-[var(--muted)]">
+                {isSalaryMode ? formatEpicYears(marker.value) : marker.label === selectedName ? "fortune" : formatMultiplier(marker.value)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function ScaleStory({
   ownAmount,
   fortune,
-  label,
 }: {
   ownAmount: number;
   fortune: number;
-  label: string;
 }) {
   const ratio = ownAmount > 0 && fortune > 0 ? Math.max(1, fortune / ownAmount) : 0;
-  const visualWidth = ratio ? Math.min(100, Math.max(6, (Math.log10(ownAmount) / Math.log10(fortune)) * 100)) : 0;
+  const realWidth = ratio ? Math.max(0.2, Math.min(100, (ownAmount / fortune) * 100)) : 0;
+  const compressedWidth = ratio ? Math.min(100, Math.max(6, (Math.log10(ownAmount) / Math.log10(fortune)) * 100)) : 0;
 
   return (
-    <div className="grid gap-4 rounded-[2rem] bg-white/62 p-4 shadow-[0_22px_70px_rgba(31,24,18,0.09)] sm:p-5">
+    <div className="grid gap-5 rounded-[2rem] bg-white/62 p-4 shadow-[0_22px_70px_rgba(31,24,18,0.09)] sm:p-5">
       <div className="flex items-center justify-between gap-4">
         <p className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
-          Comparaison d'échelle
+          Échelle réelle puis compressée
         </p>
         <ChartLineUp className="text-[var(--accent)]" size={22} weight="bold" />
       </div>
       <div className="grid gap-3">
         <div>
           <div className="mb-1 flex items-center justify-between text-xs font-semibold text-[var(--muted)]">
-            <span>{label}</span>
+            <span>échelle réelle</span>
+            <span>{formatRatio(ratio)}</span>
+          </div>
+          <div className="relative h-5 overflow-hidden rounded-full bg-black/10">
+            <motion.span
+              className="absolute inset-y-0 left-0 rounded-full bg-[var(--accent)]"
+              initial={{ width: 0 }}
+              animate={{ width: `${realWidth}%` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+            <span className="absolute inset-y-0 right-0 w-full rounded-full border border-black/10" />
+          </div>
+          <p className="mt-2 text-xs leading-5 text-[var(--muted)]">
+            En réel, ta part est presque invisible. C'est le choc d'échelle.
+          </p>
+        </div>
+        <div>
+          <div className="mb-1 flex items-center justify-between text-xs font-semibold text-[var(--muted)]">
+            <span>échelle compressée</span>
             <span>{formatCurrencyEUR(ownAmount)}</span>
           </div>
           <div className="h-3 overflow-hidden rounded-full bg-black/8">
             <motion.span
               className="block h-full rounded-full bg-[var(--accent)]"
               initial={{ width: 0 }}
-              animate={{ width: `${visualWidth}%` }}
+              animate={{ width: `${compressedWidth}%` }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             />
           </div>
@@ -156,7 +206,7 @@ function ScaleStory({
         </div>
       </div>
       <p className="text-sm leading-6 text-[var(--muted)]">
-        La barre est compressée en logarithme. Sans compression, ta barre serait quasiment invisible.
+        La seconde barre utilise une compression logarithmique pour rendre la distance lisible.
       </p>
     </div>
   );
@@ -207,6 +257,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
   const inputHelp = isSalaryMode
     ? "Calcul théorique à 100% du salaire, sans dépense."
     : "Montant déjà disponible : épargne, héritage, prix, budget, vente.";
+  const sceneKey = `${mode}-${selected.slug}`;
 
   const impactGroups: Record<ImpactTab, ImpactCard[]> = {
     buy: [
@@ -280,14 +331,14 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
       }. Cette fortune vaut environ ${multiplierText} ce montant. Calculé sur L'Écart.`;
 
   return (
-    <section className={compact ? "grid gap-5" : "grid gap-7"}>
+    <section className={compact ? "grid gap-6" : "grid gap-10"}>
       <div
-        className={`relative overflow-hidden border border-black/18 bg-[var(--panel)] ${
-          compact ? "shadow-[10px_10px_0_rgba(17,16,14,0.13)]" : "paper-panel"
+        className={`relative overflow-hidden rounded-[2rem] border border-black/10 bg-[var(--panel)] ${
+          compact ? "shadow-[0_22px_70px_rgba(31,24,18,0.1)]" : "paper-panel"
         }`}
       >
-        <div className="grid lg:grid-cols-[370px_1fr]">
-          <div className="grid content-start gap-5 border-b border-black/10 p-4 sm:p-5 lg:border-b-0 lg:border-r">
+        <div className="grid gap-5 p-4 sm:p-5 lg:grid-cols-[280px_1fr] lg:items-start">
+          <div className="lg:pt-1">
             <div>
               <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent-dark)]">
                 Choisis ton point de départ
@@ -297,7 +348,9 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 gap-1 rounded-full border border-black/15 bg-white p-1">
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-[300px_1fr_260px] xl:items-end">
+            <div className="grid grid-cols-2 gap-1 rounded-full border border-black/15 bg-white p-1 md:col-span-2 xl:col-span-1">
               {modeOptions.map(({ value, Icon, label }) => {
                 return (
                   <button
@@ -346,7 +399,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                 animate={{ opacity: 1, y: 0 }}
                 exit={reduce ? undefined : { opacity: 0, y: -8 }}
                 transition={{ duration: 0.22 }}
-                className="hidden grid-cols-2 gap-2 sm:grid"
+                className="hidden grid-cols-2 gap-2 sm:grid md:col-span-2 xl:col-span-3 xl:grid-cols-4"
               >
                 {examples.map(([label, value]) => (
                   <button
@@ -377,7 +430,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
               </select>
             </label>
 
-            <div className="hidden gap-2 sm:grid sm:grid-cols-2 lg:grid-cols-1">
+            <div className="hidden gap-2 sm:grid sm:grid-cols-2 md:col-span-2 xl:col-span-3">
               {billionaires.slice(0, 4).map((person) => (
                 <button
                   key={person.slug}
@@ -400,12 +453,27 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
               ))}
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="relative grid gap-8 p-5 sm:p-8 lg:p-10">
+      <div className="relative grid gap-8 overflow-hidden rounded-[2.5rem] bg-[var(--panel)] p-5 shadow-[0_34px_120px_rgba(31,24,18,0.13)] sm:p-8 lg:p-10">
+        <AnimatePresence mode="wait">
+          {!reduce ? (
+            <motion.div
+              key={sceneKey}
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-[rgba(213,31,18,0.10)] to-transparent"
+              initial={{ x: "-20%", opacity: 0 }}
+              animate={{ x: "430%", opacity: [0, 1, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            />
+          ) : null}
+        </AnimatePresence>
             <div className="grid gap-8 xl:grid-cols-[1fr_300px] xl:items-start">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
-                  key={`${mode}-${activeAmount}-${selected.slug}`}
+                  key={sceneKey}
                   initial={reduce ? false : { opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduce ? undefined : { opacity: 0, y: -12 }}
@@ -457,9 +525,9 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                     </p>
                     <h2 className="display-type max-w-5xl text-[clamp(3.2rem,5.8vw,5.7rem)] font-medium uppercase leading-[0.94] tracking-normal text-[var(--foreground)]">
                       {isSalaryMode ? (
-                        <AnimatedMetric value={salaryYears} formatter={formatEpicYears} />
+                        formatEpicYears(salaryYears)
                       ) : (
-                        <AnimatedMetric value={comparison.ratioDenominator} formatter={formatRatio} />
+                        formatRatio(comparison.ratioDenominator)
                       )}
                     </h2>
                     <p className="max-w-2xl text-xl leading-8 text-[var(--muted)] sm:text-2xl">
@@ -473,7 +541,6 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                 <ScaleStory
                   ownAmount={isSalaryMode ? yearlySalary : activeAmount}
                   fortune={selected.netWorthEUR}
-                  label={isSalaryMode ? "1 an de salaire" : "ta somme"}
                 />
                 <details className="rounded-[2rem] bg-white/55 p-4 text-sm leading-6 text-[var(--muted)] shadow-[0_18px_60px_rgba(31,24,18,0.08)]">
                   <summary className="cursor-pointer font-semibold text-[var(--foreground)]">
@@ -494,7 +561,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
 
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
-                key={`${mode}-cards-${selected.slug}-${activeAmount}`}
+                key={`${sceneKey}-cards`}
                 initial={reduce ? false : { opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={reduce ? undefined : { opacity: 0, y: -10 }}
@@ -544,33 +611,29 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                   </div>
                 </article>
 
-                <article className="grid content-between gap-8 rounded-[2.25rem] bg-white/66 p-6 shadow-[0_24px_80px_rgba(31,24,18,0.1)] sm:p-8">
-                  <div>
-                    <p className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--accent-dark)]">
-                      Timeline
-                    </p>
-                    <p className="mt-3 text-lg leading-7 text-[var(--muted)]">
-                      {isSalaryMode
-                        ? "Même en consacrant tout ton salaire à cette fortune, le repère sort de l'échelle humaine."
-                        : "Ton montant existe. La fortune aussi. Le problème est la distance entre les deux."}
-                    </p>
-                  </div>
-                  <div className="grid gap-4">
-                    <div className="relative h-2 rounded-full bg-black/10">
-                      <span className="absolute left-0 top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-[var(--accent)] shadow-[0_0_0_8px_rgba(213,31,18,0.12)]" />
-                      <span className="absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-[var(--foreground)] shadow-[0_0_0_8px_rgba(17,16,14,0.1)]" />
-                    </div>
-                    <div className="flex justify-between text-xs font-semibold text-[var(--muted)]">
-                      <span>toi</span>
-                      <span>{selected.name}</span>
-                    </div>
-                  </div>
-                </article>
+                <TimeScale
+                  years={isSalaryMode ? salaryYears : comparison.ratioDenominator}
+                  isSalaryMode={isSalaryMode}
+                  selectedName={selected.name}
+                />
               </motion.div>
             </AnimatePresence>
 
-            <section className="grid gap-5 rounded-[2.5rem] bg-white/42 p-5 shadow-[0_24px_90px_rgba(31,24,18,0.08)] sm:p-7">
-              <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+            <details className="group rounded-[2.5rem] bg-white/42 p-5 shadow-[0_24px_90px_rgba(31,24,18,0.08)] sm:p-7">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                <span>
+                  <span className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">
+                    Simulation secondaire
+                  </span>
+                  <span className="display-type mt-2 block text-3xl font-medium uppercase leading-none sm:text-4xl">
+                    Voir ce que 1% représenterait
+                  </span>
+                </span>
+                <span className="inline-flex h-11 shrink-0 items-center rounded-full bg-[var(--foreground)] px-4 text-sm font-semibold text-[var(--panel)] transition group-open:rotate-1">
+                  Ouvrir
+                </span>
+              </summary>
+              <div className="mt-6 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
                 <div>
                   <p className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">
                     1% de sa variation annuelle
@@ -628,7 +691,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
                   ))}
                 </motion.div>
               </AnimatePresence>
-            </section>
+            </details>
 
             <div className="grid gap-5 rounded-[2.5rem] bg-[var(--foreground)] p-5 text-[var(--panel)] shadow-[0_28px_90px_rgba(17,16,14,0.18)] md:grid-cols-[1fr_auto] md:items-center md:p-7">
               <div>
@@ -665,8 +728,6 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
               </div>
             </div>
           </div>
-        </div>
-      </div>
       {!compact ? (
         <TaxScenarioPanel
           baseAmountEUR={selected.annualGainEUR}
