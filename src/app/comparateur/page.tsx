@@ -17,29 +17,40 @@ export default async function ComparateurPage({ searchParams }: PageProps) {
   const params = await searchParams;
 
   return (
-    <main className="mx-auto grid max-w-7xl gap-12 overflow-hidden px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mobile-safe-panel mb-8 max-w-4xl">
-        <h1 className="display-type text-5xl font-semibold uppercase leading-[0.98] md:text-8xl">
-          Ma situation vs ultra-riches
+    <main className="mx-auto grid max-w-7xl gap-10 overflow-hidden px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mobile-safe-panel mx-auto mb-4 max-w-4xl text-center">
+        <p className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--accent-dark)]">
+          Comparateur
+        </p>
+        <h1 className="display-type mt-4 text-5xl font-semibold uppercase leading-[0.95] md:text-7xl">
+          Ton épargne pèse combien ?
         </h1>
-        <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
-          Le but n'est pas de viser les riches en général. On regarde l'écart avec des fortunes extrêmes, en partant de
-          ton salaire et de ton épargne.
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">
+          Deux champs, une fortune, trois chiffres. Le reste sert seulement à vérifier les hypothèses.
         </p>
       </div>
       <PersonalFortuneComparator showSecondaryLink={false} />
 
-      <section className="grid gap-5">
-        <div className="max-w-3xl">
-          <h2 className="display-type text-4xl font-semibold uppercase leading-none md:text-5xl">
-            Comparer une somme libre
-          </h2>
-          <p className="mt-3 text-base leading-7 text-[var(--muted)]">
-            L'ancien calculateur reste disponible pour tester un montant précis en SMIC et repères du quotidien.
-          </p>
+      <details className="paper-panel group rounded-none p-5 open:pb-6">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+          <span>
+            <span className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">
+              Option secondaire
+            </span>
+            <span className="display-type mt-2 block text-3xl font-semibold uppercase leading-none md:text-4xl">
+              Comparer une somme libre
+            </span>
+          </span>
+          <span className="text-sm font-semibold text-[var(--muted)] group-open:hidden">Ouvrir</span>
+          <span className="hidden text-sm font-semibold text-[var(--muted)] group-open:inline">Fermer</span>
+        </summary>
+        <p className="mt-3 max-w-2xl text-base leading-7 text-[var(--muted)]">
+          Pour tester un montant précis en SMIC et repères du quotidien.
+        </p>
+        <div className="mt-5">
+          <ComparatorTool initialAmount={params?.amount ?? "1 milliard"} />
         </div>
-        <ComparatorTool initialAmount={params?.amount ?? "1 milliard"} />
-      </section>
+      </details>
     </main>
   );
 }

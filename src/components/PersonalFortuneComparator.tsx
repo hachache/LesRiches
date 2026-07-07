@@ -3,12 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight, BowlFood, GraduationCap, TrendUp, Wallet } from "@phosphor-icons/react";
+import { ArrowRight, BowlFood, ChartPieSlice, TrendUp } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import { billionaires } from "@/data/billionaires";
 import { economicReferences } from "@/data/economicReferences";
 import { calculatePersonalFortuneComparison } from "@/lib/calculations/personalComparison";
-import { calculateConcreteEquivalents } from "@/lib/calculations/taxScenarios";
+import { calculateTaxScenario } from "@/lib/calculations/taxScenarios";
 import { formatCurrencyEUR, formatLargeNumber, formatTinyPercentage } from "@/lib/formatters/numbers";
 import { FortuneFractionPie } from "@/components/FortuneFractionPie";
 import { ShareResultButton } from "@/components/ShareResultButton";
@@ -43,7 +43,10 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
       }),
     [salaryMonthly, savingsTotal, selected.netWorthEUR],
   );
-  const selectedConcrete = useMemo(() => calculateConcreteEquivalents(selected.netWorthEUR), [selected.netWorthEUR]);
+  const onePercentAnnualGain = useMemo(
+    () => calculateTaxScenario(selected.annualGainEUR, 0.01, selected.annualGainLabel),
+    [selected.annualGainEUR, selected.annualGainLabel],
+  );
 
   const summary = `${formatCurrencyEUR(savingsTotal)} d'épargne représente ${formatTinyPercentage(
     comparison.percentage,
@@ -55,14 +58,18 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
 
   return (
     <section className={compact ? "grid gap-5" : "grid gap-8"}>
-      <div className="paper-panel grid overflow-hidden rounded-none border-black/35 lg:grid-cols-[360px_1fr]">
-        <div className="grid gap-5 border-b border-black/15 p-5 sm:p-6 lg:border-b-0 lg:border-r">
+      <div
+        className={`grid overflow-hidden rounded-none border-black/35 ${
+          compact ? "border bg-white/88 shadow-[8px_8px_0_rgba(0,0,0,0.18)] backdrop-blur-sm" : "paper-panel"
+        } lg:grid-cols-[340px_1fr]`}
+      >
+        <div className="grid gap-4 border-b border-black/15 p-4 sm:p-5 lg:border-b-0 lg:border-r">
           <div>
             <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">
               Moi vs ultra-riches
             </p>
-            <h2 className="display-type mt-3 text-4xl font-semibold uppercase leading-[0.95] sm:text-5xl">
-              Entre ton chiffre. Regarde la fraction.
+            <h2 className="display-type mt-2 text-3xl font-semibold uppercase leading-[0.98] sm:text-4xl">
+              Trois chiffres. Pas plus.
             </h2>
           </div>
 
@@ -139,9 +146,9 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
           initial={reduce ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="grid gap-6 p-5 sm:p-7"
+          className="grid gap-5 p-4 sm:p-6"
         >
-          <div className="grid gap-6 xl:grid-cols-[1fr_260px] xl:items-center">
+          <div className="grid gap-5 xl:grid-cols-[1fr_220px] xl:items-center">
             <div className="grid gap-5">
               <div className="flex items-start gap-4">
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden border border-black/30 bg-black sm:h-24 sm:w-24">
@@ -159,14 +166,12 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
               </div>
 
               <div>
-                <p className="display-type text-4xl font-semibold uppercase leading-[0.95] sm:text-6xl">
-                  Ton épargne représente{" "}
-                  <span className="text-[var(--accent)]">{formatTinyPercentage(comparison.percentage)}</span> de cette
-                  fortune.
+                <p className="display-type text-4xl font-semibold uppercase leading-[0.95] sm:text-5xl xl:text-6xl">
+                  Ton épargne pèse{" "}
+                  <span className="text-[var(--accent)]">{formatTinyPercentage(comparison.percentage)}</span>.
                 </p>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-                  Plus le pourcentage est petit, plus l'écart est grand. Le reste de la page traduit cet écart en
-                  exemples concrets.
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base">
+                  Pas besoin de lire dix indicateurs : une fraction, un temps de salaire, un équivalent concret.
                 </p>
               </div>
             </div>
@@ -176,21 +181,20 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
             </div>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-3 md:grid-cols-3">
             {[
-              [TrendUp, "Années de salaire", formatLargeNumber(comparison.salaryYears), "sans aucune dépense"],
-              [Wallet, "Fois ton épargne", formatLargeNumber(comparison.savingsMultiplier), "pour atteindre la fortune"],
+              [
+                ChartPieSlice,
+                "Ta part",
+                formatTinyPercentage(comparison.percentage),
+                "de la fortune estimée",
+              ],
+              [TrendUp, "Temps de salaire", `${formatLargeNumber(comparison.salaryYears)} ans`, "sans dépenser"],
               [
                 BowlFood,
-                "Enfants nourris 1 an",
-                formatLargeNumber(selectedConcrete.childrenFedOneYear),
-                "sur la fortune totale",
-              ],
-              [
-                GraduationCap,
-                "Écoles construites",
-                formatLargeNumber(selectedConcrete.schoolsBuilt),
-                "ordre de grandeur",
+                "1% de son année",
+                `${formatLargeNumber(onePercentAnnualGain.amount)} €`,
+                `${formatLargeNumber(onePercentAnnualGain.concrete.childrenFedOneYear)} enfants nourris 1 an, ou ${formatLargeNumber(onePercentAnnualGain.concrete.schoolsBuilt)} écoles théoriques`,
               ],
             ].map(([Icon, title, value, text]) => (
               <article key={String(title)} className="border border-black/15 bg-white/68 p-4">
@@ -202,10 +206,10 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
             ))}
           </div>
 
-          <div className="grid gap-4 border-t border-black/10 pt-5 md:grid-cols-[1fr_auto] md:items-center">
+          <div className="grid gap-4 border-t border-black/10 pt-4 md:grid-cols-[1fr_auto] md:items-center">
             <p className="max-w-3xl text-sm leading-6 text-[var(--muted)]">
-              Ces repères restent théoriques. Ils servent à comprendre l'échelle, pas à promettre une transformation
-              mécanique d'une fortune en politique publique.
+              Les équivalents sont théoriques : ils servent à sentir l'ordre de grandeur, pas à promettre un résultat
+              automatique.
             </p>
             <div className="flex flex-wrap gap-2">
               <ShareResultButton summary={summary} />
