@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono, Oswald } from "next/font/google";
+import { PageShell } from "@/components/PageShell";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -84,7 +85,7 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
-        {children}
+        <PageShell>{children}</PageShell>
       </body>
     </html>
   );
