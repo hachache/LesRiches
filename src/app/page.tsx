@@ -33,12 +33,12 @@ export default function Home() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_420px] lg:px-8">
         <div>
-          <h2 className="display-type max-w-3xl text-balance text-5xl font-medium uppercase leading-[1]">
-            Deux lectures, un même écart.
+          <h2 className="display-type max-w-3xl text-balance text-4xl font-medium uppercase leading-[0.98] sm:text-5xl">
+            Des repères, pas des verdicts.
           </h2>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
-            Le mode salaire montre le temps théorique nécessaire pour atteindre une fortune. Le mode épargne montre la
-            fraction réelle que représente ton montant. Les repères concrets donnent ensuite l'ordre de grandeur.
+            Les fortunes, leur variation annuelle et les équivalents publics ne remplacent pas une analyse économique.
+            Ils rendent seulement une échelle visible.
           </p>
         </div>
         <MethodologyNotice />
@@ -46,7 +46,7 @@ export default function Home() {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
         <div>
-          <h2 className="display-type text-5xl font-medium uppercase leading-none">Sources visibles</h2>
+          <h2 className="display-type text-4xl font-medium uppercase leading-[0.98] sm:text-5xl">Sources visibles</h2>
           <p className="mt-4 max-w-sm text-sm leading-6 text-[var(--muted)]">
             La home ne montre que les hypothèses utilisées dans les repères principaux. Les données secondaires restent
             dans la méthodologie.

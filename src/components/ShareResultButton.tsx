@@ -12,27 +12,78 @@ type ShareResultButtonProps = {
     fortune: string;
     result: string;
     resultLabel: string;
+    imageSrc?: string;
   };
 };
 
-function drawShareCard(card: NonNullable<ShareResultButtonProps["card"]>) {
+const CARD_WIDTH = 1080;
+const CARD_HEIGHT = 1350;
+
+function splitLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines: number) {
+  const words = text.trim().split(/\s+/);
+  const lines: string[] = [];
+  let current = "";
+
+  for (const word of words) {
+    const candidate = current ? `${current} ${word}` : word;
+    if (ctx.measureText(candidate).width <= maxWidth || !current) {
+      current = candidate;
+      continue;
+    }
+
+    lines.push(current);
+    current = word;
+    if (lines.length === maxLines - 1) break;
+  }
+
+  if (current && lines.length < maxLines) lines.push(current);
+  return lines;
+}
+
+function drawWrappedText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number,
+  maxLines: number,
+) {
+  const lines = splitLines(ctx, text, maxWidth, maxLines);
+  lines.forEach((line, index) => ctx.fillText(line, x, y + index * lineHeight));
+  return y + lines.length * lineHeight;
+}
+
+function loadCanvasImage(src: string) {
+  return new Promise<HTMLImageElement | null>((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => resolve(null);
+    image.src = src;
+  });
+}
+
+async function drawShareCard(card: NonNullable<ShareResultButtonProps["card"]>) {
   const canvas = document.createElement("canvas");
-  canvas.width = 1200;
-  canvas.height = 1500;
+  canvas.width = CARD_WIDTH;
+  canvas.height = CARD_HEIGHT;
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
+
+  await document.fonts?.ready;
+  const displayFont = getComputedStyle(document.documentElement).getPropertyValue("--font-display").trim() || "Arial Narrow";
 
   ctx.fillStyle = "#f3efe6";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.strokeStyle = "rgba(17,16,14,0.08)";
   ctx.lineWidth = 1;
-  for (let x = 0; x < canvas.width; x += 72) {
+  for (let x = 0; x < canvas.width; x += 54) {
     ctx.beginPath();
     ctx.moveTo(x, 0);
     ctx.lineTo(x, canvas.height);
     ctx.stroke();
   }
-  for (let y = 0; y < canvas.height; y += 72) {
+  for (let y = 0; y < canvas.height; y += 54) {
     ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(canvas.width, y);
@@ -40,49 +91,67 @@ function drawShareCard(card: NonNullable<ShareResultButtonProps["card"]>) {
   }
 
   ctx.fillStyle = "#d51f12";
-  ctx.fillRect(92, 84, 10, 42);
+  ctx.fillRect(72, 70, 10, 42);
   ctx.fillStyle = "#11100e";
-  ctx.font = "700 28px Arial";
-  ctx.fillText("L'ECART", 122, 116);
+  ctx.font = `700 24px ${displayFont}, Arial, sans-serif`;
+  ctx.fillText("L'ÉCART", 102, 102);
 
-  ctx.font = "700 26px Arial";
+  ctx.font = "700 22px Arial, sans-serif";
   ctx.fillStyle = "#686058";
-  ctx.fillText(card.modeLabel.toUpperCase(), 92, 248);
-  ctx.font = "700 86px Arial";
+  ctx.fillText(card.modeLabel.toUpperCase(), 72, 212);
+  ctx.font = `500 74px ${displayFont}, Arial, sans-serif`;
   ctx.fillStyle = "#11100e";
-  ctx.fillText(card.amount, 92, 340);
+  const amountBottom = drawWrappedText(ctx, card.amount, 72, 288, 930, 86, 2);
 
   ctx.fillStyle = "#d51f12";
-  ctx.fillRect(96, 420, 6, 96);
+  ctx.fillRect(76, amountBottom + 28, 6, 78);
 
-  ctx.font = "700 26px Arial";
+  ctx.font = "700 20px Arial, sans-serif";
   ctx.fillStyle = "#686058";
-  ctx.fillText(`FORTUNE ESTIMEE DE ${card.billionaireName}`.toUpperCase(), 92, 600);
-  ctx.font = "700 88px Arial";
+  drawWrappedText(ctx, `FORTUNE ESTIMÉE DE ${card.billionaireName}`.toUpperCase(), 72, amountBottom + 168, 900, 28, 2);
+  ctx.font = `500 64px ${displayFont}, Arial, sans-serif`;
   ctx.fillStyle = "#d51f12";
-  ctx.fillText(card.fortune, 92, 702);
+  const fortuneBottom = drawWrappedText(ctx, card.fortune, 72, amountBottom + 248, 900, 76, 2);
 
-  ctx.font = "700 28px Arial";
+  ctx.font = "700 20px Arial, sans-serif";
   ctx.fillStyle = "#686058";
-  ctx.fillText("RESULTAT", 92, 860);
-  ctx.font = "800 132px Arial";
+  ctx.fillText("L'ÉCART", 72, fortuneBottom + 86);
+  ctx.font = `500 108px ${displayFont}, Arial, sans-serif`;
   ctx.fillStyle = "#11100e";
-  const resultLines = card.result.length > 18 ? card.result.split(" ") : [card.result];
-  resultLines.slice(0, 3).forEach((line, index) => ctx.fillText(line, 92, 1000 + index * 124));
+  const resultBottom = drawWrappedText(ctx, card.result.toUpperCase(), 72, fortuneBottom + 198, 930, 112, 3);
 
-  ctx.font = "700 48px Arial";
+  ctx.font = `500 44px ${displayFont}, Arial, sans-serif`;
   ctx.fillStyle = "#d51f12";
-  ctx.fillText(card.resultLabel.toUpperCase(), 92, 1330);
+  drawWrappedText(ctx, card.resultLabel.toUpperCase(), 72, resultBottom + 30, 900, 52, 2);
 
-  ctx.font = "600 30px Arial";
-  ctx.fillStyle = "#686058";
-  ctx.fillText("lecart.fr", 92, 1424);
+  const panelTop = 1082;
+  ctx.fillStyle = "#11100e";
+  ctx.fillRect(0, panelTop, canvas.width, canvas.height - panelTop);
+
+  const portrait = card.imageSrc ? await loadCanvasImage(card.imageSrc) : null;
+  if (portrait) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(128, panelTop + 112, 54, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(portrait, 74, panelTop + 58, 108, 108);
+    ctx.restore();
+  }
+
+  ctx.fillStyle = "#f3efe6";
+  ctx.font = "700 22px Arial, sans-serif";
+  ctx.fillText("FORTUNE DE RÉFÉRENCE", portrait ? 216 : 72, panelTop + 92);
+  ctx.font = `500 44px ${displayFont}, Arial, sans-serif`;
+  drawWrappedText(ctx, card.billionaireName.toUpperCase(), portrait ? 216 : 72, panelTop + 146, 700, 52, 2);
+  ctx.fillStyle = "#d51f12";
+  ctx.font = "700 23px Arial, sans-serif";
+  ctx.fillText("lecart.fr", 72, panelTop + 230);
 
   return canvas;
 }
 
 async function createShareImage(card: NonNullable<ShareResultButtonProps["card"]>) {
-  const canvas = drawShareCard(card);
+  const canvas = await drawShareCard(card);
   if (!canvas) return null;
 
   return new Promise<File | null>((resolve) => {

@@ -1,6 +1,6 @@
 # L'Écart
 
-Outil web pédagogique qui compare un salaire net ou une épargne à des fortunes extrêmes. Le site affiche le temps théorique nécessaire, le ratio réel, puis des repères concrets d'achat, sociaux et civils.
+Outil web pédagogique qui compare un salaire net ou une épargne à des fortunes extrêmes. Le site affiche le temps théorique nécessaire, le ratio réel, puis trois repères concrets : enfants nourris, écoles et hôpitaux théoriques.
 
 Le ton est direct, factuel et non militant. L'objectif est de rendre les ordres de grandeur compréhensibles sans transformer l'interface en simulateur économique.
 
@@ -20,10 +20,10 @@ Le ton est direct, factuel et non militant. L'objectif est de rendre les ordres 
 - Formats acceptés : `10000`, `10 000`, `1,000,000`, `1m`, `1 million`, `1 milliard`, `1 billion`.
 - Résultats lisibles : temps théorique en mode salaire, ratio et multiplicateur en mode épargne.
 - Simulation théorique sur 1% d'une variation annuelle estimée, jamais sur toute la fortune par défaut.
-- Repères visibles : achats/infrastructures théoriques, équivalents sociaux et repères civils.
+- Repères concrets optionnels : enfants nourris pendant un an, écoles et hôpitaux théoriques.
 - Page fortunes avec recherche, tri, cartes compactes et un seul détail ouvert.
 - APIs JSON : `/api/personal-compare`, `/api/tax-scenario`, `/api/compare` en compatibilité historique.
-- Boutons copier/partager.
+- Boutons copier, partager et générer une carte sociale 1080x1350.
 
 ## Architecture
 
@@ -37,6 +37,8 @@ src/app/
   api/personal-compare/route.ts
   api/tax-scenario/route.ts
 src/components/
+  PersonalFortuneComparator.tsx
+  ImpactExplorer.tsx
 src/lib/calculations/
 src/lib/formatters/
 src/data/economicReferences.ts
@@ -130,7 +132,7 @@ Les repères concrets dans `src/data/economicReferences.ts` mélangent sources p
 ## Roadmap
 
 - Remplacer les données démo par des sources vérifiées et datées.
-- Ajouter un export image partageable.
+- Ajouter un format de carte sociale paysage.
 - Ajouter une comparaison entre deux fortunes.
 - Ajouter une mise à jour automatisée des références publiques.
 - Ajouter un mode internationalisation.

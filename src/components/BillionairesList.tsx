@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Briefcase, MagnifyingGlass, PiggyBank, WarningCircle } from "@phosphor-icons/react";
+import { motion, useReducedMotion } from "motion/react";
 import { billionaires } from "@/data/billionaires";
 import { BillionaireCard } from "@/components/BillionaireCard";
 import { formatCurrencyEUR } from "@/lib/formatters/numbers";
@@ -16,6 +17,7 @@ const modeOptions = [
 ] as const;
 
 export function BillionairesList() {
+  const reduce = useReducedMotion();
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortMode>("desc");
   const [mode, setMode] = useState<CompareMode>("salary");
@@ -36,7 +38,7 @@ export function BillionairesList() {
 
   return (
     <section className="grid gap-5">
-      <div className="paper-panel grid gap-5 rounded-none border-black/30 p-4">
+      <div className="grid gap-5 rounded-2xl border border-black/10 bg-[var(--panel)]/90 p-5 shadow-[0_18px_70px_rgba(31,24,18,0.1)] sm:p-6">
         <div className="grid gap-3 md:grid-cols-[1fr_220px]">
           <label className="relative">
             <span className="sr-only">Rechercher</span>
@@ -58,9 +60,9 @@ export function BillionairesList() {
             <option value="name">Nom</option>
           </select>
         </div>
-        <div className="grid gap-4 border-t border-black/10 pt-4 lg:grid-cols-[300px_360px_1fr] lg:items-end">
+        <div className="grid gap-4 border-t border-black/10 pt-5 lg:grid-cols-[280px_340px_1fr] lg:items-end">
           <div className="grid gap-2">
-            <span className="font-mono text-xs font-bold uppercase tracking-[0.12em]">Mode de comparaison</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">Mode de comparaison</span>
             <div className="grid grid-cols-2 rounded-full border border-black/15 bg-white p-1">
               {modeOptions.map(({ value, label, Icon }) => {
                 const active = mode === value;
@@ -73,13 +75,18 @@ export function BillionairesList() {
                       setMode(value);
                       setAmountInput(value === "salary" ? "2 000" : "10 000");
                     }}
-                    className={`inline-flex h-11 items-center justify-center gap-2 rounded-full text-sm font-bold transition ${
-                      active ? "bg-[var(--ink)] text-white" : "text-[var(--ink)] hover:bg-black/5"
-                    }`}
+                    className="relative inline-flex h-11 items-center justify-center gap-2 rounded-full text-sm font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
                     aria-pressed={active}
                   >
-                    <Icon size={17} weight="bold" />
-                    {label}
+                    {active ? (
+                      <motion.span
+                        layoutId="billionaires-mode"
+                        transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 360, damping: 30 }}
+                        className="absolute inset-0 rounded-full bg-[var(--foreground)]"
+                      />
+                    ) : null}
+                    <Icon size={17} weight="bold" className={`relative z-10 ${active ? "text-[var(--panel)]" : "text-[var(--foreground)]"}`} />
+                    <span className={`relative z-10 ${active ? "text-[var(--panel)]" : "text-[var(--foreground)]"}`}>{label}</span>
                   </button>
                 );
               })}

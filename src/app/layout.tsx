@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Geist, Geist_Mono, Oswald } from "next/font/google";
+import { Geist, Geist_Mono, Roboto_Condensed } from "next/font/google";
 import { PageShell } from "@/components/PageShell";
 import "./globals.css";
 
@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const oswald = Oswald({
+const robotoCondensed = Roboto_Condensed({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lecart.vercel.app";
@@ -56,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} antialiased`}>
+    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} ${robotoCondensed.variable} antialiased`}>
       <body>
         <header className="sticky top-0 z-40 border-b border-white/10 bg-black text-white backdrop-blur-md">
           <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">

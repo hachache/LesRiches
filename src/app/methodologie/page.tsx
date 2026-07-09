@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 export default function MethodologiePage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="display-type text-5xl font-medium uppercase leading-none md:text-7xl">Méthodologie</h1>
+      <h1 className="display-type text-4xl font-medium uppercase leading-[0.98] md:text-6xl">Méthodologie</h1>
       <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
-        L'Écart compare une somme unique à une fortune extrême. Le site cherche à rendre l'ordre de grandeur lisible,
-        pas à produire une analyse fiscale ou patrimoniale complète.
+        L'Écart compare un salaire net mensuel ou une épargne à une fortune extrême. Le site rend un ordre de grandeur
+        lisible, il ne produit pas une analyse fiscale ou patrimoniale complète.
       </p>
 
       <div className="paper-panel relative mt-8 aspect-[16/7] overflow-hidden rounded-lg">
@@ -34,9 +34,8 @@ export default function MethodologiePage() {
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Ce que le site affiche</h2>
           <p className="mt-3">
-            Le parcours principal calcule trois choses : le ratio entre la somme saisie et la fortune, le nombre de fois
-            où la fortune contient cette somme, et ce que 1% d'une variation annuelle estimée représenterait en repères
-            budgétaires simples.
+            Avec un salaire, le parcours mesure le temps théorique nécessaire. Avec une épargne, il affiche un ratio
+            simple. Une lecture optionnelle traduit ensuite 1% d'une variation annuelle estimée en repères budgétaires.
           </p>
         </section>
 
@@ -82,7 +81,7 @@ export default function MethodologiePage() {
               "Valeur utile pour comprendre une échelle, mais à vérifier ou remplacer avant usage éditorial sérieux.",
             ],
           ].map(([title, text]) => (
-            <article key={title} className="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5">
+            <article key={title} className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] p-5">
               <h3 className="text-xl font-semibold text-[var(--foreground)]">{title}</h3>
               <p className="mt-3 text-base leading-7">{text}</p>
             </article>

@@ -44,7 +44,7 @@ export function HomeImpactHero() {
           <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-[var(--accent-dark)]">
             L'Écart
           </p>
-          <h1 className="display-type mt-5 text-balance text-6xl font-medium uppercase leading-[0.96] sm:text-7xl md:text-8xl xl:text-[7.7rem]">
+          <h1 className="display-type mt-5 text-balance text-5xl font-medium uppercase leading-[0.98] sm:text-6xl md:text-7xl xl:text-[7rem]">
             Mesurer l'écart.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-xl sm:leading-8">
@@ -107,7 +107,7 @@ export function HomeImpactHero() {
               initial={reduce ? false : { opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="display-type text-[clamp(3.15rem,9vw,8.5rem)] font-medium uppercase leading-[0.9]"
+              className="display-type text-[clamp(2.85rem,7vw,6.8rem)] font-medium uppercase leading-[0.92]"
             >
               {formatHeroYears(salaryYears)}
             </motion.p>
