@@ -18,6 +18,7 @@ type StoryMetric = {
 type StorySceneProps = {
   progress: MotionValue<number>;
   range: [number, number, number, number];
+  persist?: boolean;
   imageSrc: string;
   imageAlt: string;
   label: string;
@@ -27,10 +28,11 @@ type StorySceneProps = {
   metrics?: StoryMetric[];
 };
 
-function StoryScene({ progress, range, imageSrc, imageAlt, label, value, unit, sentence, metrics }: StorySceneProps) {
-  const opacity = useTransform(progress, range, [0, 1, 1, 0]);
-  const contentY = useTransform(progress, range, [48, 0, 0, -36]);
-  const imageScale = useTransform(progress, range, [1.08, 1.02, 1, 0.98]);
+function StoryScene({ progress, range, persist = false, imageSrc, imageAlt, label, value, unit, sentence, metrics }: StorySceneProps) {
+  const inputRange = persist ? [range[0], range[1], range[2]] : range;
+  const opacity = useTransform(progress, inputRange, persist ? [0, 1, 1] : [0, 1, 1, 0]);
+  const contentY = useTransform(progress, inputRange, persist ? [48, 0, 0] : [48, 0, 0, -36]);
+  const imageScale = useTransform(progress, inputRange, persist ? [1.08, 1.02, 1] : [1.08, 1.02, 1, 0.98]);
 
   return (
     <motion.article style={{ opacity }} className="absolute inset-0 overflow-hidden">
@@ -133,7 +135,7 @@ export function GapStory() {
       <div className="sticky top-16 h-[calc(100dvh-4rem)] overflow-hidden">
         <StoryScene progress={scrollYProgress} range={[0, 0.035, 0.285, 0.35]} {...scenes[0]} />
         <StoryScene progress={scrollYProgress} range={[0.29, 0.36, 0.62, 0.69]} {...scenes[1]} />
-        <StoryScene progress={scrollYProgress} range={[0.63, 0.7, 1, 1.01]} {...scenes[2]} />
+        <StoryScene persist progress={scrollYProgress} range={[0.63, 0.7, 0.99, 1]} {...scenes[2]} />
         <motion.div aria-hidden="true" style={{ scaleX: progressScale }} className="absolute inset-x-0 bottom-0 h-1 origin-left bg-[var(--accent)]" />
       </div>
     </section>
