@@ -66,7 +66,7 @@ export default function MethodologiePage() {
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets utilisés</h2>
           <p className="mt-3">
-            L'interface garde cinq familles lisibles : alimentation, éducation, santé, logement et accès à l'eau. Ce sont
+            L'interface garde trois familles immédiatement lisibles : alimentation, éducation et santé. Ce sont
             des équivalents budgétaires, pas des effets garantis.
           </p>
         </section>

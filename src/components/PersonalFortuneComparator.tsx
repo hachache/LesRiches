@@ -7,7 +7,6 @@ import {
   ArrowRight,
   Briefcase,
   ChartLineUp,
-  ClockCounterClockwise,
   PiggyBank,
   Ruler,
   ShareFat,
@@ -81,11 +80,8 @@ function ScaleLens({
   const reduce = useReducedMotion();
   const ratio = ownAmount > 0 && fortune > 0 ? fortune / ownAmount : 0;
   const percentage = ownAmount > 0 && fortune > 0 ? (ownAmount / fortune) * 100 : 0;
-  const compressedPosition =
-    ownAmount > 0 && fortune > 0 ? Math.min(96, Math.max(4, (Math.log10(ownAmount) / Math.log10(fortune)) * 100)) : 0;
-
   return (
-    <aside className="ink-panel grid gap-6 overflow-hidden rounded-2xl p-5 sm:p-6">
+    <aside className="ink-panel grid content-between gap-6 overflow-hidden rounded-2xl p-5 sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-white/58">Part réelle</p>
@@ -95,105 +91,36 @@ function ScaleLens({
         <ChartLineUp className="shrink-0 text-[var(--accent)]" size={24} weight="bold" />
       </div>
 
-      <div className="grid gap-5">
-        <div>
-          <div className="mb-2 flex items-end justify-between gap-4">
-            <p className="text-xs font-semibold text-white/58">Échelle réelle</p>
-            <strong className="text-xs text-white/78">presque invisible</strong>
-          </div>
-          <div className="relative h-9 border-b border-white/28">
-            <motion.span
-              key={`${sceneKey}-real`}
-              aria-hidden="true"
-              initial={reduce ? false : { scaleY: 0, opacity: 0 }}
-              animate={{ scaleY: 1, opacity: 1 }}
-              transition={reduce ? { duration: 0 } : { duration: 0.36, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute bottom-0 left-0 h-8 w-[3px] origin-bottom bg-[var(--accent)]"
-            />
-            <span className="absolute bottom-0 right-0 h-6 w-[3px] bg-white" />
-          </div>
-          <div className="mt-2 flex justify-between text-xs text-white/54">
-            <span>{ownLabel}</span>
-            <span>fortune</span>
-          </div>
+      <div>
+        <div className="mb-2 flex items-end justify-between gap-4">
+          <p className="text-xs font-semibold text-white/58">Échelle réelle</p>
+          <strong className="text-xs text-white/78">ta part reste invisible</strong>
         </div>
-
-        <div>
-          <div className="mb-2 flex items-end justify-between gap-4">
-            <p className="text-xs font-semibold text-white/58">Échelle logarithmique</p>
-            <strong className="text-xs text-white/78">position lisible</strong>
-          </div>
-          <div className="relative h-9 border-b border-white/28">
-            {Array.from({ length: 10 }, (_, index) => (
-              <span
-                key={index}
-                aria-hidden="true"
-                className="absolute bottom-0 h-2 w-px bg-white/24"
-                style={{ left: `${index * 11.111}%` }}
-              />
-            ))}
-            <motion.span
-              key={`${sceneKey}-compressed`}
-              aria-label="Position de ta somme sur une échelle logarithmique"
-              initial={reduce ? false : { left: "0%", opacity: 0 }}
-              animate={{ left: `${compressedPosition}%`, opacity: 1 }}
-              transition={reduce ? { duration: 0 } : { duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute bottom-0 h-7 w-[3px] -translate-x-1/2 bg-[var(--accent)] shadow-[0_0_0_4px_rgba(213,31,18,0.12)]"
-            />
-            <span className="absolute bottom-0 right-0 h-6 w-[3px] bg-white" />
-          </div>
-          <p className="mt-2 text-xs leading-5 text-white/54">La compression permet enfin de distinguer les deux repères.</p>
+        <div className="relative h-11 border-b border-white/28">
+          <motion.span
+            key={`${sceneKey}-real`}
+            aria-hidden="true"
+            initial={reduce ? false : { scaleY: 0, opacity: 0 }}
+            animate={{ scaleY: 1, opacity: 1 }}
+            transition={reduce ? { duration: 0 } : { duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-0 left-0 h-10 w-[3px] origin-bottom bg-[var(--accent)]"
+          />
+          <motion.span
+            key={`${sceneKey}-fortune`}
+            aria-hidden="true"
+            initial={reduce ? false : { scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={reduce ? { duration: 0 } : { duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-0 right-0 h-8 w-[3px] origin-bottom bg-white"
+          />
         </div>
+        <div className="mt-2 flex justify-between text-xs text-white/54">
+          <span>{ownLabel}</span>
+          <span>fortune</span>
+        </div>
+        <p className="mt-5 text-xs leading-5 text-white/54">La barre n'est pas compressée. C'est précisément pour cela que l'écart paraît aussi brutal.</p>
       </div>
     </aside>
-  );
-}
-
-function TimeLandmarks({ years }: { years: number }) {
-  const reduce = useReducedMotion();
-  const landmarks = [
-    { label: "Une vie de 83 ans", value: 83 },
-    { label: "Depuis l'Antiquité", value: 2_500 },
-    { label: "Existence d'Homo sapiens", value: 300_000 },
-    { label: "Depuis la disparition des dinosaures", value: 66_000_000 },
-  ].filter((landmark) => years >= landmark.value);
-
-  if (!landmarks.length) return null;
-
-  return (
-    <section className="border-t border-black/12 pt-7 sm:pt-9">
-      <div className="flex items-start gap-3">
-        <ClockCounterClockwise className="mt-0.5 shrink-0 text-[var(--accent)]" size={22} weight="bold" />
-        <div>
-          <p className="text-sm font-semibold text-[var(--accent-dark)]">Le temps, remis à l'échelle</p>
-          <p className="mt-1 max-w-2xl text-lg leading-7 text-[var(--muted)]">Voici combien de fois le résultat contient chaque repère.</p>
-        </div>
-      </div>
-      <ol className="relative mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <motion.span
-          aria-hidden="true"
-          className="absolute left-0 top-2 hidden h-px w-full origin-left bg-[var(--accent)] lg:block"
-          initial={reduce ? false : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.9 }}
-        />
-        {landmarks.map((landmark, index) => (
-          <motion.li
-            key={landmark.label}
-            initial={reduce ? false : { opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={reduce ? { duration: 0 } : { duration: 0.3, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="relative border-l-2 border-[var(--accent)] pl-3 lg:border-l-0 lg:pt-6"
-          >
-            <span aria-hidden="true" className="absolute left-[-5px] top-0 hidden h-3 w-3 rounded-full border-2 border-[var(--accent)] bg-[var(--panel)] lg:block" />
-            <p className="text-sm font-semibold">{landmark.label}</p>
-            <p className="display-type mt-2 text-2xl font-medium leading-none text-[var(--accent-dark)]">{formatLargeNumber(years / landmark.value)} fois</p>
-          </motion.li>
-        ))}
-      </ol>
-    </section>
   );
 }
 
@@ -201,35 +128,29 @@ function RealityIndicators({
   mode,
   amount,
   fortune,
-  salaryYears,
 }: {
   mode: CompareMode;
   amount: number;
   fortune: number;
-  salaryYears: number;
 }) {
   const reduce = useReducedMotion();
   const isSalary = mode === "salary";
   const yearlyAmount = amount * 12;
   const lifetimeCount = calculateLifetimeEquivalents(fortune, amount);
-  const monthlySalaryCount = amount > 0 ? fortune / amount : 0;
   const savingsMultiplier = amount > 0 ? fortune / amount : 0;
   const physicalDistance = calculatePhysicalScaleDistanceMeters(isSalary ? yearlyAmount : amount, fortune);
-  const percentage = amount > 0 && fortune > 0 ? (amount / fortune) * 100 : 0;
   const indicators = isSalary
     ? [
-        { value: formatLargeNumber(monthlySalaryCount), label: "salaires mensuels", Icon: Briefcase, emphasis: true },
-        { value: formatLargeNumber(lifetimeCount), label: "vies complètes de 83 ans", Icon: UsersThree },
+        { value: formatLargeNumber(lifetimeCount), label: "vies complètes de 83 ans", Icon: UsersThree, emphasis: true },
         { value: formatPhysicalDistance(physicalDistance), label: "si une année mesurait 1 mm", Icon: Ruler },
       ]
     : [
-        { value: formatTinyPercentage(percentage), label: "de cette fortune", Icon: ChartLineUp, emphasis: true },
-        { value: formatLargeNumber(savingsMultiplier), label: "fois ton épargne", Icon: PiggyBank },
+        { value: formatLargeNumber(savingsMultiplier), label: "fois ton épargne", Icon: PiggyBank, emphasis: true },
         { value: formatPhysicalDistance(physicalDistance), label: "si ton épargne mesurait 1 mm", Icon: Ruler },
       ];
 
   return (
-    <section className="grid gap-3 border-t border-black/12 pt-7 md:grid-cols-[1.25fr_0.9fr_0.9fr]">
+    <section className="grid gap-3 border-t border-black/12 pt-7 md:grid-cols-[1.15fr_0.85fr]">
       {indicators.map(({ value, label, Icon, emphasis }, index) => (
         <motion.article
           key={label}
@@ -246,7 +167,6 @@ function RealityIndicators({
           </div>
         </motion.article>
       ))}
-      {isSalary ? <span className="sr-only">Le résultat principal est {formatEpicYears(salaryYears)}.</span> : null}
     </section>
   );
 }
@@ -459,23 +379,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
             mode={mode}
             amount={activeAmount}
             fortune={selected.netWorthEUR}
-            salaryYears={salaryYears}
           />
-          {isSalaryMode ? (
-            <TimeLandmarks years={salaryYears} />
-          ) : (
-            <section className="grid gap-4 border-t border-black/12 pt-6 sm:grid-cols-[auto_1fr] sm:items-start sm:pt-8">
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--foreground)] text-[var(--panel)]">
-                <PiggyBank size={22} weight="bold" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-[var(--accent-dark)]">En clair</p>
-                <p className="mt-2 max-w-3xl text-lg leading-7 text-[var(--muted)]">
-                  Il faudrait multiplier cette épargne par {formatLargeNumber(comparison.savingsMultiplier)} pour atteindre cette fortune. Sa part exacte est {formatTinyPercentage(comparison.percentage)}.
-                </p>
-              </div>
-            </section>
-          )}
 
           <ImpactExplorer annualGainEUR={selected.annualGainEUR} annualGainLabel={selected.annualGainLabel} ownerName={selected.name} />
 

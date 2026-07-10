@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { Drop, ForkKnife, GraduationCap, Hospital, HouseLine, type Icon } from "@phosphor-icons/react";
+import { ForkKnife, GraduationCap, Hospital, type Icon } from "@phosphor-icons/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { calculateTaxScenario } from "@/lib/calculations/taxScenarios";
 import { formatCurrencyEUR, formatDecimal, formatLargeNumber } from "@/lib/formatters/numbers";
 
-type Focus = "nourrir" | "eduquer" | "soigner" | "loger" | "eau";
+type Focus = "nourrir" | "eduquer" | "soigner";
 
 type ImpactExplorerProps = {
   annualGainEUR: number;
@@ -62,25 +62,6 @@ const impactOptions: ImpactOption[] = [
     value: (scenario) => scenario.concrete.localHospitalsBuilt,
     suffix: "hôpitaux",
   },
-  {
-    id: "loger",
-    label: "Loger",
-    title: "Logements sociaux financés théoriquement",
-    description: "Hypothèse de coût unitaire. Le foncier et le montage financier peuvent fortement changer le résultat.",
-    Icon: HouseLine,
-    value: (scenario) => scenario.concrete.socialHousingUnits,
-    suffix: "logements",
-    secondary: (scenario) => `${formatLargeNumber(scenario.concrete.averageRentYears)} années de loyer moyen`,
-  },
-  {
-    id: "eau",
-    label: "Eau",
-    title: "Points d'eau potable financés théoriquement",
-    description: "Le coût dépend du pays, du terrain, de la profondeur, de la maintenance et de la gouvernance locale.",
-    Icon: Drop,
-    value: (scenario) => scenario.concrete.waterWells,
-    suffix: "points d'eau",
-  },
 ];
 
 export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: ImpactExplorerProps) {
@@ -107,7 +88,7 @@ export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: Im
       </summary>
 
       <div className="grid border-t border-black/10 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative min-h-72 overflow-hidden border-b border-black/10 lg:min-h-[560px] lg:border-b-0 lg:border-r">
+        <div className="relative min-h-72 overflow-hidden border-b border-black/10 lg:min-h-[480px] lg:border-b-0 lg:border-r">
           <Image
             src="/assets/editorial/civic-scale-v3.png"
             alt="Collage éditorial montrant une école, un hôpital, des logements, de l'aide alimentaire et un point d'eau"
@@ -131,7 +112,7 @@ export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: Im
         </div>
 
         <div className="grid content-between gap-7 p-5 sm:p-7">
-          <div className="grid grid-cols-5 gap-1 rounded-full border border-black/12 bg-white p-1">
+          <div className="grid grid-cols-3 gap-1 rounded-full border border-black/12 bg-white p-1">
             {impactOptions.map((option) => {
               const isActive = option.id === focus;
               return (

@@ -1,6 +1,6 @@
 # L'Écart
 
-Outil web pédagogique qui compare un salaire net ou une épargne à des fortunes extrêmes. Le site affiche le temps théorique nécessaire, le ratio réel, des repères physiques, puis cinq familles d'équivalents concrets : alimentation, éducation, santé, logement et accès à l'eau.
+Outil web pédagogique qui compare un salaire net ou une épargne à des fortunes extrêmes. Le site affiche le temps théorique nécessaire, le ratio réel, des repères physiques, puis trois familles d'équivalents concrets : alimentation, éducation et santé.
 
 Le ton est direct, factuel et non militant. L'objectif est de rendre les ordres de grandeur compréhensibles sans transformer l'interface en simulateur économique.
 
@@ -23,7 +23,7 @@ Le ton est direct, factuel et non militant. L'objectif est de rendre les ordres 
 - Simulation théorique sur 1% d'une variation annuelle estimée, jamais sur toute la fortune par défaut.
 - Repères concrets optionnels : enfants nourris, écoles, hôpitaux, logements et points d'eau théoriques.
 - Expérience animée avec transitions Motion, parallax du hero, spotlight réactif et respect de `prefers-reduced-motion`.
-- Page fortunes avec recherche, tri, cartes compactes et un seul détail ouvert.
+- Page fortunes avec une base de comparaison commune, des cartes compactes et un seul détail ouvert.
 - APIs JSON : `/api/personal-compare`, `/api/tax-scenario`, `/api/compare` en compatibilité historique.
 - Boutons copier, partager et générer une carte sociale 1080x1350.
 

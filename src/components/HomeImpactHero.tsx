@@ -157,13 +157,13 @@ export function HomeImpactHero() {
           </div>
 
           <div className="relative grid gap-2 border-t border-black/10 p-3 sm:grid-cols-[1fr_auto] sm:px-5 sm:py-4">
-            <a
-              href="#comparer"
+            <Link
+              href="/comparateur"
               className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[var(--foreground)] px-5 text-sm font-bold text-[var(--panel)] transition hover:-translate-y-0.5 hover:bg-[var(--ink)] active:translate-y-px sm:h-12"
             >
               Essayer avec mes chiffres
               <ArrowRight size={18} weight="bold" />
-            </a>
+            </Link>
             <Link
               href="/milliardaires"
               className="hidden h-12 items-center justify-center rounded-full border border-black/18 bg-white/72 px-5 text-sm font-bold transition hover:-translate-y-0.5 hover:border-[var(--accent)] active:translate-y-px sm:inline-flex"

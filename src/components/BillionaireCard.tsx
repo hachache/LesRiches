@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChartLineUp, ClockCounterClockwise, Ruler, UsersThree } from "@phosphor-icons/react";
+import { ArrowRight, ChartLineUp, ClockCounterClockwise, Ruler } from "@phosphor-icons/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Billionaire } from "@/types/economics";
 import {
@@ -106,42 +106,40 @@ export function BillionaireCard({
             transition={{ duration: 0.38 }}
             className="overflow-hidden border-t border-black/10"
           >
-            <div className="grid gap-4 p-5 lg:grid-cols-[1.1fr_0.9fr_1.1fr_auto] lg:items-stretch">
-              <div className="rounded-2xl bg-[var(--foreground)] p-5 text-[var(--panel)]">
+            <div className="grid gap-4 p-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-stretch">
+              <div className="grid content-between rounded-2xl bg-[var(--foreground)] p-5 text-[var(--panel)]">
                 <div className="flex items-center gap-3 text-[var(--accent)]">
                   {compareMode === "salary" ? <ClockCounterClockwise size={24} weight="bold" /> : <ChartLineUp size={24} weight="bold" />}
                   <p className="text-sm font-semibold text-white/62">Lecture principale</p>
                 </div>
-                <p className="display-type mt-6 text-4xl font-medium leading-[0.9]">{mainValue}</p>
-                <p className="mt-3 text-sm leading-6 text-white/62">
-                  {compareMode === "salary" ? `avec ${formatCurrencyEUR(amountToCompare)} nets par mois` : "de la fortune estimée"}
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-black/10 bg-[var(--panel)]/76 p-5">
-                <UsersThree className="text-[var(--accent-dark)]" size={24} weight="bold" />
-                <p className="mt-6 text-2xl font-semibold">{secondaryValue}</p>
-                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{compareMode === "salary" ? "au même salaire, sans aucune dépense" : "part exacte du montant saisi"}</p>
-              </div>
-
-              <div className="rounded-2xl border border-black/10 bg-white/76 p-5">
-                <Ruler className="text-[var(--accent-dark)]" size={24} weight="bold" />
-                <p className="display-type mt-6 text-3xl font-medium leading-none">{formatPhysicalDistance(physicalDistance)}</p>
-                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-                  {compareMode === "salary" ? "si une année de salaire mesurait 1 mm" : "si ton épargne mesurait 1 mm"}
-                </p>
-              </div>
-
-              <div className="grid min-w-48 content-between gap-5 rounded-2xl border border-[var(--accent)]/20 bg-[rgba(213,31,18,0.07)] p-5">
                 <div>
-                  <p className="text-sm font-semibold text-[var(--accent-dark)]">1% d'une année estimée</p>
-                  <p className="mt-3 text-lg font-semibold">{formatLargeNumber(onePercentAnnualGain.concrete.childrenFedOneYear)} enfants nourris un an</p>
-                  <p className="mt-2 text-sm text-[var(--muted)]">ou {formatDecimal(onePercentAnnualGain.concrete.schoolsBuilt, 1)} écoles théoriques</p>
+                  <p className="display-type mt-6 text-4xl font-medium leading-[0.9] sm:text-5xl">{mainValue}</p>
+                  <p className="mt-3 text-sm leading-6 text-white/62">
+                    {compareMode === "salary" ? `avec ${formatCurrencyEUR(amountToCompare)} nets par mois` : "de la fortune estimée"}
+                  </p>
+                  <p className="mt-6 border-t border-white/14 pt-5 text-xl font-semibold text-white">{secondaryValue}</p>
                 </div>
-                <Link href="/comparateur" className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[var(--foreground)] px-4 text-sm font-semibold text-[var(--panel)] transition hover:-translate-y-0.5 hover:bg-black active:translate-y-px">
-                  Comparer
-                  <ArrowRight size={16} weight="bold" />
-                </Link>
+              </div>
+
+              <div className="grid gap-5 rounded-2xl border border-black/10 bg-[var(--panel)]/76 p-5 sm:grid-cols-2">
+                <div className="border-b border-black/10 pb-5 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-5">
+                  <Ruler className="text-[var(--accent-dark)]" size={24} weight="bold" />
+                  <p className="display-type mt-6 text-3xl font-medium leading-none">{formatPhysicalDistance(physicalDistance)}</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                    {compareMode === "salary" ? "si une année de salaire mesurait 1 mm" : "si ton épargne mesurait 1 mm"}
+                  </p>
+                </div>
+                <div className="grid content-between gap-5">
+                  <div>
+                    <p className="text-sm font-semibold text-[var(--accent-dark)]">1% d'une année estimée</p>
+                    <p className="mt-3 text-lg font-semibold">{formatLargeNumber(onePercentAnnualGain.concrete.childrenFedOneYear)} enfants nourris un an</p>
+                    <p className="mt-2 text-sm text-[var(--muted)]">ou {formatDecimal(onePercentAnnualGain.concrete.schoolsBuilt, 1)} écoles théoriques</p>
+                  </div>
+                  <Link href="/comparateur" className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[var(--foreground)] px-4 text-sm font-semibold text-[var(--panel)] transition hover:-translate-y-0.5 hover:bg-black active:translate-y-px">
+                    Comparer cette fortune
+                    <ArrowRight size={16} weight="bold" />
+                  </Link>
+                </div>
               </div>
             </div>
           </motion.div>
