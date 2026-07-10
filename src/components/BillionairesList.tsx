@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Briefcase, MagnifyingGlass, PiggyBank, WarningCircle } from "@phosphor-icons/react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { billionaires } from "@/data/billionaires";
 import { BillionaireCard } from "@/components/BillionaireCard";
 import { formatCurrencyEUR } from "@/lib/formatters/numbers";
@@ -37,36 +37,41 @@ export function BillionairesList() {
   }, [query, sort]);
 
   return (
-    <section className="grid gap-5">
-      <div className="grid gap-5 rounded-2xl border border-black/10 bg-[var(--panel)]/90 p-5 shadow-[0_18px_70px_rgba(31,24,18,0.1)] sm:p-6">
-        <div className="grid gap-3 md:grid-cols-[1fr_220px]">
-          <label className="relative">
-            <span className="sr-only">Rechercher</span>
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" size={19} />
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              className="h-12 w-full rounded-none border border-black/25 bg-white pl-10 pr-3 font-semibold outline-none focus:ring-2 focus:ring-[var(--accent)]"
-              placeholder="Rechercher un nom"
-            />
+    <section className="grid gap-6">
+      <div className="grid gap-6 rounded-2xl border border-black/10 bg-[var(--panel)]/90 p-5 shadow-[0_18px_70px_rgba(31,24,18,0.1)] sm:p-7">
+        <div className="grid gap-4 md:grid-cols-[1fr_220px] md:items-end">
+          <label className="grid gap-2">
+            <span className="text-sm font-semibold">Rechercher une fortune</span>
+            <span className="relative">
+              <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" size={19} />
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                className="h-12 w-full rounded-xl border border-black/20 bg-white pl-10 pr-3 font-semibold outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20"
+                placeholder="Elon Musk, Bernard Arnault..."
+              />
+            </span>
           </label>
-          <select
-            value={sort}
-            onChange={(event) => setSort(event.target.value as SortMode)}
-            className="h-12 rounded-none border border-black/25 bg-white px-3 font-semibold outline-none focus:ring-2 focus:ring-[var(--accent)]"
-          >
-            <option value="desc">Fortune décroissante</option>
-            <option value="asc">Fortune croissante</option>
-            <option value="name">Nom</option>
-          </select>
+          <label className="grid gap-2">
+            <span className="text-sm font-semibold">Trier la liste</span>
+            <select
+              value={sort}
+              onChange={(event) => setSort(event.target.value as SortMode)}
+              className="h-12 rounded-xl border border-black/20 bg-white px-3 font-semibold outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20"
+            >
+              <option value="desc">Plus élevée d'abord</option>
+              <option value="asc">Plus faible d'abord</option>
+              <option value="name">Par nom</option>
+            </select>
+          </label>
         </div>
-        <div className="grid gap-4 border-t border-black/10 pt-5 lg:grid-cols-[280px_340px_1fr] lg:items-end">
+
+        <div className="grid gap-5 rounded-2xl border border-black/8 bg-white/48 p-4 lg:grid-cols-[280px_340px_1fr] lg:items-end lg:p-5">
           <div className="grid gap-2">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">Mode de comparaison</span>
+            <span className="text-sm font-semibold">Ce que tu compares</span>
             <div className="grid grid-cols-2 rounded-full border border-black/15 bg-white p-1">
               {modeOptions.map(({ value, label, Icon }) => {
                 const active = mode === value;
-
                 return (
                   <button
                     key={value}
@@ -92,50 +97,63 @@ export function BillionairesList() {
               })}
             </div>
           </div>
+
           <label className="grid gap-2">
-            <span className="font-mono text-xs font-bold uppercase tracking-[0.12em]">
-              {mode === "salary" ? "Salaire net mensuel" : "Épargne à comparer"}
-            </span>
-            <div className="grid grid-cols-[48px_1fr] border border-black/25 bg-white">
+            <span className="text-sm font-semibold">{mode === "salary" ? "Salaire net mensuel" : "Épargne totale"}</span>
+            <span className="grid grid-cols-[48px_1fr] overflow-hidden rounded-xl border border-black/20 bg-white">
               <span className="flex items-center justify-center border-r border-black/15 text-xl">€</span>
               <input
                 inputMode="decimal"
                 value={amountInput}
                 onChange={(event) => setAmountInput(event.target.value)}
-                className="h-12 bg-white px-3 text-xl font-semibold outline-none focus:ring-2 focus:ring-[var(--accent)]"
+                className="h-12 min-w-0 bg-white px-3 text-xl font-semibold outline-none focus:ring-2 focus:ring-[var(--accent)]"
               />
-            </div>
+            </span>
           </label>
+
           <div className="grid gap-1 text-sm leading-6 text-[var(--muted)]">
             <p>
               {mode === "salary"
-                ? `Les cartes indiquent le temps théorique nécessaire avec ${formatCurrencyEUR(usableAmount)} nets par mois, sans dépense.`
-                : `Les cartes comparent chaque fortune à ${formatCurrencyEUR(usableAmount)} d'épargne.`}{" "}
-              C'est un repère d'échelle, pas un jugement politique.
+                ? `${formatCurrencyEUR(usableAmount)} nets par mois, en supposant que chaque euro est conservé.`
+                : `${formatCurrencyEUR(usableAmount)} déjà disponibles, comparés à chaque fortune.`}
             </p>
             {parsed.error ? (
               <p className="flex items-center gap-2 font-medium text-[var(--accent-dark)]">
                 <WarningCircle size={16} weight="bold" />
                 {parsed.error}
               </p>
-            ) : parsed.warning ? (
-              <p>{parsed.warning}</p>
-            ) : null}
+            ) : parsed.warning ? <p>{parsed.warning}</p> : null}
           </div>
         </div>
       </div>
-      <div className="grid gap-4">
-        {filtered.map((person) => (
-          <BillionaireCard
-            key={person.name}
-            billionaire={person}
-            amountToCompare={usableAmount}
-            compareMode={mode}
-            selected={selectedSlug === person.slug}
-            onSelect={() => setSelectedSlug(selectedSlug === person.slug ? "" : person.slug)}
-          />
-        ))}
+
+      <div className="flex items-center justify-between gap-4 px-1">
+        <p className="text-sm font-semibold">{filtered.length} fortune{filtered.length > 1 ? "s" : ""}</p>
+        <p className="text-xs text-[var(--muted)]">Estimations indicatives à actualiser</p>
       </div>
+
+      <motion.div layout className="grid gap-4">
+        <AnimatePresence mode="popLayout" initial={false}>
+          {filtered.map((person) => (
+            <BillionaireCard
+              key={person.slug}
+              billionaire={person}
+              amountToCompare={usableAmount}
+              compareMode={mode}
+              selected={selectedSlug === person.slug}
+              onSelect={() => setSelectedSlug(selectedSlug === person.slug ? "" : person.slug)}
+            />
+          ))}
+        </AnimatePresence>
+        {!filtered.length ? (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-2xl border border-dashed border-black/20 bg-white/48 p-10 text-center">
+            <p className="text-lg font-semibold">Aucune fortune ne correspond à cette recherche.</p>
+            <button type="button" onClick={() => setQuery("")} className="mt-4 rounded-full bg-[var(--foreground)] px-5 py-3 text-sm font-semibold text-[var(--panel)]">
+              Réinitialiser
+            </button>
+          </motion.div>
+        ) : null}
+      </motion.div>
     </section>
   );
 }

@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { ForkKnife, GraduationCap, Hospital, type Icon } from "@phosphor-icons/react";
+import { Drop, ForkKnife, GraduationCap, Hospital, HouseLine, type Icon } from "@phosphor-icons/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { calculateTaxScenario } from "@/lib/calculations/taxScenarios";
-import { formatCurrencyEUR, formatLargeNumber } from "@/lib/formatters/numbers";
+import { formatCurrencyEUR, formatDecimal, formatLargeNumber } from "@/lib/formatters/numbers";
 
-type Focus = "nourrir" | "eduquer" | "soigner";
+type Focus = "nourrir" | "eduquer" | "soigner" | "loger" | "eau";
 
 type ImpactExplorerProps = {
   annualGainEUR: number;
@@ -15,43 +15,71 @@ type ImpactExplorerProps = {
   ownerName: string;
 };
 
+type Scenario = ReturnType<typeof calculateTaxScenario>;
+
 type ImpactOption = {
   id: Focus;
   label: string;
   title: string;
   description: string;
   Icon: Icon;
-  value: (scenario: ReturnType<typeof calculateTaxScenario>) => number;
+  value: (scenario: Scenario) => number;
   suffix: string;
+  secondary?: (scenario: Scenario) => string;
 };
+
+function formatImpactValue(value: number): string {
+  return value < 10 ? formatDecimal(value, 1) : formatLargeNumber(value);
+}
 
 const impactOptions: ImpactOption[] = [
   {
     id: "nourrir",
     label: "Nourrir",
     title: "Enfants nourris pendant un an",
-    description: "Un repas par jour à 2 euros. C'est un repère budgétaire, pas une promesse de résultat.",
+    description: "Un repas par jour à 2 euros. Ce repère ne couvre ni la logistique ni l'ensemble des besoins nutritionnels.",
     Icon: ForkKnife,
     value: (scenario) => scenario.concrete.childrenFedOneYear,
     suffix: "enfants",
+    secondary: (scenario) => `${formatLargeNumber(scenario.concrete.foodAidMeals)} repas théoriques`,
   },
   {
     id: "eduquer",
     label: "Éduquer",
     title: "Écoles construites théoriquement",
-    description: "Le coût réel dépend du foncier, du territoire et du programme de construction.",
+    description: "Le coût réel varie selon le foncier, le territoire, la taille et le programme de construction.",
     Icon: GraduationCap,
     value: (scenario) => scenario.concrete.schoolsBuilt,
     suffix: "écoles",
+    secondary: (scenario) => `${formatLargeNumber(scenario.concrete.educationStudentYears)} années de scolarité`,
   },
   {
     id: "soigner",
     label: "Soigner",
-    title: "Hôpitaux locaux théoriques",
-    description: "La construction seulement. Les équipes et le fonctionnement ne sont pas inclus.",
+    title: "Hôpitaux locaux construits théoriquement",
+    description: "La construction seulement. Les équipes, les équipements et le fonctionnement ne sont pas inclus.",
     Icon: Hospital,
     value: (scenario) => scenario.concrete.localHospitalsBuilt,
     suffix: "hôpitaux",
+  },
+  {
+    id: "loger",
+    label: "Loger",
+    title: "Logements sociaux financés théoriquement",
+    description: "Hypothèse de coût unitaire. Le foncier et le montage financier peuvent fortement changer le résultat.",
+    Icon: HouseLine,
+    value: (scenario) => scenario.concrete.socialHousingUnits,
+    suffix: "logements",
+    secondary: (scenario) => `${formatLargeNumber(scenario.concrete.averageRentYears)} années de loyer moyen`,
+  },
+  {
+    id: "eau",
+    label: "Eau",
+    title: "Points d'eau potable financés théoriquement",
+    description: "Le coût dépend du pays, du terrain, de la profondeur, de la maintenance et de la gouvernance locale.",
+    Icon: Drop,
+    value: (scenario) => scenario.concrete.waterWells,
+    suffix: "points d'eau",
   },
 ];
 
@@ -66,47 +94,53 @@ export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: Im
   const Icon = active.Icon;
 
   return (
-    <details className="group overflow-hidden rounded-2xl border border-black/10 bg-white/52">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-5 p-5 sm:px-6 sm:py-5">
+    <details className="group overflow-hidden rounded-2xl border border-black/10 bg-[rgba(255,250,240,0.7)] shadow-[0_18px_70px_rgba(31,24,18,0.08)]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-5 p-5 transition-colors hover:bg-white/45 sm:px-7 sm:py-6">
         <span>
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">
-            Une lecture supplémentaire
-          </span>
-          <span className="mt-1 block text-lg font-semibold sm:text-xl">Voir ce que 1% d'une année représenterait</span>
+          <span className="block text-sm font-semibold text-[var(--accent-dark)]">Un autre ordre de grandeur</span>
+          <span className="mt-1 block text-lg font-semibold sm:text-2xl">Ce que représenterait 1% de sa variation annuelle</span>
         </span>
         <span className="inline-flex h-10 shrink-0 items-center rounded-full border border-black/15 px-4 text-sm font-semibold transition group-open:bg-[var(--foreground)] group-open:text-[var(--panel)]">
-          <span className="group-open:hidden">Ouvrir</span>
+          <span className="group-open:hidden">Voir</span>
           <span className="hidden group-open:inline">Fermer</span>
         </span>
       </summary>
 
-      <div className="grid border-t border-black/10 lg:grid-cols-[0.72fr_1fr]">
-        <div className="relative min-h-64 overflow-hidden border-b border-black/10 lg:min-h-full lg:border-b-0 lg:border-r">
+      <div className="grid border-t border-black/10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="relative min-h-72 overflow-hidden border-b border-black/10 lg:min-h-[560px] lg:border-b-0 lg:border-r">
           <Image
-            src="/assets/editorial/impact-ledger-v2.png"
-            alt="Collage éditorial évoquant une balance, une école, un hôpital et l'aide alimentaire"
+            src="/assets/editorial/civic-scale-v3.png"
+            alt="Collage éditorial montrant une école, un hôpital, des logements, de l'aide alimentaire et un point d'eau"
             fill
-            sizes="(max-width: 1024px) 100vw, 42vw"
-            className="object-cover object-left"
+            sizes="(max-width: 1024px) 100vw, 46vw"
+            className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/42 via-transparent to-transparent" />
-          <p className="absolute bottom-5 left-5 right-5 text-sm leading-6 text-white/90 sm:bottom-6 sm:left-6">
-            Simulation ponctuelle sur 1% de la variation annuelle estimée de {ownerName}.
+          <div className="absolute inset-0 bg-gradient-to-t from-black/64 via-black/4 to-transparent" />
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-y-0 left-0 w-1 bg-[var(--accent)]"
+            initial={reduce ? false : { scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            style={{ transformOrigin: "bottom" }}
+          />
+          <p className="absolute bottom-5 left-5 right-5 max-w-md text-sm leading-6 text-white sm:bottom-7 sm:left-7">
+            Simulation ponctuelle sur 1% de la variation annuelle estimée de {ownerName}. Ce n'est pas un revenu disponible.
           </p>
         </div>
 
-        <div className="grid gap-6 p-5 sm:p-6">
-          <div className="grid grid-cols-3 gap-1 rounded-full border border-black/12 bg-white p-1">
+        <div className="grid content-between gap-7 p-5 sm:p-7">
+          <div className="grid grid-cols-5 gap-1 rounded-full border border-black/12 bg-white p-1">
             {impactOptions.map((option) => {
               const isActive = option.id === focus;
-
               return (
                 <button
                   key={option.id}
                   type="button"
                   onClick={() => setFocus(option.id)}
                   aria-pressed={isActive}
-                  className="relative h-10 rounded-full text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+                  className="relative inline-flex h-11 min-w-0 items-center justify-center rounded-full px-1 text-[10px] font-bold sm:text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
                 >
                   {isActive ? (
                     <motion.span
@@ -115,9 +149,7 @@ export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: Im
                       className="absolute inset-0 rounded-full bg-[var(--foreground)]"
                     />
                   ) : null}
-                  <span className={`relative z-10 ${isActive ? "text-[var(--panel)]" : "text-[var(--foreground)]"}`}>
-                    {option.label}
-                  </span>
+                  <span className={`relative z-10 truncate ${isActive ? "text-[var(--panel)]" : "text-[var(--foreground)]"}`}>{option.label}</span>
                 </button>
               );
             })}
@@ -126,30 +158,35 @@ export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: Im
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={focus}
-              initial={reduce ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? undefined : { opacity: 0, y: -8 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="grid gap-4"
+              initial={reduce ? false : { opacity: 0, y: 20, filter: "blur(7px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={reduce ? undefined : { opacity: 0, y: -14, filter: "blur(5px)" }}
+              transition={{ duration: 0.4 }}
+              className="grid gap-5"
             >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent)] text-white">
-                  <Icon size={22} weight="bold" />
+              <div className="flex items-center justify-between gap-4">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent)] text-white shadow-[0_10px_32px_rgba(213,31,18,0.24)]">
+                  <Icon size={24} weight="bold" />
                 </span>
-                <p className="text-sm font-semibold text-[var(--muted)]">1% = {formatCurrencyEUR(scenario.amount)}</p>
+                <p className="text-right text-sm font-semibold text-[var(--muted)]">1% = {formatCurrencyEUR(scenario.amount)}</p>
               </div>
-              <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--accent-dark)]">
-                  {active.title}
+              <div aria-live="polite">
+                <p className="text-sm font-semibold text-[var(--accent-dark)]">{active.title}</p>
+                <p className="display-type mt-3 text-[clamp(4rem,9vw,7.2rem)] font-medium leading-[0.82]">
+                  {formatImpactValue(active.value(scenario))}
                 </p>
-                <p className="display-type mt-2 text-6xl font-medium leading-[0.9] sm:text-7xl">
-                  {formatLargeNumber(active.value(scenario))}
-                </p>
-                <p className="mt-1 text-lg font-semibold text-[var(--foreground)]">{active.suffix}</p>
+                <p className="mt-2 text-xl font-semibold text-[var(--foreground)]">{active.suffix}</p>
               </div>
+              {active.secondary ? (
+                <p className="border-l-2 border-[var(--accent)] pl-4 text-lg font-semibold">Soit aussi {active.secondary(scenario)}.</p>
+              ) : null}
               <p className="max-w-xl text-sm leading-6 text-[var(--muted)]">{active.description}</p>
             </motion.div>
           </AnimatePresence>
+
+          <p className="border-t border-black/10 pt-4 text-xs leading-5 text-[var(--muted)]">
+            Les coûts sont des hypothèses pédagogiques centralisées. Consulte la méthodologie avant toute réutilisation.
+          </p>
         </div>
       </div>
     </details>

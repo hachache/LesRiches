@@ -2,7 +2,7 @@ import type { EconomicReference } from "@/types/economics";
 
 export function SourceList({ sources }: { sources: EconomicReference[] }) {
   return (
-    <div className="paper-panel divide-y divide-black/10 overflow-hidden rounded-lg">
+    <div className="paper-panel divide-y divide-black/10 overflow-hidden rounded-2xl">
       {sources.map((source) => (
         <div key={source.label} className="grid gap-2 p-4 md:grid-cols-[1fr_1.4fr_auto] md:items-start">
           <strong className="text-sm">{source.label}</strong>
@@ -14,9 +14,11 @@ export function SourceList({ sources }: { sources: EconomicReference[] }) {
             ) : (
               source.source
             )}
-            {source.note ? <span className="block text-xs">{source.note}</span> : null}
+            {source.note ? <span className="mt-1 block text-xs leading-5">{source.note}</span> : null}
           </p>
-          <span className="font-mono text-xs text-[var(--muted)]">{source.lastUpdated}</span>
+          <time className="whitespace-nowrap text-xs font-semibold text-[var(--muted)]" dateTime={source.lastUpdated}>
+            {new Intl.DateTimeFormat("fr-FR", { month: "short", year: "numeric" }).format(new Date(`${source.lastUpdated}T12:00:00`))}
+          </time>
         </div>
       ))}
     </div>

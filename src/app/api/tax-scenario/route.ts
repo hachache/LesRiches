@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Parametres invalides. Utilisez billionaire et rate, par exemple /api/tax-scenario?billionaire=elon-musk&rate=1.",
+          "Paramètres invalides. Utilisez billionaire et rate, par exemple /api/tax-scenario?billionaire=elon-musk&rate=1.",
       },
       { status: 400 },
     );

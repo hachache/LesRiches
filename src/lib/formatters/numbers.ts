@@ -75,8 +75,17 @@ export function formatDurationYears(value: number): string {
   return `${formatDecimal(clean, clean >= 100 ? 0 : 1)} ans`;
 }
 
+export function formatPhysicalDistance(valueInMeters: number): string {
+  const clean = cleanNumber(valueInMeters);
+  if (!clean) return "0 m";
+  if (clean >= 1_000_000_000) return `${formatDecimal(clean / 1_000_000_000, 1)} million${clean >= 2_000_000_000 ? "s" : ""} de km`;
+  if (clean >= 1_000) return `${formatDecimal(clean / 1_000, clean >= 100_000 ? 0 : 1)} km`;
+  if (clean >= 1) return `${formatDecimal(clean, clean >= 100 ? 0 : 1)} m`;
+  return `${formatDecimal(clean * 100, 1)} cm`;
+}
+
 export function formatStartYear(year: number): string {
-  if (!Number.isFinite(year)) return "date impossible a calculer";
+  if (!Number.isFinite(year)) return "date impossible à calculer";
   if (year <= 0) {
     return `environ ${normalizeSpaces(frenchNumber.format(Math.abs(Math.round(year))))} ans avant notre ère`;
   }

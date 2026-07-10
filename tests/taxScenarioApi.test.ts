@@ -24,6 +24,6 @@ describe("/api/tax-scenario", () => {
     const payload = await response.json();
 
     expect(response.status).toBe(400);
-    expect(payload.error).toContain("Parametres invalides");
+    expect(payload.error).toContain("Paramètres invalides");
   });
 });

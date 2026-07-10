@@ -23,7 +23,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Parametres invalides. Utilisez amount et billionaire avec un slug connu, par exemple /api/personal-compare?amount=1%20million&billionaire=elon-musk.",
+          "Paramètres invalides. Utilisez amount et billionaire avec un slug connu, par exemple /api/personal-compare?amount=1%20million&billionaire=elon-musk.",
       },
       { status: 400 },
     );

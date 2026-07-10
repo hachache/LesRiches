@@ -1,6 +1,6 @@
 # L'Écart
 
-Outil web pédagogique qui compare un salaire net ou une épargne à des fortunes extrêmes. Le site affiche le temps théorique nécessaire, le ratio réel, puis trois repères concrets : enfants nourris, écoles et hôpitaux théoriques.
+Outil web pédagogique qui compare un salaire net ou une épargne à des fortunes extrêmes. Le site affiche le temps théorique nécessaire, le ratio réel, des repères physiques, puis cinq familles d'équivalents concrets : alimentation, éducation, santé, logement et accès à l'eau.
 
 Le ton est direct, factuel et non militant. L'objectif est de rendre les ordres de grandeur compréhensibles sans transformer l'interface en simulateur économique.
 
@@ -19,8 +19,10 @@ Le ton est direct, factuel et non militant. L'objectif est de rendre les ordres 
 - Parcours principal : deux modes, `Salaire net` ou `Épargne`, plus une fortune de référence.
 - Formats acceptés : `10000`, `10 000`, `1,000,000`, `1m`, `1 million`, `1 milliard`, `1 billion`.
 - Résultats lisibles : temps théorique en mode salaire, ratio et multiplicateur en mode épargne.
+- Repères d'échelle : salaires mensuels, vies de 83 ans et distance physique si le point de départ mesure 1 mm.
 - Simulation théorique sur 1% d'une variation annuelle estimée, jamais sur toute la fortune par défaut.
-- Repères concrets optionnels : enfants nourris pendant un an, écoles et hôpitaux théoriques.
+- Repères concrets optionnels : enfants nourris, écoles, hôpitaux, logements et points d'eau théoriques.
+- Expérience animée avec transitions Motion, parallax du hero, spotlight réactif et respect de `prefers-reduced-motion`.
 - Page fortunes avec recherche, tri, cartes compactes et un seul détail ouvert.
 - APIs JSON : `/api/personal-compare`, `/api/tax-scenario`, `/api/compare` en compatibilité historique.
 - Boutons copier, partager et générer une carte sociale 1080x1350.
@@ -39,6 +41,9 @@ src/app/
 src/components/
   PersonalFortuneComparator.tsx
   ImpactExplorer.tsx
+  HomeImpactHero.tsx
+  MotionReveal.tsx
+  SiteNav.tsx
 src/lib/calculations/
 src/lib/formatters/
 src/data/economicReferences.ts
@@ -117,7 +122,7 @@ curl "http://localhost:3000/api/compare?amount=1%20milliard"
 
 ## Données
 
-Les fortunes et variations annuelles dans `src/data/billionaires.ts` sont marquées comme données démo à vérifier. Avant publication éditoriale sérieuse, elles doivent être remplacées par des valeurs datées issues de Forbes, Bloomberg ou d'une source publique équivalente.
+Les fortunes et variations annuelles dans `src/data/billionaires.ts` sont marquées comme estimations indicatives. Avant publication éditoriale sérieuse, elles doivent être remplacées par des valeurs datées issues de Forbes, Bloomberg ou d'une source publique équivalente.
 
 Les repères concrets dans `src/data/economicReferences.ts` mélangent sources publiques et hypothèses pédagogiques. Les hypothèses sont explicitement signalées dans la méthodologie.
 
@@ -131,7 +136,7 @@ Les repères concrets dans `src/data/economicReferences.ts` mélangent sources p
 
 ## Roadmap
 
-- Remplacer les données démo par des sources vérifiées et datées.
+- Remplacer les estimations indicatives par des sources vérifiées et datées.
 - Ajouter un format de carte sociale paysage.
 - Ajouter une comparaison entre deux fortunes.
 - Ajouter une mise à jour automatisée des références publiques.

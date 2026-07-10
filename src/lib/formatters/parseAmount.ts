@@ -59,7 +59,7 @@ export function parseAmountInput(input: string): ParsedAmount {
   const amount = value * multiplier;
 
   if (!Number.isFinite(amount) || amount <= 0) {
-    return { amount: null, normalized, error: "Somme invalide. Exemple : 1 milliard ou 1000000." };
+    return { amount: null, normalized, error: "Montant invalide. Exemple : 1 milliard ou 1000000." };
   }
 
   return {

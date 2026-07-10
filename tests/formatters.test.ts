@@ -4,6 +4,7 @@ import {
   formatDurationYears,
   formatLargeNumber,
   formatMultiplier,
+  formatPhysicalDistance,
   formatRatio,
   formatTinyPercentage,
   formatStartYear,
@@ -38,5 +39,10 @@ describe("formatters", () => {
   test("formats ratios and multipliers in readable French units", () => {
     expect(formatRatio(42_000_000)).toBe("1 / 42 millions");
     expect(formatMultiplier(42_000_000)).toBe("42 millions fois");
+  });
+
+  test("formats physical distances without abbreviating the scale", () => {
+    expect(formatPhysicalDistance(42_000)).toBe("42 km");
+    expect(formatPhysicalDistance(850)).toBe("850 m");
   });
 });

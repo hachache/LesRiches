@@ -3,6 +3,7 @@ import type { PersonalFortuneComparison, PersonalFortuneComparisonOptions } from
 import { calculatePurchasingPowerUnits } from "@/lib/calculations/compare";
 
 const DEFAULT_CAREER_YEARS = 42;
+const REFERENCE_LIFETIME_YEARS = 83;
 
 function positive(value: unknown, fallback = 0): number {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : fallback;
@@ -27,6 +28,26 @@ export function calculateSalaryYearsToFortune(netWorthEUR: number, monthlySalary
   const fortune = positive(netWorthEUR);
   const yearlySalary = positive(monthlySalary) * 12;
   return fortune && yearlySalary ? fortune / yearlySalary : 0;
+}
+
+export function calculateLifetimeEquivalents(
+  netWorthEUR: number,
+  monthlySalary: number,
+  lifetimeYears = REFERENCE_LIFETIME_YEARS,
+): number {
+  const years = calculateSalaryYearsToFortune(netWorthEUR, monthlySalary);
+  const lifetime = positive(lifetimeYears);
+  return years && lifetime ? years / lifetime : 0;
+}
+
+export function calculatePhysicalScaleDistanceMeters(
+  personalAmount: number,
+  netWorthEUR: number,
+  personalMarkerMillimeters = 1,
+): number {
+  const ratio = calculateSavingsMultiplier(netWorthEUR, personalAmount);
+  const markerMillimeters = positive(personalMarkerMillimeters);
+  return ratio && markerMillimeters ? (ratio * markerMillimeters) / 1_000 : 0;
 }
 
 export function calculateSavingsMultiplier(netWorthEUR: number, savingsTotal: number): number {

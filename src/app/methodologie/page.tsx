@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { MotionReveal } from "@/components/MotionReveal";
 import { SourceList } from "@/components/SourceList";
 import { sourceReferences } from "@/data/economicReferences";
 
@@ -13,13 +14,15 @@ export const metadata: Metadata = {
 export default function MethodologiePage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="display-type text-4xl font-medium uppercase leading-[0.98] md:text-6xl">Méthodologie</h1>
-      <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
-        L'Écart compare un salaire net mensuel ou une épargne à une fortune extrême. Le site rend un ordre de grandeur
-        lisible, il ne produit pas une analyse fiscale ou patrimoniale complète.
-      </p>
+      <MotionReveal>
+        <p className="text-sm font-semibold text-[var(--accent-dark)]">Méthodologie</p>
+        <h1 className="display-type mt-4 text-5xl font-medium uppercase leading-[0.94] md:text-7xl">D'où viennent les chiffres ?</h1>
+        <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
+          L'Écart compare un salaire net ou une épargne à une fortune extrême. Il montre une échelle, pas une analyse fiscale complète.
+        </p>
+      </MotionReveal>
 
-      <div className="paper-panel relative mt-8 aspect-[16/7] overflow-hidden rounded-lg">
+      <MotionReveal className="paper-panel relative mt-8 aspect-[16/7] overflow-hidden rounded-2xl" delay={0.06}>
         <Image
           src="/assets/methodology/source-ledger.png"
           alt="Illustration de fiches de méthodologie et de sources économiques"
@@ -28,7 +31,7 @@ export default function MethodologiePage() {
           sizes="(max-width: 1024px) 100vw, 1024px"
           className="object-cover"
         />
-      </div>
+      </MotionReveal>
 
       <div className="mt-8 grid gap-8 text-lg leading-8 text-[var(--muted)]">
         <section>
@@ -61,24 +64,21 @@ export default function MethodologiePage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets conservés</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Repères concrets utilisés</h2>
           <p className="mt-3">
-            L'interface principale garde seulement trois repères : enfants nourris pendant un an, écoles théoriques et
-            hôpitaux locaux théoriques. Ce sont des équivalents budgétaires, pas des effets garantis.
+            L'interface garde cinq familles lisibles : alimentation, éducation, santé, logement et accès à l'eau. Ce sont
+            des équivalents budgétaires, pas des effets garantis.
           </p>
         </section>
 
         <section className="grid gap-4 md:grid-cols-2">
           {[
-            ["Somme comparée", "Montant libre saisi par l'utilisateur : épargne, don, héritage, prix, budget ou fortune."],
+            ["Salaire net", "Revenu mensuel après cotisations. Le calcul suppose, de façon irréaliste, que chaque euro est conservé."],
+            ["Épargne", "Montant déjà disponible que l'utilisateur souhaite comparer à une fortune estimée."],
             ["Fortune estimée", "Approximation fondée sur actifs, actions, participations, immobilier et marchés."],
             [
               "Variation annuelle",
               "Écart indicatif d'une fortune sur une période. Ce n'est pas un salaire et cela peut être négatif.",
-            ],
-            [
-              "Hypothèse pédagogique",
-              "Valeur utile pour comprendre une échelle, mais à vérifier ou remplacer avant usage éditorial sérieux.",
             ],
           ].map(([title, text]) => (
             <article key={title} className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] p-5">
@@ -91,9 +91,8 @@ export default function MethodologiePage() {
         <section>
           <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">Limites</h2>
           <p className="mt-3">
-            Les fortunes de milliardaires changent avec les marchés. Les variations annuelles dans le dépôt sont
-            marquées comme données démo et doivent être remplacées par Forbes, Bloomberg ou une source équivalente. Les
-            portraits sont des assets éditoriaux générés.
+            Les fortunes évoluent avec les marchés. Les variations annuelles intégrées au projet sont indicatives et
+            doivent être actualisées avec Forbes, Bloomberg ou une source équivalente. Les portraits sont des illustrations éditoriales générées.
           </p>
         </section>
       </div>

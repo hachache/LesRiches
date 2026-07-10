@@ -3,7 +3,9 @@ import {
   calculateCareersAtSavingsRate,
   calculateFortuneFraction,
   calculateImpactEquivalents,
+  calculateLifetimeEquivalents,
   calculatePersonalFortuneComparison,
+  calculatePhysicalScaleDistanceMeters,
   calculateSavingsMultiplier,
   calculateSalaryYearsToFortune,
 } from "@/lib/calculations/personalComparison";
@@ -25,6 +27,16 @@ describe("personal fortune comparison", () => {
   test("calculates years of salary required for a fortune", () => {
     expect(calculateSalaryYearsToFortune(1_200_000, 2_000)).toBe(50);
     expect(calculateSalaryYearsToFortune(1_200_000, 0)).toBe(0);
+  });
+
+  test("turns salary years into full lifetimes", () => {
+    expect(calculateLifetimeEquivalents(1_992_000, 2_000, 83)).toBe(1);
+    expect(calculateLifetimeEquivalents(1_992_000, 0, 83)).toBe(0);
+  });
+
+  test("turns a wealth ratio into a physical distance", () => {
+    expect(calculatePhysicalScaleDistanceMeters(10_000, 420_000_000_000)).toBe(42_000);
+    expect(calculatePhysicalScaleDistanceMeters(0, 420_000_000_000)).toBe(0);
   });
 
   test("calculates how many times personal savings fit into a fortune", () => {

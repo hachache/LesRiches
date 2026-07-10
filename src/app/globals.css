@@ -38,6 +38,10 @@ body {
   overflow-x: hidden;
 }
 
+main {
+  isolation: isolate;
+}
+
 .paper-panel {
   border: 1px solid var(--line);
   background:
@@ -135,4 +139,32 @@ a,
 input,
 select {
   outline-color: var(--accent);
+}
+
+button,
+a,
+input,
+select,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

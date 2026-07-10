@@ -227,7 +227,7 @@ export function ShareResultButton({ summary, card }: ShareResultButtonProps) {
         <button
           type="button"
           onClick={downloadImage}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/16 bg-white/8 px-5 text-sm font-semibold text-white transition hover:bg-white/14 active:translate-y-px"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-black/15 bg-white/72 px-5 text-sm font-semibold text-[var(--foreground)] transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-white active:translate-y-px"
         >
           <DownloadSimple size={18} weight="bold" />
           Image
