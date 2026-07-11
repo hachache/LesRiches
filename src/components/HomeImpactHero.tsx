@@ -7,10 +7,9 @@ import { ArrowRight } from "@phosphor-icons/react";
 import {
   AnimatePresence,
   motion,
-  useMotionTemplate,
-  useMotionValue,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
 } from "motion/react";
 import { billionaires } from "@/data/billionaires";
@@ -24,21 +23,20 @@ export function HomeImpactHero() {
   const reference = billionaires.find((person) => person.slug === selectedSlug) ?? billionaires[0];
   const salaryMonthly = 2_000;
   const salaryYears = calculateSalaryYearsToFortune(reference.netWorthEUR, salaryMonthly);
-  const pointerX = useMotionValue(520);
-  const pointerY = useMotionValue(260);
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${pointerX}px ${pointerY}px, rgba(213,31,18,0.14), transparent 62%)`;
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 90]);
-  const backgroundScale = useTransform(scrollYProgress, [0, 1], [1.02, reduce ? 1.02 : 1.08]);
+  const smoothHeroProgress = useSpring(scrollYProgress, { stiffness: 140, damping: 32, mass: 0.28 });
+  const backgroundY = useTransform(smoothHeroProgress, [0, 1], [0, reduce ? 0 : 54]);
+  const backgroundScale = useTransform(smoothHeroProgress, [0, 1], [1.015, reduce ? 1.015 : 1.045]);
 
   return (
     <section ref={sectionRef} className="relative min-h-[calc(100dvh-4rem)] overflow-hidden border-b border-black/10">
-      <motion.div className="absolute -inset-x-8 -inset-y-24" style={{ y: backgroundY, scale: backgroundScale }}>
+      <motion.div className="absolute -inset-x-8 -inset-y-24 [transform:translateZ(0)] [will-change:transform]" style={{ y: backgroundY, scale: backgroundScale }}>
         <Image
-          src="/assets/home/hero-gap-v3.png"
+          src="/assets/home/hero-gap-v3.webp"
           alt="Composition éditoriale abstraite sur l'écart entre un revenu et une fortune extrême"
           fill
           priority
+          quality={82}
           sizes="100vw"
           className="object-cover"
         />
@@ -50,7 +48,7 @@ export function HomeImpactHero() {
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.66 }}
+          transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-7xl text-center"
         >
           <p className="font-mono text-xs font-bold tracking-[0.16em] text-[var(--accent-dark)]">L'ÉCART</p>
@@ -65,23 +63,17 @@ export function HomeImpactHero() {
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.78, delay: 0.08 }}
-          onPointerMove={(event) => {
-            const bounds = event.currentTarget.getBoundingClientRect();
-            pointerX.set(event.clientX - bounds.left);
-            pointerY.set(event.clientY - bounds.top);
-          }}
-          className="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-2xl border border-black/10 bg-[rgba(255,250,240,0.92)] shadow-[0_36px_140px_rgba(31,24,18,0.2)] backdrop-blur-xl"
+          transition={{ duration: 0.72, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-2xl border border-black/10 bg-[rgba(255,250,240,0.97)] shadow-[0_36px_140px_rgba(31,24,18,0.18)]"
         >
-          <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: spotlight }} />
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             <motion.span
               key={reference.slug}
               aria-hidden="true"
               initial={reduce ? false : { x: "-120%", opacity: 0 }}
               animate={{ x: "520%", opacity: [0, 0.72, 0] }}
               exit={{ opacity: 0 }}
-              transition={reduce ? { duration: 0 } : { duration: 0.9 }}
+              transition={reduce ? { duration: 0 } : { duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
               className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/5 bg-gradient-to-r from-transparent via-white/74 to-transparent"
             />
           </AnimatePresence>
@@ -95,16 +87,26 @@ export function HomeImpactHero() {
               {billionaires.map((person) => {
                 const active = person.slug === reference.slug;
                 return (
-                  <button
+                  <motion.button
                     key={person.slug}
                     type="button"
                     onClick={() => setSelectedSlug(person.slug)}
                     aria-label={`Comparer avec ${person.name}`}
                     aria-pressed={active}
-                    className={`relative h-8 w-8 overflow-hidden rounded-full border-2 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:h-11 sm:w-11 ${active ? "border-[var(--accent)]" : "border-white opacity-62 hover:opacity-100"}`}
+                    whileHover={reduce ? undefined : { y: -3, scale: 1.04 }}
+                    whileTap={reduce ? undefined : { scale: 0.94 }}
+                    transition={{ type: "spring", stiffness: 420, damping: 28 }}
+                    className={`relative h-8 w-8 overflow-hidden rounded-full border-2 border-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:h-11 sm:w-11 ${active ? "opacity-100" : "opacity-62 hover:opacity-100"}`}
                   >
+                    {active ? (
+                      <motion.span
+                        layoutId="active-hero-fortune"
+                        className="absolute inset-0 z-10 rounded-full ring-2 ring-inset ring-[var(--accent)]"
+                        transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      />
+                    ) : null}
                     <Image src={person.imageSrc} alt="" fill sizes="44px" className="object-cover" />
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -114,13 +116,13 @@ export function HomeImpactHero() {
             <div className="grid content-center gap-4 border-r border-black/10 p-4 sm:p-6">
               <div>
                 <p className="text-xs font-semibold leading-5 text-[var(--muted)] sm:text-sm">Fortune estimée de {reference.name}</p>
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="popLayout" initial={false}>
                   <motion.div
                     key={reference.slug}
                     initial={reduce ? false : { opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={reduce ? undefined : { opacity: 0, y: -12 }}
-                    transition={{ duration: 0.34 }}
+                    transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
                     className="display-type mt-3 font-medium leading-[0.86] text-[var(--accent)]"
                   >
                     <p className="text-[clamp(2.4rem,9vw,4rem)]">{formatDecimal(reference.netWorthEUR / 1_000_000_000, 1)}</p>
@@ -134,13 +136,13 @@ export function HomeImpactHero() {
             <div className="grid content-center p-4 sm:p-6 md:px-8">
               <div aria-live="polite">
                 <p className="text-xs font-semibold text-[var(--muted)] sm:text-sm">Temps nécessaire</p>
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="popLayout" initial={false}>
                   <motion.div
                     key={reference.slug}
-                    initial={reduce ? false : { opacity: 0, y: 26, filter: "blur(8px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={reduce ? undefined : { opacity: 0, y: -18, filter: "blur(6px)" }}
-                    transition={{ duration: 0.48 }}
+                    initial={reduce ? false : { opacity: 0, y: 22, scale: 0.985 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={reduce ? undefined : { opacity: 0, y: -16, scale: 0.99 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     className="mt-3"
                   >
                     <p className="display-type text-[clamp(2.45rem,7vw,5.2rem)] font-medium uppercase leading-[0.84]">

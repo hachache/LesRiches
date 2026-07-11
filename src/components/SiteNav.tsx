@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useReducedMotion, useScroll } from "motion/react";
+import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 
 const navItems: ReadonlyArray<{ label: string; href: string; mobileHidden?: boolean }> = [
   { label: "Comparer", href: "/comparateur" },
@@ -14,6 +14,7 @@ export function SiteNav() {
   const pathname = usePathname();
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
+  const smoothScrollProgress = useSpring(scrollYProgress, { stiffness: 180, damping: 36, mass: 0.25 });
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[rgba(8,8,7,0.94)] text-white backdrop-blur-xl">
@@ -58,7 +59,7 @@ export function SiteNav() {
       {reduce ? null : (
         <motion.span
           aria-hidden="true"
-          style={{ scaleX: scrollYProgress }}
+          style={{ scaleX: smoothScrollProgress }}
           className="absolute inset-x-0 bottom-0 h-px origin-left bg-[var(--accent)]"
         />
       )}

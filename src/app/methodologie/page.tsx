@@ -24,7 +24,7 @@ export default function MethodologiePage() {
 
       <MotionReveal className="paper-panel relative mt-8 aspect-[16/7] overflow-hidden rounded-2xl" delay={0.06}>
         <Image
-          src="/assets/methodology/source-ledger.png"
+          src="/assets/methodology/source-ledger.webp"
           alt="Illustration de fiches de méthodologie et de sources économiques"
           fill
           priority

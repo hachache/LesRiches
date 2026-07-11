@@ -292,7 +292,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
             </label>
           </div>
 
-          <AnimatePresence mode="wait" initial={false}>
+          <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={mode}
               initial={reduce ? false : { opacity: 0, y: 6 }}
@@ -329,7 +329,7 @@ export function PersonalFortuneComparator({ compact = false, showSecondaryLink =
         ) : null}
 
         <div className="grid gap-10 xl:grid-cols-[1fr_330px] xl:items-start">
-          <AnimatePresence mode="wait" initial={false}>
+          <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={sceneKey}
               initial={reduce ? false : { opacity: 0, y: 14 }}

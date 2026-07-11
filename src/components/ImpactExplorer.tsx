@@ -90,7 +90,7 @@ export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: Im
       <div className="grid border-t border-black/10 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="relative min-h-72 overflow-hidden border-b border-black/10 lg:min-h-[480px] lg:border-b-0 lg:border-r">
           <Image
-            src="/assets/editorial/civic-scale-v3.png"
+            src="/assets/editorial/civic-scale-v3.webp"
             alt="Collage éditorial montrant une école, un hôpital, des logements, de l'aide alimentaire et un point d'eau"
             fill
             sizes="(max-width: 1024px) 100vw, 46vw"
@@ -136,13 +136,13 @@ export function ImpactExplorer({ annualGainEUR, annualGainLabel, ownerName }: Im
             })}
           </div>
 
-          <AnimatePresence mode="wait" initial={false}>
+          <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={focus}
-              initial={reduce ? false : { opacity: 0, y: 20, filter: "blur(7px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={reduce ? undefined : { opacity: 0, y: -14, filter: "blur(5px)" }}
-              transition={{ duration: 0.4 }}
+              initial={reduce ? false : { opacity: 0, y: 18, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={reduce ? undefined : { opacity: 0, y: -12, scale: 0.995 }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
               className="grid gap-5"
             >
               <div className="flex items-center justify-between gap-4">
